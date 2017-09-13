@@ -2,7 +2,7 @@
 
 ### Overview
 
-This is an interceptor module to make the p5 canvas accessible. 
+This is an interceptor module to make the p5 canvas accessible.
 
 The canvas is an inherently inaccessible element in the web. This module tries to reconstruct what is on the canvas in p5 in words and sound so that it is accessible to the screen reader.
 
@@ -23,7 +23,7 @@ The interceptors now have the following class structure
     * BaseInterceptor
         * TextInterceptor
         * GridInterceptor
-    
+
 and the entities ( p5 functions ) have the following class structure
 
     * BaseEntity
@@ -31,8 +31,11 @@ and the entities ( p5 functions ) have the following class structure
         * FillEntity
         * TextEntity
         * ShapeEntity
-        
+
   (additional entities will be added here)
 
 
+### Reference
 
+* [Setting up Grunt file](https://gruntjs.com/sample-gruntfile)
+* [](https://semaphoreci.com/community/tutorials/getting-started-with-grunt-js)
