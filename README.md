@@ -2,9 +2,9 @@
 
 ### Overview
 
-This is an interceptor module to make the p5 canvas accessible.
+This is a library to make the p5 canvas accessible.
 
-The canvas is an inherently inaccessible element in the web. This module tries to reconstruct what is on the canvas in p5 in words and sound so that it is accessible to the screen reader.
+The canvas is an inherently inaccessible element in the web. This library tries to reconstruct what is on the canvas in p5 in words and sound so that it is accessible to the screen reader.
 
 It helps create 3 kinds of output
 
@@ -14,28 +14,22 @@ It helps create 3 kinds of output
 
 3) **Sound Output** - This mode explains the movement of the objects present in the canvas. Top to Down movement is represented by a decrease in frequency and left to right by panning the stereo output.
 
-### Code structure
+### Usage
 
-The code can be widely split into interceptors (modules that intercept the code and create entities) and entities(classes that decide how each function that is intercepted should be treated)
+Link to the library in the end of the html file [https://cdn.rawgit.com/MathuraMG/p5-accessibility/f4e75f25/dist/p5-accessibility.js](https://cdn.rawgit.com/MathuraMG/p5-accessibility/f4e75f25/dist/p5-accessibility.js)
 
-The interceptors now have the following class structure
+To get the **plain text output**, include the following in your HTML file, where you want the output to be available.
+`<section id="textOutput-content"></section>`
 
-    * BaseInterceptor
-        * TextInterceptor
-        * GridInterceptor
+To get the **table text output**, include the following in your HTML file, where you want the output to be available.
+`<section id="gridOutput-content"></section>`
 
-and the entities ( p5 functions ) have the following class structure
-
-    * BaseEntity
-        * BackgroundEntity
-        * FillEntity
-        * TextEntity
-        * ShapeEntity
-
-  (additional entities will be added here)
+To get the **sound output**, include the following in your HTML file, where you want the output to be available.
+`<section id="soundOutput-content"></section>`
 
 
-### Reference
+### To use on local/contribute
 
-* [Setting up Grunt file](https://gruntjs.com/sample-gruntfile)
-* [](https://semaphoreci.com/community/tutorials/getting-started-with-grunt-js)
+* Clone or download this repo
+* make changes to the source code in the `src` folder
+* run `grunt` in the root folder, this will update the library in `/dist/p5-accessibility.js`

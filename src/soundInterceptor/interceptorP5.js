@@ -36,7 +36,6 @@ funcNames = funcNames.filter(function(x) {
 
 if($('#soundOutput-content').length) {
   funcNames.forEach(function(x) {
-    console.log('inside the sound thingy');
     var i = 0;
     var originalFunc = p5.prototype[x.name];
     p5.prototype[x.name] = function() {

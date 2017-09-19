@@ -19,7 +19,6 @@ funcNames = funcNames.filter(function(x) {
 });
 if($('#gridOutput-content').length) {
   funcNames.forEach(function(x) {
-    console.log('inside grid');
     var document = parent.document;
     var originalFunc = p5.prototype[x.name];
     var byID = function(id) {
