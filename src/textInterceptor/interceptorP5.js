@@ -20,7 +20,7 @@ funcNames = funcNames.filter(function(x) {
 
 if($('#textOutput-content').length) {
   funcNames.forEach(function(x) {
-    var document = parent.document;
+    // var document = parent.document;
     var originalFunc = p5.prototype[x.name];
     var byID = function(id) {
       var element = document.getElementById(id);
