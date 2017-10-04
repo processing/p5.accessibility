@@ -1,5 +1,9 @@
 function createTextStructure() {
   $('#textOutput-content').append(
+    $('<h1/>')
+      .html("Text Output")
+  );
+  $('#textOutput-content').append(
     $('<p/>')
       .attr("id", "textOutput-content-summary")
       .attr("tabIndex", "0")
@@ -21,6 +25,10 @@ function createTextStructure() {
 }
 
 function createTableStructure() {
+  $('#gridOutput-content').append(
+    $('<h1/>')
+      .html("Grid Output")
+  );
   $('#gridOutput-content').append(
     $('<p/>')
       .attr("id", "gridOutput-content-summary")
