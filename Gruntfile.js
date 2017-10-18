@@ -1,6 +1,9 @@
 module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+    curl: {
+      'src/colorNamer.js': 'https://cdn.rawgit.com/lm-n/colour-namer/1228bc4d/lib/colorNamer.js'
+    },
     concat: {
       options: {
         // define a string to put between each file in the concatenated output
@@ -8,7 +11,7 @@ module.exports = function(grunt) {
       },
       dist: {
         // the files to concatenate
-        src: ['src/createHTMLstructure.js' ,'src/_data.js','src/registry.js','src/interceptorHelperFunctions.js','src/baseInterceptor.js', 'src/entities/entity.min.js', 'src/ntc.min.js' , 'src/textInterceptor/*.js','src/gridInterceptor/*.js','src/soundInterceptor/*.js'],
+        src: ['src/colorNamer.js','src/createHTMLstructure.js' ,'src/_data.js','src/registry.js','src/interceptorHelperFunctions.js','src/baseInterceptor.js', 'src/entities/entity.min.js', 'src/ntc.min.js' , 'src/textInterceptor/*.js','src/gridInterceptor/*.js','src/soundInterceptor/*.js'],
         // the location of the resulting JS file
         dest: 'dist/p5-accessibility.js'
       }
@@ -32,6 +35,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-curl');
 
   grunt.registerTask('default', ['concat']);
 };

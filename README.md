@@ -32,4 +32,10 @@ To get the **sound output**, include the following in your HTML file, where you 
 
 * Clone or download this repo
 * make changes to the source code in the `src` folder
+* run `grunt curl` to get the latest versions of the CDN libraries
 * run `grunt` in the root folder, this will update the library in `/dist/p5-accessibility.js`
+
+
+### References
+
+* [grunt-curl](https://github.com/twolfson/grunt-curl)
