@@ -763,7 +763,7 @@ baseInterceptor.prototype.getColorName = function(arguments) {
   if (arguments.length >= 3) {
     // assuming that we are doing RGB - convert RGB values to a name
     var colorName = rgbColorName(arguments[0], arguments[1], arguments[2]);
-    var rgb = '(' + arguments[0] + ',' + arguments[1] + ',' + arguments[2] + ')';
+    var rgb = '(' + arguments[0] + ', ' + arguments[1] + ', ' + arguments[2] + ')';
     return ({
       'color': colorName,
       'rgb': rgb
@@ -772,19 +772,19 @@ baseInterceptor.prototype.getColorName = function(arguments) {
     if (!(typeof(arguments[0])).localeCompare('number')) {
       // assuming that we are doing RGB - this would be a grayscale number
       if (arguments[0] < 10) {
-        var rgb = '(0,0,0)';
+        var rgb = '(0, 0, 0)';
         return ({
           'color': 'black',
           'rgb': rgb
         });
       } else if (arguments[0] > 240) {
-        var rgb = '(255,255,255)';
+        var rgb = '(255, 255, 255)';
         return ({
           'color': 'white',
           'rgb': rgb
         });
       } else {
-        var rgb = '(' + arguments[0] + ',' + arguments[0] + ',' + arguments[0] + ')';
+        var rgb = '(' + arguments[0] + ', ' + arguments[0] + ', ' + arguments[0] + ')';
         return ({
           'color': 'grey',
           'rgb': rgb
@@ -798,7 +798,7 @@ baseInterceptor.prototype.getColorName = function(arguments) {
         var r = parseInt(arguments[0].charAt(1) + arguments[0].charAt(2), 16);
         var g = parseInt(arguments[0].charAt(3) + arguments[0].charAt(4), 16);
         var b = parseInt(arguments[0].charAt(5) + arguments[0].charAt(6), 16);
-        var rgb = '(' + r + ',' + g + ',' + b + ')';
+        var rgb = '(' + r + ', ' + g + ', ' + b + ')';
         return ({
           'color': colorName,
           'rgb': rgb
