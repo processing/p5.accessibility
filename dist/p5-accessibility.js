@@ -990,6 +990,7 @@ textInterceptor.prototype.getSummary = function(object1, object2, element) {
         objectList.appendChild(objectListItem);
         var objLink = document.createElement('a');
         objLink.href = '#object' + i;
+        objLink.target = '_self';
         objLink.innerHTML = objArrayItem['type'];
         objectListItem.appendChild(objLink);
         objectListItem.innerHTML +=
@@ -1005,6 +1006,7 @@ textInterceptor.prototype.getSummary = function(object1, object2, element) {
         objectList.appendChild(objectListItem);
         var objLink = document.createElement('a');
         objLink.href = '#object' + (i + object1.objectArray.length);
+        objLink.target = '_self';
         objLink.innerHTML = objArrayItem['type'];
         objectListItem.appendChild(objLink);
         objectListItem.innerHTML +=
