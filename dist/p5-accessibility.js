@@ -793,6 +793,7 @@ baseInterceptor.prototype.getColorName = function(arguments) {
     } else if (!(typeof(arguments[0])).localeCompare('string')) {
       if (!arguments[0].charAt(0).localeCompare('#')) {
         // if user has entered a hex color
+        console.log(arguments[0].slice(1));
         var colorName = hexColorName(arguments[0].slice(1));
         var r = parseInt(arguments[0].charAt(1) + arguments[0].charAt(2), 16);
         var g = parseInt(arguments[0].charAt(3) + arguments[0].charAt(4), 16);
@@ -942,8 +943,7 @@ textInterceptor.prototype.populateTable = function(table, objectArray) {
       }
       for (var j = this.prevTotalCount; j < this.totalCount; j++) {
         var row = document.createElement('tr');
-        row.id = 'plain-object' + j;
-        row.tabIndex = 0;
+        row.id = 'object' + j;
         var properties = Object.keys(objectArray[j].getAttributes());
         for (var i = 0; i < properties.length; i++) {
           var col = document.createElement('td');
@@ -982,56 +982,43 @@ textInterceptor.prototype.getSummary = function(object1, object2, element) {
   if (object2.objectCount > 0 || object1.objectCount > 0) {
 
     var objectList = document.createElement('ul');
-    var button1 = document.createElement('button');
-    button1.addEventListener('click', function() {
-      rowFocus();
-    })
-    objectList.appendChild(button1);
 
     if (this.totalCount < 100) {
 
       object1.objectArray.forEach(function(objArrayItem,i){
         var objectListItem = document.createElement('li');
+        objectList.appendChild(objectListItem);
         var objLink = document.createElement('a');
-        objLink.addEventListener('click', function() {
-          rowFocus('plain-object' + i);
-        });
-        objLink.href="javascript:void(0)";
-        objLink.innerHTML =
-        objArrayItem['type'] +
+        objLink.href = '#object' + i;
+        objLink.target = '_self';
+        objLink.innerHTML = objArrayItem['type'];
+        objectListItem.appendChild(objLink);
+        objectListItem.innerHTML +=
         ' at ' +
         objArrayItem['location'] +
         ' covering ' +
         objArrayItem['area'] +
         ' of the canvas';
-        objectListItem.appendChild(objLink);
-        objectList.appendChild(objectListItem);
       });
 
       object2.objectArray.forEach(function(objArrayItem,i){
         var objectListItem = document.createElement('li');
+        objectList.appendChild(objectListItem);
         var objLink = document.createElement('a');
-        objLink.href="javascript:void(0)";
-        objLink.innerHTML =
-        objArrayItem['type'] +
+        objLink.href = '#object' + (i + object1.objectArray.length);
+        objLink.target = '_self';
+        objLink.innerHTML = objArrayItem['type'];
+        objectListItem.appendChild(objLink);
+        objectListItem.innerHTML +=
         ' at ' +
         objArrayItem['location'] +
         ' covering ' +
         objArrayItem['area'] +
         ' of the canvas';
-        objLink.onclick = function() {
-          rowFocus("plain-object" + parseInt(i + object1.objectArray.length));
-        };
-        objectListItem.appendChild(objLink);
-        objectList.appendChild(objectListItem);
       });
       element.appendChild(objectList);
     }
   }
-}
-
-function rowFocus(id) {
-  document.getElementById(id).focus();
 }
 
 var textInterceptor = new textInterceptor();
@@ -1167,12 +1154,8 @@ gridInterceptor.prototype.populateTable = function(objectArray, documentPassed) 
       // add link in table
       var cellLink = documentPassed.createElement('a');
       cellLink.innerHTML += object.type;
-      var objectId = 'grid-object' + i;
-      cellLink.setAttribute('href', 'javascript:void(0)');
-      cellLink.onclick = function() {
-        rowFocus(objectId);
-      };
-
+      var objectId = '#object' + i;
+      cellLink.setAttribute('href', objectId);
       if(object.coordLoc.locY < that.noCols && object.coordLoc.locX < that.noRows && object.coordLoc.locY> 0 && object.coordLoc.locX > 0 ) {
         documentPassed.getElementsByClassName('gridOutput-cell-content')[cellLoc].appendChild(cellLink);
       }
@@ -1207,8 +1190,7 @@ gridInterceptor.prototype.populateObjectDetails = function(object1, object2, ele
     if (this.totalCount < 100) {
       object1.objectArray.forEach(function(objArrayItem,i){
         var objectListItem = document.createElement('li');
-        objectListItem.setAttribute('tabIndex', 0);
-        objectListItem.id = 'grid-object' + i;
+        objectListItem.id = 'object' + i;
         objectList.appendChild(objectListItem);
         var objKeys = Object.keys(objArrayItem.getAttributes());
         objKeys.forEach(function(objKeyItem){
@@ -1223,8 +1205,7 @@ gridInterceptor.prototype.populateObjectDetails = function(object1, object2, ele
       });
       object2.objectArray.forEach(function(objArrayItem,i){
         var objectListItem = document.createElement('li');
-        objectListItem.setAttribute('tabIndex', 0);
-        objectListItem.id = 'grid-object' + (object1.objectArray.length + i);
+        objectListItem.id = 'object' + (object1.objectArray.length + i);
         objectList.appendChild(objectListItem);
         var objKeys = Object.keys(objArrayItem.getAttributes());
         objKeys.forEach(function(objKeyItem){
@@ -1242,9 +1223,6 @@ gridInterceptor.prototype.populateObjectDetails = function(object1, object2, ele
   }
 }
 
-function rowFocus(id) {
-  document.getElementById(id).focus();
-}
 
 var gridInterceptor = new gridInterceptor();
 ;funcNames = allData['classitems'].map(function(x) {

@@ -57,6 +57,7 @@ baseInterceptor.prototype.getColorName = function(arguments) {
     } else if (!(typeof(arguments[0])).localeCompare('string')) {
       if (!arguments[0].charAt(0).localeCompare('#')) {
         // if user has entered a hex color
+        console.log(arguments[0].slice(1));
         var colorName = hexColorName(arguments[0].slice(1));
         var r = parseInt(arguments[0].charAt(1) + arguments[0].charAt(2), 16);
         var g = parseInt(arguments[0].charAt(3) + arguments[0].charAt(4), 16);

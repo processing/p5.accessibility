@@ -74,12 +74,8 @@ gridInterceptor.prototype.populateTable = function(objectArray, documentPassed) 
       // add link in table
       var cellLink = documentPassed.createElement('a');
       cellLink.innerHTML += object.type;
-      var objectId = 'grid-object' + i;
-      cellLink.setAttribute('href', 'javascript:void(0)');
-      cellLink.onclick = function() {
-        rowFocus(objectId);
-      };
-
+      var objectId = '#object' + i;
+      cellLink.setAttribute('href', objectId);
       if(object.coordLoc.locY < that.noCols && object.coordLoc.locX < that.noRows && object.coordLoc.locY> 0 && object.coordLoc.locX > 0 ) {
         documentPassed.getElementsByClassName('gridOutput-cell-content')[cellLoc].appendChild(cellLink);
       }
@@ -114,8 +110,7 @@ gridInterceptor.prototype.populateObjectDetails = function(object1, object2, ele
     if (this.totalCount < 100) {
       object1.objectArray.forEach(function(objArrayItem,i){
         var objectListItem = document.createElement('li');
-        objectListItem.setAttribute('tabIndex', 0);
-        objectListItem.id = 'grid-object' + i;
+        objectListItem.id = 'object' + i;
         objectList.appendChild(objectListItem);
         var objKeys = Object.keys(objArrayItem.getAttributes());
         objKeys.forEach(function(objKeyItem){
@@ -130,8 +125,7 @@ gridInterceptor.prototype.populateObjectDetails = function(object1, object2, ele
       });
       object2.objectArray.forEach(function(objArrayItem,i){
         var objectListItem = document.createElement('li');
-        objectListItem.setAttribute('tabIndex', 0);
-        objectListItem.id = 'grid-object' + (object1.objectArray.length + i);
+        objectListItem.id = 'object' + (object1.objectArray.length + i);
         objectList.appendChild(objectListItem);
         var objKeys = Object.keys(objArrayItem.getAttributes());
         objKeys.forEach(function(objKeyItem){
@@ -149,8 +143,5 @@ gridInterceptor.prototype.populateObjectDetails = function(object1, object2, ele
   }
 }
 
-function rowFocus(id) {
-  document.getElementById(id).focus();
-}
 
 var gridInterceptor = new gridInterceptor();
