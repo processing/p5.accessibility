@@ -1,12 +1,14 @@
 var x =0, speed =2;
+let red;
 
 function setup() {
   createCanvas(200,200);
+  red=color(255,0,0);
 }
 
 function draw() {
   background(220);
-  fill("#ff0000");
+  fill(red);
   ellipse(20,20,20,20);
   fill(32,255,65);
   ellipse(50,x,10,10);
