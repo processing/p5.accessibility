@@ -911,6 +911,9 @@ BaseEntity.isParameter = false;
   var self = this;
   var passedArguments = arguments;
   this.populate = function(Interceptor) {
+    if(passedArguments[0].name == 'p5.Color') {
+      passedArguments = passedArguments[0].levels;
+    }
     Interceptor.bgColor = Interceptor.getColorName(passedArguments)['color'] + Interceptor.getColorName(passedArguments)['rgb'];
   }
 
