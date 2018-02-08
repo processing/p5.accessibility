@@ -832,7 +832,251 @@ baseInterceptor.prototype.getColorName = function(arguments) {
     }
   }
 }
-;function BaseEntity(Interceptor,object,arguments,canvasX,canvasY){this.type=Interceptor.currentColor+" "+object.name,this.location="",this.coordinates="",this.isMember=function(){};this.getAttributes=function(){return{type:this.type,location:this.location,coordinates:this.coordinates}};this.getLocation=function(object,arguments,canvasX,canvasY){var xCoord,yCoord;arguments=[].slice.call(arguments);var i=0;var that=this;that.coordinates="";arguments.forEach(function(argument){a=argument;if(object.params[i].description.indexOf("x-coordinate")>-1){xCoord=a;that.coordinates+=a+"x,"}else if(object.params[i].description.indexOf("y-coordinate")>-1){yCoord=a;that.coordinates+=a+"y"}i++});if(xCoord<.4*canvasX){if(yCoord<.4*canvasY){return"top left"}else if(yCoord>.6*canvasY){return"bottom left"}else{return"mid left"}}else if(xCoord>.6*canvasX){if(yCoord<.4*canvasY){return"top right"}else if(yCoord>.6*canvasY){return"bottom right"}else{return"mid right"}}else{if(yCoord<.4*canvasY){return"top middle"}else if(yCoord>.6*canvasY){return"bottom middle"}else{return"middle"}}};this.canvasLocator=function(object,arguments,canvasX,canvasY){var xCoord,yCoord;var noRows=10,noCols=10;var locX,locY;var i=0;arguments=[].slice.call(arguments);arguments.forEach(function(argument){a=argument;if(object.params[i].description.indexOf("x-coordinate")>-1){xCoord=a}else if(object.params[i].description.indexOf("y-coordinate")>-1){yCoord=a}i++});locX=Math.floor(xCoord/canvasX*noRows);locY=Math.floor(yCoord/canvasY*noCols);if(locX==noRows){locX=locX-1}if(locY==noCols){locY=locY-1}return{locX:locX,locY:locY}}}BaseEntity.isParameter=false;function BackgroundEntity(Interceptor,object,arguments,canvasX,canvasY){var self=this;var passedArguments=arguments;this.populate=function(Interceptor){Interceptor.bgColor=Interceptor.getColorName(passedArguments)["color"]+Interceptor.getColorName(passedArguments)["rgb"]};this.populate(Interceptor)}BackgroundEntity.handledNames=["background"];BackgroundEntity.handles=function(name){return this.handledNames.indexOf(name)>=0};BackgroundEntity.isParameter=true;Registry.register(BackgroundEntity);function FillEntity(Interceptor,shapeObject,arguments,canvasX,canvasY){var self=this;var passedArguments=arguments;this.populate=function(Interceptor){Interceptor.currentColor=Interceptor.getColorName(passedArguments)["color"]+Interceptor.getColorName(passedArguments)["rgb"]};this.populate(Interceptor)}FillEntity.handledNames=["fill"];FillEntity.handles=function(name){return this.handledNames.indexOf(name)>=0};FillEntity.isParameter=true;Registry.register(FillEntity);function ShapeEntity(Interceptor,shapeObject,arguments,canvasX,canvasY){var self=this;BaseEntity.call(self,shapeObject,arguments,canvasX,canvasY);this.areaAbs=0;this.type=Interceptor.currentColor+" "+shapeObject.name;this.area=0;this.populate=function(shapeObject,arguments,canvasX,canvasY){this.location=this.getLocation(shapeObject,arguments,canvasX,canvasY);this.areaAbs=this.getObjectArea(shapeObject.name,arguments);this.coordLoc=this.canvasLocator(shapeObject,arguments,canvasX,canvasY);this.area=(this.getObjectArea(shapeObject.name,arguments)*100/(canvasX*canvasY)).toFixed(2)+"%"};this.getAttributes=function(){return{type:this.type,location:this.location,coordinates:this.coordinates,area:this.area}};this.getObjectArea=function(objectType,arguments){var objectArea=0;if(!objectType.localeCompare("arc")){objectArea=0}else if(!objectType.localeCompare("ellipse")){objectArea=3.14*arguments[2]*arguments[3]/4}else if(!objectType.localeCompare("line")){objectArea=0}else if(!objectType.localeCompare("point")){objectArea=0}else if(!objectType.localeCompare("quad")){objectArea=arguments[0]*arguments[1]+arguments[2]*arguments[3]+arguments[4]*arguments[5]+arguments[6]*arguments[7]-(arguments[2]*arguments[1]+arguments[4]*arguments[3]+arguments[6]*arguments[5]+arguments[0]*arguments[7])}else if(!objectType.localeCompare("rect")){objectArea=arguments[2]*arguments[3]}else if(!objectType.localeCompare("triangle")){objectArea=abs(arguments[0]*(arguments[3]-arguments[5])+arguments[2]*(arguments[5]-arguments[1])+arguments[4]*(arguments[1]-arguments[3]))}return objectArea};this.populate(shapeObject,arguments,canvasX,canvasY)}ShapeEntity.handledNames=["arc","ellipse","line","point","quad","rect","triangle"];ShapeEntity.handles=function(name){return this.handledNames.indexOf(name)>=0};ShapeEntity.isParameter=false;Registry.register(ShapeEntity);function TextEntity(Interceptor,shapeObject,arguments,canvasX,canvasY){var self=this;BaseEntity.call(self,shapeObject,arguments,canvasX,canvasY);this.type=String(arguments[0]).substring(0,20)+"("+Interceptor.currentColor+")";this.populate=function(shapeObject,arguments,canvasX,canvasY){this.location=this.getLocation(shapeObject,arguments,canvasX,canvasY);this.coordLoc=this.canvasLocator(shapeObject,arguments,canvasX,canvasY)};this.getAttributes=function(){return{type:this.type,location:this.location,coordinates:this.coordinates}};this.populate(shapeObject,arguments,canvasX,canvasY)}TextEntity.handledNames=["text"];TextEntity.handles=function(name){return this.handledNames.indexOf(name)>=0};TextEntity.isParameter=false;Registry.register(TextEntity);;function textInterceptor() { // eslint-disable-line
+;function BaseEntity(Interceptor,object,arguments, canvasX, canvasY) {
+  this.type= Interceptor.currentColor + ' ' +  object.name ,
+  this.location= '' ,
+  this.coordinates= '',
+  this.isMember = function() {
+
+  }
+
+  this.getAttributes = function() {
+    return({
+      type: this.type,
+      location: this.location,
+      coordinates: this.coordinates
+    })
+  };
+
+  this.getLocation = function(object, arguments, canvasX, canvasY) { // eslint-disable-line
+    var xCoord, yCoord;
+    arguments = [].slice.call(arguments);
+    var i = 0;
+    var that = this;
+    that.coordinates = '';
+
+    arguments.forEach(function(argument){
+      a = argument;
+      if (object.params[i].description.indexOf('x-coordinate') > -1) {
+        xCoord = a;
+        that.coordinates += a + 'x,';
+      } else if (object.params[i].description.indexOf('y-coordinate') > -1) {
+        yCoord = a;
+        that.coordinates += a + 'y';
+      }
+      i++;
+    });
+
+    if (xCoord < 0.4 * canvasX) {
+      if (yCoord < 0.4 * canvasY) {
+        return 'top left';
+      } else if (yCoord > 0.6 * canvasY) {
+        return 'bottom left';
+      } else {
+        return 'mid left';
+      }
+    } else if (xCoord > 0.6 * canvasX) {
+      if (yCoord < 0.4 * canvasY) {
+        return 'top right';
+      } else if (yCoord > 0.6 * canvasY) {
+        return 'bottom right';
+      } else {
+        return 'mid right';
+      }
+    } else {
+      if (yCoord < 0.4 * canvasY) {
+        return 'top middle';
+      } else if (yCoord > 0.6 * canvasY) {
+        return 'bottom middle';
+      } else {
+        return 'middle';
+      }
+    }
+  }
+
+  /* return which part of the canvas an object os present */
+  this.canvasLocator = function(object, arguments, canvasX, canvasY) {
+    var xCoord, yCoord;
+    var noRows = 10, noCols = 10;
+    var locX, locY;
+    var i = 0;
+    arguments = [].slice.call(arguments);
+    arguments.forEach(function(argument){
+      a = argument;
+
+      if (object.params[i].description.indexOf('x-coordinate') > -1) {
+        xCoord = a;
+      } else if (object.params[i].description.indexOf('y-coordinate') > -1) {
+        yCoord = a;
+      }
+      i++;
+    });
+
+    locX = Math.floor((xCoord / canvasX) * noRows);
+    locY = Math.floor((yCoord / canvasY) * noCols);
+    if (locX == noRows) {
+      locX = locX - 1;
+    }
+    if (locY == noCols) {
+      locY = locY - 1;
+    }
+    return ({
+      locX: locX,
+      locY: locY
+    });
+  }
+}
+
+BaseEntity.isParameter = false;
+;function BackgroundEntity(Interceptor,object,arguments, canvasX, canvasY) {
+  var self = this;
+  var passedArguments = arguments;
+  this.populate = function(Interceptor) {
+    if(passedArguments[0].name == 'p5.Color') {
+      passedArguments = passedArguments[0].levels;
+    }
+    Interceptor.bgColor = Interceptor.getColorName(passedArguments)['color'] + Interceptor.getColorName(passedArguments)['rgb'];
+  }
+
+  this.populate(Interceptor);
+}
+BackgroundEntity.handledNames = [
+  'background'
+]
+
+BackgroundEntity.handles = function(name) {
+  return (this.handledNames.indexOf(name) >= 0);
+}
+
+BackgroundEntity.isParameter = true;
+
+Registry.register(BackgroundEntity);
+;function FillEntity(Interceptor,shapeObject,arguments, canvasX, canvasY) {
+  var self = this;
+  var passedArguments = arguments;
+  this.populate = function(Interceptor) {
+    if(passedArguments[0].name == 'p5.Color') {
+      passedArguments = passedArguments[0].levels;
+    }
+    Interceptor.currentColor = Interceptor.getColorName(passedArguments)['color'] + Interceptor.getColorName(passedArguments)['rgb'];
+  }
+
+  this.populate(Interceptor);
+}
+FillEntity.handledNames = [
+  'fill'
+]
+
+FillEntity.handles = function(name) {
+  return (this.handledNames.indexOf(name) >= 0);
+}
+
+FillEntity.isParameter = true;
+
+Registry.register(FillEntity);
+;function ShapeEntity(Interceptor,shapeObject,arguments, canvasX, canvasY) {
+  var self = this;
+  BaseEntity.call(self,shapeObject,arguments, canvasX, canvasY);
+  this.areaAbs = 0;
+  this.type = Interceptor.currentColor + ' ' + shapeObject.name;
+  this.area = 0;
+
+  this.populate = function(shapeObject, arguments, canvasX, canvasY) {
+    this.location = this.getLocation(shapeObject, arguments, canvasX, canvasY);
+    this.areaAbs = this.getObjectArea(shapeObject.name, arguments);
+    this.coordLoc = this.canvasLocator(shapeObject, arguments, canvasX, canvasY);
+    this.area = (this.getObjectArea(shapeObject.name, arguments)*100/(canvasX*canvasY)).toFixed(2) + '%';
+  }
+
+  this.getAttributes = function() {
+    return({
+      type: this.type,
+      location: this.location,
+      coordinates: this.coordinates,
+      area: this.area
+    })
+  };
+
+  /* return area of the shape */
+  this.getObjectArea = function(objectType, arguments) {
+    var objectArea = 0;
+    if (!objectType.localeCompare('arc')) {
+      objectArea = 0;
+    } else if (!objectType.localeCompare('ellipse')) {
+      objectArea = 3.14 * arguments[2] * arguments[3] / 4;
+    } else if (!objectType.localeCompare('line')) {
+      objectArea = 0;
+    } else if (!objectType.localeCompare('point')) {
+      objectArea = 0;
+    } else if (!objectType.localeCompare('quad')) {
+      // x1y2+x2y3+x3y4+x4y1−x2y1−x3y2−x4y3−x1y4
+      objectArea = (arguments[0] * arguments[1] + arguments[2] * arguments[3]
+        + arguments[4] * arguments[5] + arguments[6] * arguments[7])
+        - (arguments[2] * arguments[1] + arguments[4] * arguments[3]
+        + arguments[6] * arguments[5] + arguments[0] * arguments[7]);
+    } else if (!objectType.localeCompare('rect')) {
+      objectArea = arguments[2] * arguments[3];
+    } else if (!objectType.localeCompare('triangle')) {
+      objectArea = abs(arguments[0] * (arguments[3] - arguments[5]) + arguments[2] * (arguments[5] - arguments[1])
+      + arguments[4] * (arguments[1] - arguments[3]));
+      // Ax( By −	Cy) +	Bx(Cy −	Ay) +	Cx(Ay −	By )
+    }
+    return objectArea;
+  }
+
+  this.populate(shapeObject,arguments, canvasX, canvasY);
+}
+
+ShapeEntity.handledNames = [
+  'arc',
+  'ellipse',
+  'line',
+  'point',
+  'quad',
+  'rect',
+  'triangle'
+]
+
+ShapeEntity.handles = function(name) {
+  return (this.handledNames.indexOf(name) >= 0);
+}
+
+ShapeEntity.isParameter = false;
+
+Registry.register(ShapeEntity);
+;function TextEntity(Interceptor,shapeObject,arguments, canvasX, canvasY) {
+  var self = this;
+  BaseEntity.call(self,shapeObject,arguments, canvasX, canvasY);
+  this.type = String(arguments[0]).substring(0, 20) + '(' + Interceptor.currentColor + ')';
+
+  this.populate = function(shapeObject, arguments, canvasX, canvasY) {
+    this.location = this.getLocation(shapeObject, arguments, canvasX, canvasY);
+    this.coordLoc = this.canvasLocator(shapeObject, arguments, canvasX, canvasY);
+  };
+
+  this.getAttributes = function() {
+    return({
+      type: this.type,
+      location: this.location,
+      coordinates: this.coordinates,
+    })
+  };
+
+  this.populate(shapeObject,arguments, canvasX, canvasY);
+}
+
+TextEntity.handledNames = [
+  'text'
+]
+
+TextEntity.handles = function(name) {
+  return (this.handledNames.indexOf(name) >= 0);
+}
+
+TextEntity.isParameter = false;
+
+Registry.register(TextEntity);
+;function textInterceptor() { // eslint-disable-line
   var self = this;
   baseInterceptor.call(self);
 }
@@ -920,7 +1164,7 @@ textInterceptor.prototype.populateTable = function(table, objectArray) {
         }
       }
       for (var j = this.totalCount; j < this.prevTotalCount; j++) {
-        var tempRow = table.children[j];
+        var tempRow = table.children[this.totalCount];
         table.removeChild(tempRow);
       }
     } else if (this.prevTotalCount <= this.totalCount) {
