@@ -34,7 +34,7 @@ funcNames = funcNames.filter(function(x) {
   return (x['name'] && x['params'] && (className === 'p5'));
 });
 
-if($('#soundOutput-content').length) {
+if(document.getElementById('soundOutput-content')) {
   funcNames.forEach(function(x) {
     var i = 0;
     var originalFunc = p5.prototype[x.name];
