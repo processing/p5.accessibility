@@ -16,7 +16,7 @@ It helps create 3 kinds of output
 
 ### Usage
 
-Link to the library in the end of the html file [https://cdn.rawgit.com/MathuraMG/p5-accessibility/e856365c/dist/p5-accessibility.js](https://cdn.rawgit.com/MathuraMG/p5-accessibility/e856365c/dist/p5-accessibility.js)
+Link to the library in the end of the html file [https://cdn.rawgit.com/lm-n/p5-accessibility/nojquery/dist/p5-accessibility.js](https://cdn.rawgit.com/lm-n/p5-accessibility/nojquery/dist/p5-accessibility.js)
 
 To get the **plain text output**, include the following in your HTML file, where you want the output to be available.
 `<section id="textOutput-content"></section>`
