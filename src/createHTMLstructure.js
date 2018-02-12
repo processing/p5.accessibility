@@ -1,54 +1,75 @@
+function getElementById(id) {
+  return document.getElementById(id);
+}
+
+function createElement(tag) {
+  return document.createElement(tag);
+}
+
 function createTextStructure() {
-  $('#textOutput-content').append(
-    $('<h1/>')
-      .html("Text Output")
-  );
-  $('#textOutput-content').append(
-    $('<p/>')
-      .attr("id", "textOutput-content-summary")
-      .attr("tabIndex", "0")
-      .attr("aria-label","text output summary")
-      .attr("role","main")
-  );
-  $('#textOutput-content').append(
-    $('<table/>')
-      .attr("id", "textOutput-content-table")
-      .attr("summary","text output details")
-  );
-  $('#textOutput-content').append(
-    $('<p/>')
-      .attr("id", "textOutput-content-details")
-      .attr("tabIndex", "0")
-      .attr("aria-label","text output details")
-      .attr("role","main")
-  );
+
+  let textOutput = getElementById('textOutput-content');
+  let heading = createElement('h1');
+  let contentSummary = createElement('p');
+  let contentTable = createElement('table');
+  let contentDetails = createElement('p');
+
+  textOutput.appendChild(heading);
+  textOutput.appendChild(contentSummary);
+  textOutput.appendChild(contentTable);
+  textOutput.appendChild(contentDetails);
+
+  heading.innerHTML = 'Text Output';
+
+  contentSummary.setAttribute('id', 'textOutput-content-summary');
+  contentSummary.setAttribute('tabIndex', '0');
+  contentSummary.setAttribute('aria-label','text output summary')
+  contentSummary.setAttribute('role','main');
+
+  contentTable.setAttribute('id', 'textOutput-content-table');
+  contentTable.setAttribute('summary','text output details');
+
+  contentDetails.setAttribute('id', 'textOutput-content-details');
+  contentDetails.setAttribute('tabIndex', '0');
+  contentDetails.setAttribute('aria-label','text output details');
+  contentDetails.setAttribute('role','main');
+
 }
 
 function createTableStructure() {
-  $('#gridOutput-content').append(
-    $('<h1/>')
-      .html("Grid Output")
-  );
-  $('#gridOutput-content').append(
-    $('<p/>')
-      .attr("id", "gridOutput-content-summary")
-      .attr("tabIndex", "0")
-      .attr("aria-label","table output summary")
-      .attr("role","main")
-  );
-  $('#gridOutput-content').append(
-    $('<table/>')
-      .attr("id", "gridOutput-content-table")
-      .attr("summary","table output details")
-  );
-  $('#gridOutput-content').append(
-    $('<div/>')
-      .attr("id", "gridOutput-content-details")
-      .attr("tabIndex", "0")
-      .attr("aria-label","table output details")
-      .attr("role","main")
-  );
+
+  let textOutput = getElementById('gridOutput-content');
+  let heading = createElement('h1');
+  let contentSummary = createElement('p');
+  let contentTable = createElement('table');
+  let contentDetails = createElement('div');
+
+  textOutput.appendChild(heading);
+  textOutput.appendChild(contentSummary);
+  textOutput.appendChild(contentTable);
+  textOutput.appendChild(contentDetails);
+
+  heading.innerHTML = 'Grid Output';
+
+  contentSummary.setAttribute('id', 'gridOutput-content-summary');
+  contentSummary.setAttribute('tabIndex', '0');
+  contentSummary.setAttribute('aria-label','text output summary')
+  contentSummary.setAttribute('role','main');
+
+  contentTable.setAttribute('id', 'gridOutput-content-table');
+  contentTable.setAttribute('summary','grid output details');
+
+  contentDetails.setAttribute('id', 'gridOutput-content-details');
+  contentDetails.setAttribute('tabIndex', '0');
+  contentDetails.setAttribute('aria-label','table output details');
+  contentDetails.setAttribute('role','main');
+
 }
 
-createTextStructure();
-createTableStructure();
+if(getElementById('textOutput-content')){
+  createTextStructure();
+}
+
+if(getElementById('gridOutput-content')){
+  createTableStructure();
+}

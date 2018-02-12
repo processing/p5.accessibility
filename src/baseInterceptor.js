@@ -17,10 +17,10 @@ function baseInterceptor() {
   },
   this.drawObject = {
     objectArray: [],
-      objectCount: 0,
-      objectTypeCount: {}
-    },
-    this.isCleared = false;
+    objectCount: 0,
+    objectTypeCount: {}
+  },
+  this.isCleared = false;
 }
 
 baseInterceptor.prototype.getColorName = function(arguments) {

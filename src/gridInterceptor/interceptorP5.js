@@ -17,7 +17,7 @@ funcNames = funcNames.filter(function(x) {
   var className = x['class'];
   return (x['name'] && x['params'] && (className === 'p5'));
 });
-if($('#gridOutput-content').length) {
+if(document.getElementById('gridOutput-content')) {
   funcNames.forEach(function(x) {
     // var document = parent.document;
     var originalFunc = p5.prototype[x.name];
