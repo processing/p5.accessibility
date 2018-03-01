@@ -739,6 +739,13 @@ function createTextStructure() {
   let contentTable = createElement('table');
   let contentDetails = createElement('p');
 
+  textOutput.style.position = 'absolute';
+  textOutput.style.left = '-1000px';
+  textOutput.style.top = 'auto';
+  textOutput.style.width = '1px';
+  textOutput.style.height = '1px';
+  textOutput.style.overflow = 'hidden';
+  
   textOutput.appendChild(heading);
   textOutput.appendChild(contentSummary);
   textOutput.appendChild(contentTable);
@@ -768,6 +775,13 @@ function createTableStructure() {
   let contentSummary = createElement('p');
   let contentTable = createElement('table');
   let contentDetails = createElement('div');
+
+  textOutput.style.position = 'absolute';
+  textOutput.style.left = '-1000px';
+  textOutput.style.top = 'auto';
+  textOutput.style.width = '1px';
+  textOutput.style.height = '1px';
+  textOutput.style.overflow = 'hidden';
 
   textOutput.appendChild(heading);
   textOutput.appendChild(contentSummary);
