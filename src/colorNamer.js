@@ -36,25 +36,25 @@ function calculateColor(hsv) {
       }
     }
     if ((hsv[0]==0)&&(hsv[1]==0)&&(hsv[2]==1)){
-      for (var i = oghsv.length - 1; i >= 0; i--) {
-        oghsv[i]=Math.round(oghsv[i] * 10000) / 10000;
-      }   
-      for (var e =0;e<xcp.length;e++){
-        if((xcp[e].h == oghsv[0]) && (xcp[e].s == oghsv[1]) && (xcp[e].b == oghsv[2]) ) {
-            colortext = xcp[e].name;
-            break;
-          }else{
-            colortext = "white";
-          }
-      }
+    	for (var i = oghsv.length - 1; i >= 0; i--) {
+    		oghsv[i]=Math.round(oghsv[i] * 10000) / 10000;
+    	}  	
+    	for (var e =0;e<xcp.length;e++){
+    		if((xcp[e].h == oghsv[0]) && (xcp[e].s == oghsv[1]) && (xcp[e].b == oghsv[2]) ) {
+        		colortext = xcp[e].name;
+       			break;
+      		}else{
+      			colortext = "white";
+      		}
+    	}
     }else{
-      for(var i =0;i<color_lookup.length;i++) {
-          if((color_lookup[i]["h"] == hsv[0]) && (color_lookup[i]["s"] == hsv[1]) && (color_lookup[i]["b"] == hsv[2]) ) {
-            colortext = color_lookup[i].name;
-            break;
-          }
-      }
-      
+    	for(var i =0;i<color_lookup.length;i++) {
+      		if((color_lookup[i]["h"] == hsv[0]) && (color_lookup[i]["s"] == hsv[1]) && (color_lookup[i]["b"] == hsv[2]) ) {
+        		colortext = color_lookup[i].name;
+       			break;
+      		}
+    	}
+    	
     }
   return colortext;
 }
@@ -117,30 +117,30 @@ var oghsv;
 
 var xcp = 
 [
-  {
-    "h":0,
-    "s":0,
-    "b":0.8275,
-    "name":"gray"
-  },
-  {
-    "h":0,
-    "s":0,
-    "b":0.8627,
-    "name":"gray"
-  },
-  {
-    "h":0,
-    "s":0,
-    "b":0.7529,
-    "name":"gray"
-  },
-  {
-    "h":0.0167,
-    "s":0.1176,
-    "b":1,
-    "name":"light pink"
-  },
+	{
+		"h":0,
+		"s":0,
+		"b":0.8275,
+		"name":"gray"
+	},
+	{
+		"h":0,
+		"s":0,
+		"b":0.8627,
+		"name":"gray"
+	},
+	{
+		"h":0,
+		"s":0,
+		"b":0.7529,
+		"name":"gray"
+	},
+	{
+		"h":0.0167,
+		"s":0.1176,
+		"b":1,
+		"name":"light pink"
+	},
 ];
 
 var color_lookup =

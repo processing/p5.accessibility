@@ -18,7 +18,7 @@ gridInterceptor.prototype.clearVariables = function(object) {
 }
 
 gridInterceptor.prototype.createShadowDOMElement = function(document) {
-  var contentTable = document.getElementById('gridOutput-content-table');
+  var contentTable = document.getElementById('tableOutput-content-table');
   for (var i = 0; i < this.noRows; i++) {
     var row = document.createElement('tr');
 
@@ -30,7 +30,7 @@ gridInterceptor.prototype.createShadowDOMElement = function(document) {
     }
     contentTable.appendChild(row);
   }
-  shadowDOMElement = document.getElementById('gridOutput-content');
+  shadowDOMElement = document.getElementById('tableOutput-content');
 }
 gridInterceptor.prototype.populateObject = function(x, arguments, object, table, isDraw) {
   objectCount = object.objectCount;
