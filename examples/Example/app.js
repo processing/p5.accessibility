@@ -1,4 +1,4 @@
-var x =0, speed =2;
+let x =0, speed =2;
 let red;
 let backColor;
 function setup() {
