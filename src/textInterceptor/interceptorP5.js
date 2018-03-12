@@ -34,7 +34,6 @@ if(document.getElementById('textOutput-content')) {
       if (frameCount == 0) { // for setup
         details.innerHTML = '';
         summary.innerHTML = '';
-        table.innerHTML = '';
         textInterceptor.setupObject = textInterceptor.populateObject(x, arguments, textInterceptor.setupObject, table, false);
         textInterceptor.getSummary(textInterceptor.setupObject, textInterceptor.drawObject, summary);
         textInterceptor.populateTable(table, textInterceptor.setupObject.objectArray);
