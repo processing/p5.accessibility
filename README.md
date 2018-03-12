@@ -28,7 +28,8 @@ To get the **sound output**, include the following in your HTML file, and place 
 `<section id="soundOutput-content"></section>`
 
 To make the **plain text and table text outputs** visible include the following in your HTML file: 
-`<style>
+```
+<style>
       #textOutput-content, #gridOutput-content{
         position: static !important;
         left: 10px !important;
@@ -37,7 +38,8 @@ To make the **plain text and table text outputs** visible include the following 
         height: auto !important;
         overflow: visible !important;
       }
-    </style>`
+ </style>
+ ```
 
 
 ### To use on local/contribute
