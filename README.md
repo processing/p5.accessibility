@@ -30,7 +30,7 @@ To get the **sound output**, include the following in your HTML file, and place 
 To make the **plain text and table text outputs** visible include the following in your HTML file: 
 ```
 <style>
-      #textOutput-content, #gridOutput-content{
+      #textOutput-content, #tableOutput-content{
         position: static !important;
         left: 10px !important;
         top: auto !important;
