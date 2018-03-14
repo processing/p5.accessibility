@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "MathuraMG",
+  "contributors": ["MathuraMG","lmhyphenn", "CleezyITP"],
+  "bugs": "https://github.com/processing/p5.accessibility/issues",
   "license": "ISC",
   "dependencies": {
     "grunt-cli": "^1.2.0",

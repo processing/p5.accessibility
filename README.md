@@ -18,14 +18,28 @@ It helps create 3 kinds of output
 
 Link to the library in the end of the html file [https://cdn.rawgit.com/processing/p5.accessibility/298ccdf6/dist/p5-accessibility.js](https://cdn.rawgit.com/processing/p5.accessibility/298ccdf6/dist/p5-accessibility.js)
 
-To get the **plain text output**, include the following in your HTML file, where you want the output to be available.
+To get the **plain text output**, include the following in your HTML file, and place it where you want the output to be available:
 `<section id="textOutput-content"></section>`
 
-To get the **table text output**, include the following in your HTML file, where you want the output to be available.
+To get the **table text output**, include the following in your HTML file, and place it where you want the output to be available:
 `<section id="gridOutput-content"></section>`
 
-To get the **sound output**, include the following in your HTML file, where you want the output to be available.
+To get the **sound output**, include the following in your HTML file, and place it where you want the output to be available:
 `<section id="soundOutput-content"></section>`
+
+To make the **plain text and table text outputs** visible include the following in your HTML file: 
+```
+<style>
+      #textOutput-content, #gridOutput-content{
+        position: static !important;
+        left: 10px !important;
+        top: auto !important;
+        width: auto !important;
+        height: auto !important;
+        overflow: visible !important;
+      }
+ </style>
+ ```
 
 
 ### To use on local/contribute
