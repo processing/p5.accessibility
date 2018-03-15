@@ -1,61 +1,61 @@
 function calculateColor(hsv) {
   var colortext;
-    if (hsv[0]!=0){
-      hsv[0] = Math.round(hsv[0]*100);
-      hue = hsv[0].toString().split('');
-      var last = hue.length-1;
-      hue[last]=parseInt(hue[last]);
-      if (hue[last] < 2.5){
+  if (hsv[0]!=0){
+    hsv[0] = Math.round(hsv[0]*100);
+    hue = hsv[0].toString().split('');
+    var last = hue.length-1;
+    hue[last]=parseInt(hue[last]);
+    if (hue[last] < 2.5){
+      hue[last]=0;
+    } else if (hue[last] >= 2.5 && hue[last] < 7.5){
+      hue[last]=5;
+    }
+    if (hue.length == 2){
+      hue[0]=parseInt(hue[0]);
+      if (hue[last]>=7.5){
         hue[last]=0;
-      } else if (hue[last] >= 2.5 && hue[last] < 7.5){
-        hue[last]=5;
-      } 
-      if (hue.length == 2){
-        hue[0]=parseInt(hue[0]);
-        if (hue[last]>=7.5){
-          hue[last]=0;
-          hue[0]= hue[0]+1;
-        }
+        hue[0]= hue[0]+1;
+      }
       hsv[0] = (hue[0]*10)+hue[1];
-      }else{
-        if (hue[last]>=7.5){
-          hsv[0]=10;
-        }else{
-          hsv[0]=hue[last];
-        }
-      }
-    }
-    for (var i = hsv.length - 1; i >= 1; i--) {
-      if(hsv[i] <= 0.25) {
-        hsv[i] = 0;
-      } else if(hsv[i] > 0.25 &&  hsv[i] < 0.75){
-        hsv[i] = 0.5;
-      }
-      else {
-        hsv[i] = 1;
-      }
-    }
-    if ((hsv[0]==0)&&(hsv[1]==0)&&(hsv[2]==1)){
-      for (var i = oghsv.length - 1; i >= 0; i--) {
-        oghsv[i]=Math.round(oghsv[i] * 10000) / 10000;
-      }   
-      for (var e =0;e<xcp.length;e++){
-        if((xcp[e].h == oghsv[0]) && (xcp[e].s == oghsv[1]) && (xcp[e].b == oghsv[2]) ) {
-            colortext = xcp[e].name;
-            break;
-          }else{
-            colortext = "white";
-          }
-      }
     }else{
-      for(var i =0;i<color_lookup.length;i++) {
-          if((color_lookup[i]["h"] == hsv[0]) && (color_lookup[i]["s"] == hsv[1]) && (color_lookup[i]["b"] == hsv[2]) ) {
-            colortext = color_lookup[i].name;
-            break;
-          }
+      if (hue[last]>=7.5){
+        hsv[0]=10;
+      }else{
+        hsv[0]=hue[last];
       }
-      
     }
+  }
+  for (var i = hsv.length - 1; i >= 1; i--) {
+    if(hsv[i] <= 0.25) {
+      hsv[i] = 0;
+    } else if(hsv[i] > 0.25 &&  hsv[i] < 0.75){
+      hsv[i] = 0.5;
+    }
+    else {
+      hsv[i] = 1;
+    }
+  }
+  if ((hsv[0]==0)&&(hsv[1]==0)&&(hsv[2]==1)){
+    for (var i = oghsv.length - 1; i >= 0; i--) {
+      oghsv[i]=Math.round(oghsv[i] * 10000) / 10000;
+    }
+    for (var e =0;e<xcp.length;e++){
+      if((xcp[e].h == oghsv[0]) && (xcp[e].s == oghsv[1]) && (xcp[e].b == oghsv[2]) ) {
+        colortext = xcp[e].name;
+        break;
+      }else{
+        colortext = "white";
+      }
+    }
+  }else{
+    for(var i =0;i<color_lookup.length;i++) {
+      if((color_lookup[i]["h"] == hsv[0]) && (color_lookup[i]["s"] == hsv[1]) && (color_lookup[i]["b"] == hsv[2]) ) {
+        colortext = color_lookup[i].name;
+        break;
+      }
+    }
+
+  }
   return colortext;
 }
 
@@ -105,17 +105,17 @@ function rgbColorName(r, g, b){
 
 function hexColorName(value){
   var regEx = /[0-9A-Fa-f]{6}/g;
-    if(regEx.test(value) && value.length == 6 ) {
-      var colorname = calculateColor(hexToHsv(value));
-      return colorname;
-    }else{
-      return("Requires a valid hex value");
-    }
+  if(regEx.test(value) && value.length == 6 ) {
+    var colorname = calculateColor(hexToHsv(value));
+    return colorname;
+  }else{
+    return("Requires a valid hex value");
+  }
 }
 
 var oghsv;
 
-var xcp = 
+var xcp =
 [
   {
     "h":0,
@@ -254,13 +254,13 @@ var color_lookup =
     "name" : "orange"
   },
   {
-    "h" : 15, 
+    "h" : 15,
     "s" : 0,
     "b" : 1,
     "name" : "very light yellow"
   },
   {
-    "h" : 15, 
+    "h" : 15,
     "s" : 0.5,
     "b" : 0.5,
     "name" : "olive green"
@@ -272,13 +272,13 @@ var color_lookup =
     "name" : "light yellow"
   },
   {
-    "h" : 15, 
+    "h" : 15,
     "s" : 1,
     "b" : 0,
     "name" : "dark olive green"
   },
   {
-    "h" : 15, 
+    "h" : 15,
     "s" : 1,
     "b" : 0.5,
     "name" : "olive green"
@@ -296,7 +296,7 @@ var color_lookup =
     "name" : "very light yellow"
   },
   {
-    "h" : 20, 
+    "h" : 20,
     "s" : 0.5,
     "b" : 0.5,
     "name" : "olive green"
@@ -308,7 +308,7 @@ var color_lookup =
     "name" : "light yellow green"
   },
   {
-    "h" : 20, 
+    "h" : 20,
     "s" : 1,
     "b" : 0,
     "name" : "dark olive green"
@@ -631,7 +631,7 @@ var color_lookup =
     "b" : 1,
     "name" : "pinkish purple"
   },
-   {
+  {
     "h" : 80,
     "s" : 1,
     "b" : 0.5,
@@ -661,7 +661,7 @@ var color_lookup =
     "b" : 1,
     "name" : "light fuchsia"
   },
-   {
+  {
     "h" : 85,
     "s" : 1,
     "b" : 0.5,
@@ -721,7 +721,8 @@ var color_lookup =
     "b" : 1,
     "name" : "magenta"
   },
-];;function getElementById(id) {
+]
+;function getElementById(id) {
   return document.getElementById(id);
 }
 
