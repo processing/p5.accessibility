@@ -38,16 +38,15 @@ if(document.getElementById('textOutput-content')) {
         textInterceptor.setupObject = textInterceptor.populateObject(x, arguments, textInterceptor.setupObject, table, false);
         textInterceptor.getSummary(textInterceptor.setupObject, textInterceptor.drawObject, summary);
         textInterceptor.populateTable(table, textInterceptor.setupObject.objectArray);
-      } else if (frameCount % 20 == 0) {
-        textInterceptor.drawObject = textInterceptor.populateObject(x, arguments, textInterceptor.drawObject, details, true);
-        textInterceptor.isCleared = false;
-      } else if (frameCount % 20 == 1) { // reset some of the variables
-        if (!textInterceptor.isCleared) {
-          textInterceptor.getSummary(textInterceptor.setupObject, textInterceptor.drawObject, summary);
-          textInterceptor.populateTable(
-            table, textInterceptor.setupObject.objectArray.concat(textInterceptor.drawObject.objectArray));
+      } else if (frameCount ==1 || frameCount%20==0) {
+        if (x.name=='redraw') { // reset some of the variables
+          textInterceptor.drawObject = textInterceptor.clearVariables(textInterceptor.drawObject);
         }
-        textInterceptor.drawObject = textInterceptor.clearVariables(textInterceptor.drawObject);
+        textInterceptor.drawObject = textInterceptor.populateObject(x, arguments, textInterceptor.drawObject, details, true);
+
+        textInterceptor.getSummary(textInterceptor.setupObject, textInterceptor.drawObject, summary);
+        textInterceptor.populateTable(
+          table, textInterceptor.setupObject.objectArray.concat(textInterceptor.drawObject.objectArray));
       }
       return originalFunc.apply(this, arguments);
     };
