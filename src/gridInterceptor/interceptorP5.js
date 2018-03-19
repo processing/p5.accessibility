@@ -41,21 +41,25 @@ if(document.getElementById('gridOutput-content')) {
         gridInterceptor.populateObject(x, arguments, gridInterceptor.setupObject, details, false);
         gridInterceptor.populateObjectDetails(gridInterceptor.setupObject, gridInterceptor.drawObject, summary, details);
         gridInterceptor.populateTable(details, gridInterceptor.setupObject);
-      } else if (frameCount % 20 == 0) {
+      } else if (frameCount == 1 || frameCount % 20 == 0) {
         gridInterceptor.drawObject =
         gridInterceptor.populateObject(x, arguments, gridInterceptor.drawObject, details, true);
         gridInterceptor.isCleared = false;
-      } else if (frameCount % 20 == 1) { // reset some of the variables
-        if (!gridInterceptor.isCleared) {
-          var cells = document.getElementsByClassName('gridOutput-cell-content');
-          cells = [].slice.call(cells);
-          cells.forEach(function(cell){
-            cell.innerHTML = '';
-          });
-          programObjects = gridInterceptor.setupObject.objectArray.concat(gridInterceptor.drawObject.objectArray);
-          gridInterceptor.populateObjectDetails(gridInterceptor.setupObject, gridInterceptor.drawObject, summary, details);
-          gridInterceptor.populateTable(programObjects,document);
-        }
+
+        //clean the cells
+        var cells = document.getElementsByClassName('gridOutput-cell-content');
+        cells = [].slice.call(cells);
+        cells.forEach(function(cell){
+          cell.innerHTML = '';
+        });
+
+        //concat the new objects and populate the grid
+        //TODO : make this more efficient so that it happens only ONCE per frame count
+        programObjects = gridInterceptor.setupObject.objectArray.concat(gridInterceptor.drawObject.objectArray);
+        gridInterceptor.populateObjectDetails(gridInterceptor.setupObject, gridInterceptor.drawObject, summary, details);
+        gridInterceptor.populateTable(programObjects,document);
+      }
+      if (x.name == 'redraw') { // reset some of the variables
         gridInterceptor.drawObject = gridInterceptor.clearVariables(gridInterceptor.drawObject);
       }
       return originalFunc.apply(this, arguments);
