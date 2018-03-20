@@ -907,10 +907,17 @@ baseInterceptor.prototype.getColorName = function(arguments) {
     // assuming that we are doing RGBA - convert RGB values to a name
     var colorName = rgbColorName(arguments[0], arguments[1], arguments[2]);
     var rgb = '(' + arguments[0] + ', ' + arguments[1] + ', ' + arguments[2] + ')';
-    return ({
-      'color': colorName + ' with '+ trans + '% tranparency',
-      'rgb': rgb
-    });
+    if (trans==0){
+      return ({
+        'color': colorName,
+        'rgb': rgb
+      });
+    } else {
+      return ({
+        'color': colorName + ' with '+ trans + '% tranparency',
+        'rgb': rgb
+      });
+    }
   } else if (arguments.length >= 3) {
     // assuming that we are doing RGB - convert RGB values to a name
     var colorName = rgbColorName(arguments[0], arguments[1], arguments[2]);
@@ -924,22 +931,43 @@ baseInterceptor.prototype.getColorName = function(arguments) {
      // assuming that we are doing RGB - this would be a grayscale number
     if (arguments[0] < 10) {
       var rgb = '(0, 0, 0)';
-      return ({
-        'color': 'black with '+ trans + '% tranparency',
+      if (trans == 0){
+        return ({
+        'color': 'black',
         'rgb': rgb
-      });
+        });
+      } else {
+        return ({
+          'color': 'black with '+ trans + '% tranparency',
+          'rgb': rgb
+        });
+      }
     } else if (arguments[0] > 240) {
       var rgb = '(255, 255, 255)';
-      return ({
-        'color': 'white with '+ trans + '% tranparency',
+      if (trans == 0){
+        return ({
+        'color': 'white',
         'rgb': rgb
-      });
+        });
+      } else {
+        return ({
+          'color': 'white with '+ trans + '% tranparency',
+          'rgb': rgb
+        });
+      }
     } else {
       var rgb = '(' + arguments[0] + ', ' + arguments[0] + ', ' + arguments[0] + ')';
-      return ({
-        'color': 'grey with '+ trans + '% tranparency',
+      if (trans == 0){
+        return ({
+        'color': 'gray',
         'rgb': rgb
-      });
+        });
+      } else {
+        return ({
+          'color': 'gray with '+ trans + '% tranparency',
+          'rgb': rgb
+        });
+      }
     }
   } else if (arguments.length == 1) {
     if (!(typeof(arguments[0])).localeCompare('number')) {
