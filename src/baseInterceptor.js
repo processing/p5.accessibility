@@ -25,39 +25,18 @@ function baseInterceptor() {
 
 baseInterceptor.prototype.getColorName = function(arguments) {
   if (arguments.length == 4) {
-    console.log(arguments);
-    var trans = Math.round(100-((arguments[3]*100)/255));
-    // assuming that we are doing RGBA - convert RGB values to a name
-    var colorName = rgbColorName(arguments[0], arguments[1], arguments[2]);
-    var rgb = '(' + arguments[0] + ', ' + arguments[1] + ', ' + arguments[2] + ')';
-    if (trans==0){
-      return ({
-        'color': colorName,
-        'rgb': rgb
-      });
-    } else {
-      return ({
-        'color': colorName + ' with '+ trans + '% tranparency',
-        'rgb': rgb
-      });
-    }
-  } else if (arguments.length >= 3) {
-    // assuming that we are doing RGB - convert RGB values to a name
-    var colorName = rgbColorName(arguments[0], arguments[1], arguments[2]);
-    var rgb = '(' + arguments[0] + ', ' + arguments[1] + ', ' + arguments[2] + ')';
-    return ({
-      'color': colorName,
-      'rgb': rgb
-    });
-  }else if (arguments.length == 2 && !(typeof(arguments[0])).localeCompare('number')&&!(typeof(arguments[1])).localeCompare('number')) {
+    return(getRGBAname(arguments));
+  } else if (arguments.length == 3) {
+    return(getRGBname(arguments));
+  }else if (arguments.length == 2) {
     var trans = Math.round(100-((arguments[1]*100)/255));
      // assuming that we are doing RGB - this would be a grayscale number
-    if (arguments[0] < 10) {
+     if (arguments[0] < 10) {
       var rgb = '(0, 0, 0)';
       if (trans == 0){
         return ({
-        'color': 'black',
-        'rgb': rgb
+          'color': 'black',
+          'rgb': rgb
         });
       } else {
         return ({
@@ -69,8 +48,8 @@ baseInterceptor.prototype.getColorName = function(arguments) {
       var rgb = '(255, 255, 255)';
       if (trans == 0){
         return ({
-        'color': 'white',
-        'rgb': rgb
+          'color': 'white',
+          'rgb': rgb
         });
       } else {
         return ({
@@ -82,8 +61,8 @@ baseInterceptor.prototype.getColorName = function(arguments) {
       var rgb = '(' + arguments[0] + ', ' + arguments[0] + ', ' + arguments[0] + ')';
       if (trans == 0){
         return ({
-        'color': 'gray',
-        'rgb': rgb
+          'color': 'gray',
+          'rgb': rgb
         });
       } else {
         return ({
@@ -92,7 +71,7 @@ baseInterceptor.prototype.getColorName = function(arguments) {
         });
       }
     }
-  } else if (arguments.length == 1) {
+  }else if (arguments.length == 1) {
     if (!(typeof(arguments[0])).localeCompare('number')) {
       // assuming that we are doing RGB - this would be a grayscale number
       if (arguments[0] < 10) {
@@ -114,24 +93,100 @@ baseInterceptor.prototype.getColorName = function(arguments) {
           'rgb': rgb
         });
       }
-    } else if (!(typeof(arguments[0])).localeCompare('string')) {
+    }else if (!(typeof(arguments[0])).localeCompare('string')){
       if (!arguments[0].charAt(0).localeCompare('#')) {
-        // if user has entered a hex color
-        var colorName = hexColorName(arguments[0].slice(1));
-        var r = parseInt(arguments[0].charAt(1) + arguments[0].charAt(2), 16);
-        var g = parseInt(arguments[0].charAt(3) + arguments[0].charAt(4), 16);
-        var b = parseInt(arguments[0].charAt(5) + arguments[0].charAt(6), 16);
-        var rgb = '(' + r + ', ' + g + ', ' + b + ')';
-        return ({
-          'color': colorName,
-          'rgb': rgb
-        });
-      } else {
-        return ({
-          'color': arguments[0],
-          'rgb': ''
-        });
+        return(getHexname(arguments));
+      }else if (arguments[0].match(/rgba/)){
+        return(RGBAString(arguments));
+      }else if (arguments[0].match(/rgb/)){
+        return(RGBString(arguments));
       }
     }
+  }else{
+    return ({
+      'color': arguments[0],
+      'rgb': ''
+    });
   }
 }
+
+function getRGBAname(arguments){
+  var trans = Math.round(100-((arguments[3]*100)));
+  var colorName = rgbColorName(arguments[0], arguments[1], arguments[2]);
+  var rgb = '(' + arguments[0] + ', ' + arguments[1] + ', ' + arguments[2] + ')';
+  if (trans>=0){
+    return ({
+      'color': colorName + ' with '+ trans + '% tranparency',
+      'rgb': rgb
+    });
+  } else {
+    return ({
+      'color': colorName,
+      'rgb': rgb
+    });
+  }
+}
+
+function getRGBname(arguments){
+  var colorName = rgbColorName(arguments[0], arguments[1], arguments[2]);
+  var rgb = '(' + arguments[0] + ', ' + arguments[1] + ', ' + arguments[2] + ')';
+  return ({
+      'color': colorName,
+      'rgb': rgb
+  });
+}
+
+function getHexname(arguments){
+  var hex = arguments[0].slice(1);
+  if ((arguments[0].match(/\w/g)).length==3){//3digithex
+    var h3x = hex.match(/\w/g)  
+    hex = [h3x[0],h3x[0],h3x[1],h3x[1],h3x[2],h3x[2]].join('');
+  }
+  var colorName = hexColorName(hex);
+  var r = parseInt(hex[1] + hex[2], 16);
+  var g = parseInt(hex[3] + hex[4], 16);
+  var b = parseInt(hex[5] + hex[6], 16);
+  var rgb = '(' + r + ', ' + g + ', ' + b + ')';
+  return ({
+    'color': colorName,
+    'rgb': rgb
+  });
+}
+
+function RGBAString(arguments){
+  if (arguments[0].match(/%/)){
+    var values = (((arguments[0].match(/(\(\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?\))/g))[0]).replace(/\%|\(|\)/g,"")).split(",");
+    for (var i = values.length - 2; i >= 0; i--) {
+      if (parseInt(values[i])<100){
+        values[i]= Math.round(parseInt(values[i])*2.55);
+      } else {
+        values[i]=255;
+      }
+    }
+    values[3]=parseFloat(values[3]);
+    return(getRGBAname(values));
+  }else{
+    var values = (((arguments[0].match(/(\(\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?\))/g))[0]).replace(/(\(|\))/g,"")).split(",");
+    values = [parseInt(values[0]),parseInt(values[1]),parseInt(values[2]),parseFloat(values[3])];
+    return(getRGBAname(values));
+  }
+}
+
+function RGBString(arguments){
+  if (arguments[0].match(/%/)){
+    var values = (((arguments[0].match(/(\(\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%\s*?\))/g))[0]).replace(/\%|\(|\)/g,"")).split(",");
+    for (var i = values.length - 1; i >= 0; i--) {
+      if (parseInt(values[i])<100){
+        values[i]= Math.round(parseInt(values[i])*2.55);
+      } else {
+        values[i]=255;
+      }
+    }
+    return(getRGBname(values));
+  }else{
+    var values = (((arguments[0].match(/(\(\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?\))/g))[0]).replace(/(\(|\))/g,"")).split(",");
+    values = [parseInt(values[0]),parseInt(values[1]),parseInt(values[2])];
+    return(getRGBname(values));
+  }
+}
+
