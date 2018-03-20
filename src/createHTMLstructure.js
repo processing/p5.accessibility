@@ -45,45 +45,44 @@ function createTextStructure() {
 
 function createTableStructure() {
 
-  let textOutput = getElementById('gridOutput-content');
+  let tableOutput = getElementById('tableOutput-content');
   let heading = createElement('h1');
   let contentSummary = createElement('p');
   let contentTable = createElement('table');
   let contentDetails = createElement('div');
 
-  textOutput.style.position = 'absolute';
-  textOutput.style.left = '-1000px';
-  textOutput.style.top = 'auto';
-  textOutput.style.width = '1px';
-  textOutput.style.height = '1px';
-  textOutput.style.overflow = 'hidden';
+  tableOutput.style.position = 'absolute';
+  tableOutput.style.left = '-1000px';
+  tableOutput.style.top = 'auto';
+  tableOutput.style.width = '1px';
+  tableOutput.style.height = '1px';
+  tableOutput.style.overflow = 'hidden';
 
-  textOutput.appendChild(heading);
-  textOutput.appendChild(contentSummary);
-  textOutput.appendChild(contentTable);
-  textOutput.appendChild(contentDetails);
+  tableOutput.appendChild(heading);
+  tableOutput.appendChild(contentSummary);
+  tableOutput.appendChild(contentTable);
+  tableOutput.appendChild(contentDetails);
 
-  heading.innerHTML = 'Grid Output';
+  heading.innerHTML = 'Table Output';
 
-  contentSummary.setAttribute('id', 'gridOutput-content-summary');
+  contentSummary.setAttribute('id', 'tableOutput-content-summary');
   contentSummary.setAttribute('tabIndex', '0');
-  contentSummary.setAttribute('aria-label','text output summary')
+  contentSummary.setAttribute('aria-label','table text output summary')
   contentSummary.setAttribute('role','main');
 
-  contentTable.setAttribute('id', 'gridOutput-content-table');
-  contentTable.setAttribute('summary','grid output details');
+  contentTable.setAttribute('id', 'tableOutput-content-table');
+  contentTable.setAttribute('summary','table output details');
 
-  contentDetails.setAttribute('id', 'gridOutput-content-details');
+  contentDetails.setAttribute('id', 'tableOutput-content-details');
   contentDetails.setAttribute('tabIndex', '0');
-  contentDetails.setAttribute('aria-label','table output details');
+  contentDetails.setAttribute('aria-label','table output elements');
   contentDetails.setAttribute('role','main');
-
 }
 
 if(getElementById('textOutput-content')){
   createTextStructure();
 }
 
-if(getElementById('gridOutput-content')){
+if(getElementById('tableOutput-content')){
   createTableStructure();
 }

@@ -17,7 +17,7 @@ funcNames = funcNames.filter(function(x) {
   var className = x['class'];
   return (x['name'] && x['params'] && (className === 'p5'));
 });
-if(document.getElementById('gridOutput-content')) {
+if(document.getElementById('tableOutput-content')) {
   funcNames.forEach(function(x) {
     // var document = parent.document;
     var originalFunc = p5.prototype[x.name];
@@ -25,9 +25,9 @@ if(document.getElementById('gridOutput-content')) {
       var element = document.getElementById(id);
       return element;
     };
-    var details = byID('gridOutput-content-details');
-    var summary = byID('gridOutput-content-summary');
-    var table = byID('gridOutput-content-table');
+    var details = byID('tableOutput-content-details');
+    var summary = byID('tableOutput-content-summary');
+    var table = byID('tableOutput-content-table');
 
     p5.prototype[x.name] = function() {
       orgArg = arguments;
