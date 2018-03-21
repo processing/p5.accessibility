@@ -1046,7 +1046,7 @@ function RGBAString(arguments){
       }
       return(getRGBAname(values));
 
-    } else if (((arguments[0].match(/\,/g)).length)==2){
+    } else if (((arguments[0].match(/%/g)).length)==3 && ((arguments[0].match(/\,/g)).length)==2){
       //when arguments[0] is 'rgba(10%,100%,30%)'
       console.log(arguments[0]);
       var values = (((arguments[0].match(/(\(\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%\)\s*?\s*?)/g))[0]).replace(/\%|\(|\)/g,"")).split(",");
@@ -1073,7 +1073,7 @@ function RGBAString(arguments){
       values[3]=parseFloat(values[3]);
       return(getRGBAname(values));
     }else{
-      var values = [0,0,0,0];
+      var values = [255,255,255,0];
       return(getRGBAname(values));
     }
   }else{
@@ -1102,6 +1102,7 @@ function RGBAString(arguments){
 
 function RGBString(arguments){
   if (arguments[0].match(/%/)){
+    if (((arguments[0].match(/%/g)).length)==3){
     //when arguments[0] is 'rgb(10%,100%,30%)'
     //This line creates an array with the values in order the following order ["R","G","B"]. The RegEx looks for three values with percentages.   
     var values = (((arguments[0].match(/(\(\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%\s*?\))/g))[0]).replace(/\%|\(|\)/g,"")).split(",");
@@ -1113,6 +1114,10 @@ function RGBString(arguments){
       }
     }
     return(getRGBname(values));
+    }else{
+      var values = [255,255,255];
+      return(getRGBname(values));
+    }
   }else{
     //when arguments[0] is 'rgb(10,100,30)'
     //This line creates an array with the values in order the following order ["R","G","B"]. Values must be less than 255.  
