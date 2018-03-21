@@ -991,7 +991,7 @@ function getRGBAname(arguments){
   var trans = Math.round(100-((arguments[3]*100)));
   var colorName = rgbColorName(arguments[0], arguments[1], arguments[2]);
   var rgb = '(' + arguments[0] + ', ' + arguments[1] + ', ' + arguments[2] + ')';
-  if (trans>=0){
+  if (trans>0){
     return ({
       'color': colorName + ' with '+ trans + '% tranparency',
       'rgb': rgb
