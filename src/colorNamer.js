@@ -78,14 +78,14 @@ function rgbToHsv(r, g, b) {
   } else {
     switch (max) {
       case r:
-        h = (g - b) / d + (g < b ? 6 : 0);
-        break;
+      h = (g - b) / d + (g < b ? 6 : 0);
+      break;
       case g:
-        h = (b - r) / d + 2;
-        break;
+      h = (b - r) / d + 2;
+      break;
       case b:
-        h = (r - g) / d + 4;
-        break;
+      h = (r - g) / d + 4;
+      break;
     }
     h /= 6;
   }
@@ -117,30 +117,30 @@ var oghsv;
 
 var xcp =
 [
-  {
-    "h":0,
-    "s":0,
-    "b":0.8275,
-    "name":"gray"
-  },
-  {
-    "h":0,
-    "s":0,
-    "b":0.8627,
-    "name":"gray"
-  },
-  {
-    "h":0,
-    "s":0,
-    "b":0.7529,
-    "name":"gray"
-  },
-  {
-    "h":0.0167,
-    "s":0.1176,
-    "b":1,
-    "name":"light pink"
-  },
+{
+  "h":0,
+  "s":0,
+  "b":0.8275,
+  "name":"gray"
+},
+{
+  "h":0,
+  "s":0,
+  "b":0.8627,
+  "name":"gray"
+},
+{
+  "h":0,
+  "s":0,
+  "b":0.7529,
+  "name":"gray"
+},
+{
+  "h":0.0167,
+  "s":0.1176,
+  "b":1,
+  "name":"light pink"
+},
 ];
 
 var color_lookup =
