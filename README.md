@@ -2,7 +2,7 @@
 
 ### Overview
 
-p5-accessibility.js makes the p5 canvas more accessible to people that are blind and vissually impaired.
+p5-accessibility.js makes the p5 canvas more accessible to people that are blind and visually impaired.
 
 The canvas is an inherently inaccessible element in the web. This library tries to reconstruct what is on the canvas in p5 in words and sound so that it is accessible to screen readers.
 
