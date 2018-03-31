@@ -1,24 +1,21 @@
-let x =0, speed =2;
-let red;
-let backColor;
-function setup() {
-  createCanvas(200,200);
-  red=color(255,128,0);
-  backColor=color(123,87,255);
-}
+var y = 100;
 
-function draw() {
-  background(backColor);
-  fill(red);
-  ellipse(20,20,20,20);
-  fill(32,255,65);
-  ellipse(50,x,10,10);
-  fill("#00ffb2");
-  ellipse(150,200-x,10,10);
-  fill(150);
-  rect(170,170,25,25);
-  x+=speed ;
-  if(x>200 || x < 0) {
-    speed = -speed;
-  }
+// The statements in the setup() function
+// execute once when the program begins
+function setup() {
+  createCanvas(720, 400);  // Size must be the first statement
+  stroke(255);     // Set line drawing color to white
+  frameRate(30);
 }
+// The statements in draw() are executed until the
+// program is stopped. Each statement is executed in
+// sequence and after the last line is read, the first
+// line is executed again.
+function draw() {
+  background(0);   // Set the background to black
+  y = y - 1;
+  if (y < 0) {
+    y = height;
+  }
+  line(0, y, width, y);
+} 
