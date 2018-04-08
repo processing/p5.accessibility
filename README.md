@@ -45,8 +45,10 @@ To make the **plain text and table text outputs** visible include the following 
 ### To use on local/contribute
 
 * Clone or download this repo
-* make changes to the source code in the `src` folder
+* `cd` into the repo
+* run `npm install` to 
 * run `grunt curl` to get the latest versions of the CDN libraries
+* make changes to the source code in the `src` folder
 * run `grunt` in the root folder, this will update the library in `/dist/p5-accessibility.js`
 
 
