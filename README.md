@@ -50,7 +50,7 @@ To make the **plain text and table text outputs** visible include the following 
 * run `grunt curl` to get the latest versions of the CDN libraries
 * make changes to the source code in the `src` folder
 * run `grunt` in the root folder, this will update the library in `/dist/p5-accessibility.js`
-* keep in mind that the examples here reference the CDN libraries and not the `/dist/p5-accessibility.js` that you might generate. So if you want to test your changes with the existing examples, change the index.html files in the examples to point to your local `/dist/p5-accessibility.js`
+* keep in mind that the examples here reference the CDN library and not the `/dist/p5-accessibility.js` that you might generate. If you want to test your changes with the existing examples, change the index.html files in the examples to point to your local `/dist/p5-accessibility.js`
 
 
 ### References
