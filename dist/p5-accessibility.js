@@ -1,61 +1,61 @@
 function calculateColor(hsv) {
   var colortext;
-  if (hsv[0]!=0){
-    hsv[0] = Math.round(hsv[0]*100);
-    hue = hsv[0].toString().split('');
-    var last = hue.length-1;
-    hue[last]=parseInt(hue[last]);
-    if (hue[last] < 2.5){
-      hue[last]=0;
-    } else if (hue[last] >= 2.5 && hue[last] < 7.5){
-      hue[last]=5;
-    }
-    if (hue.length == 2){
-      hue[0]=parseInt(hue[0]);
-      if (hue[last]>=7.5){
+    if (hsv[0]!=0){
+      hsv[0] = Math.round(hsv[0]*100);
+      hue = hsv[0].toString().split('');
+      var last = hue.length-1;
+      hue[last]=parseInt(hue[last]);
+      if (hue[last] < 2.5){
         hue[last]=0;
-        hue[0]= hue[0]+1;
-      }
+      } else if (hue[last] >= 2.5 && hue[last] < 7.5){
+        hue[last]=5;
+      } 
+      if (hue.length == 2){
+        hue[0]=parseInt(hue[0]);
+        if (hue[last]>=7.5){
+          hue[last]=0;
+          hue[0]= hue[0]+1;
+        }
       hsv[0] = (hue[0]*10)+hue[1];
+      }else{
+        if (hue[last]>=7.5){
+          hsv[0]=10;
+        }else{
+          hsv[0]=hue[last];
+        }
+      }
+    }
+    for (var i = hsv.length - 1; i >= 1; i--) {
+      if(hsv[i] <= 0.25) {
+        hsv[i] = 0;
+      } else if(hsv[i] > 0.25 &&  hsv[i] < 0.75){
+        hsv[i] = 0.5;
+      }
+      else {
+        hsv[i] = 1;
+      }
+    }
+    if ((hsv[0]==0)&&(hsv[1]==0)&&(hsv[2]==1)){
+    	for (var i = oghsv.length - 1; i >= 0; i--) {
+    		oghsv[i]=Math.round(oghsv[i] * 10000) / 10000;
+    	}  	
+    	for (var e =0;e<xcp.length;e++){
+    		if((xcp[e].h == oghsv[0]) && (xcp[e].s == oghsv[1]) && (xcp[e].b == oghsv[2]) ) {
+        		colortext = xcp[e].name;
+       			break;
+      		}else{
+      			colortext = "white";
+      		}
+    	}
     }else{
-      if (hue[last]>=7.5){
-        hsv[0]=10;
-      }else{
-        hsv[0]=hue[last];
-      }
+    	for(var i =0;i<color_lookup.length;i++) {
+      		if((color_lookup[i]["h"] == hsv[0]) && (color_lookup[i]["s"] == hsv[1]) && (color_lookup[i]["b"] == hsv[2]) ) {
+        		colortext = color_lookup[i].name;
+       			break;
+      		}
+    	}
+    	
     }
-  }
-  for (var i = hsv.length - 1; i >= 1; i--) {
-    if(hsv[i] <= 0.25) {
-      hsv[i] = 0;
-    } else if(hsv[i] > 0.25 &&  hsv[i] < 0.75){
-      hsv[i] = 0.5;
-    }
-    else {
-      hsv[i] = 1;
-    }
-  }
-  if ((hsv[0]==0)&&(hsv[1]==0)&&(hsv[2]==1)){
-    for (var i = oghsv.length - 1; i >= 0; i--) {
-      oghsv[i]=Math.round(oghsv[i] * 10000) / 10000;
-    }
-    for (var e =0;e<xcp.length;e++){
-      if((xcp[e].h == oghsv[0]) && (xcp[e].s == oghsv[1]) && (xcp[e].b == oghsv[2]) ) {
-        colortext = xcp[e].name;
-        break;
-      }else{
-        colortext = "white";
-      }
-    }
-  }else{
-    for(var i =0;i<color_lookup.length;i++) {
-      if((color_lookup[i]["h"] == hsv[0]) && (color_lookup[i]["s"] == hsv[1]) && (color_lookup[i]["b"] == hsv[2]) ) {
-        colortext = color_lookup[i].name;
-        break;
-      }
-    }
-
-  }
   return colortext;
 }
 
@@ -78,14 +78,14 @@ function rgbToHsv(r, g, b) {
   } else {
     switch (max) {
       case r:
-      h = (g - b) / d + (g < b ? 6 : 0);
-      break;
+        h = (g - b) / d + (g < b ? 6 : 0);
+        break;
       case g:
-      h = (b - r) / d + 2;
-      break;
+        h = (b - r) / d + 2;
+        break;
       case b:
-      h = (r - g) / d + 4;
-      break;
+        h = (r - g) / d + 4;
+        break;
     }
     h /= 6;
   }
@@ -105,42 +105,42 @@ function rgbColorName(r, g, b){
 
 function hexColorName(value){
   var regEx = /[0-9A-Fa-f]{6}/g;
-  if(regEx.test(value) && value.length == 6 ) {
-    var colorname = calculateColor(hexToHsv(value));
-    return colorname;
-  }else{
-    return("Requires a valid hex value");
-  }
+    if(regEx.test(value) && value.length == 6 ) {
+      var colorname = calculateColor(hexToHsv(value));
+      return colorname;
+    }else{
+      return("Requires a valid hex value");
+    }
 }
 
 var oghsv;
 
-var xcp =
+var xcp = 
 [
-{
-  "h":0,
-  "s":0,
-  "b":0.8275,
-  "name":"gray"
-},
-{
-  "h":0,
-  "s":0,
-  "b":0.8627,
-  "name":"gray"
-},
-{
-  "h":0,
-  "s":0,
-  "b":0.7529,
-  "name":"gray"
-},
-{
-  "h":0.0167,
-  "s":0.1176,
-  "b":1,
-  "name":"light pink"
-},
+	{
+		"h":0,
+		"s":0,
+		"b":0.8275,
+		"name":"gray"
+	},
+	{
+		"h":0,
+		"s":0,
+		"b":0.8627,
+		"name":"gray"
+	},
+	{
+		"h":0,
+		"s":0,
+		"b":0.7529,
+		"name":"gray"
+	},
+	{
+		"h":0.0167,
+		"s":0.1176,
+		"b":1,
+		"name":"light pink"
+	},
 ];
 
 var color_lookup =
@@ -254,13 +254,13 @@ var color_lookup =
     "name" : "orange"
   },
   {
-    "h" : 15,
+    "h" : 15, 
     "s" : 0,
     "b" : 1,
     "name" : "very light yellow"
   },
   {
-    "h" : 15,
+    "h" : 15, 
     "s" : 0.5,
     "b" : 0.5,
     "name" : "olive green"
@@ -272,13 +272,13 @@ var color_lookup =
     "name" : "light yellow"
   },
   {
-    "h" : 15,
+    "h" : 15, 
     "s" : 1,
     "b" : 0,
     "name" : "dark olive green"
   },
   {
-    "h" : 15,
+    "h" : 15, 
     "s" : 1,
     "b" : 0.5,
     "name" : "olive green"
@@ -296,7 +296,7 @@ var color_lookup =
     "name" : "very light yellow"
   },
   {
-    "h" : 20,
+    "h" : 20, 
     "s" : 0.5,
     "b" : 0.5,
     "name" : "olive green"
@@ -308,7 +308,7 @@ var color_lookup =
     "name" : "light yellow green"
   },
   {
-    "h" : 20,
+    "h" : 20, 
     "s" : 1,
     "b" : 0,
     "name" : "dark olive green"
@@ -631,7 +631,7 @@ var color_lookup =
     "b" : 1,
     "name" : "pinkish purple"
   },
-  {
+   {
     "h" : 80,
     "s" : 1,
     "b" : 0.5,
@@ -661,7 +661,7 @@ var color_lookup =
     "b" : 1,
     "name" : "light fuchsia"
   },
-  {
+   {
     "h" : 85,
     "s" : 1,
     "b" : 0.5,
@@ -721,8 +721,7 @@ var color_lookup =
     "b" : 1,
     "name" : "magenta"
   },
-]
-;function getElementById(id) {
+];;function getElementById(id) {
   return document.getElementById(id);
 }
 
@@ -1292,9 +1291,31 @@ Registry.register(FillEntity);
 
   /* return area of the shape */
   this.getObjectArea = function(objectType, arguments) {
-    var objectArea = 0;
+    let objectArea = 0;
     if (!objectType.localeCompare('arc')) {
-      objectArea = 0;
+      // area of full ellipse = PI * horizontal radius * vertical radius.
+      // therefore, area of arc = difference bet. arc's start and end radians * horizontal radius * vertical radius.
+      // the below expression is adjusted for negative values and differences in arc's start and end radians over PI*2  
+      var arcSizeInRadians = ((((arguments[5] - arguments[4]) % (PI * 2)) + (PI * 2)) % (PI * 2)); 
+      objectArea = arcSizeInRadians * arguments[2] * arguments[3] / 8;
+      if(arguments[6] === 'open' || arguments[6] === 'chord' ){
+	console.log(arcSizeInRadians)
+	// when the arc's mode is OPEN or CHORD, we need to account for the area of the triangle that is formed to close the arc
+        // Ax( By −	Cy) +	Bx(Cy −	Ay) +	Cx(Ay −	By )
+        let Ax = arguments[0];
+        let Ay = arguments[1];
+        let Bx = arguments[0] + (arguments[2]/2) * cos(arguments[4]).toFixed(2);
+        let By = arguments[1] + (arguments[3]/2) * sin(arguments[4]).toFixed(2);
+        let Cx = arguments[0] + (arguments[2]/2) * cos(arguments[5]).toFixed(2);
+        let Cy = arguments[1] + (arguments[3]/2) * sin(arguments[5]).toFixed(2);
+        let areaOfExtraTriangle = abs(Ax*(By - Cy) + Bx*(Cy - Ay) + Cx*(Ay - By))/2;
+        if(arcSizeInRadians > PI) {
+	  objectArea = objectArea + areaOfExtraTriangle; 
+        } else {
+	  objectArea = objectArea - areaOfExtraTriangle;
+	}
+      }
+      else console.log(arguments[6]);
     } else if (!objectType.localeCompare('ellipse')) {
       objectArea = 3.14 * arguments[2] * arguments[3] / 4;
     } else if (!objectType.localeCompare('line')) {
