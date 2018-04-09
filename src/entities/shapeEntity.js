@@ -33,7 +33,7 @@ function ShapeEntity(Interceptor,shapeObject,arguments, canvasX, canvasY) {
       if(arguments[6] === 'open' || arguments[6] === 'chord' ){
 	console.log(arcSizeInRadians)
 	// when the arc's mode is OPEN or CHORD, we need to account for the area of the triangle that is formed to close the arc
-        // Ax( By −	Cy) +	Bx(Cy −	Ay) +	Cx(Ay −	By )
+        // (Ax( By −	Cy) +	Bx(Cy −	Ay) +	Cx(Ay −	By ) )/2
         let Ax = arguments[0];
         let Ay = arguments[1];
         let Bx = arguments[0] + (arguments[2]/2) * cos(arguments[4]).toFixed(2);
@@ -64,8 +64,8 @@ function ShapeEntity(Interceptor,shapeObject,arguments, canvasX, canvasY) {
       objectArea = arguments[2] * arguments[3];
     } else if (!objectType.localeCompare('triangle')) {
       objectArea = abs(arguments[0] * (arguments[3] - arguments[5]) + arguments[2] * (arguments[5] - arguments[1])
-      + arguments[4] * (arguments[1] - arguments[3]));
-      // Ax( By −	Cy) +	Bx(Cy −	Ay) +	Cx(Ay −	By )
+      + arguments[4] * (arguments[1] - arguments[3]))/2;
+      // (Ax( By −	Cy) +	Bx(Cy −	Ay) +	Cx(Ay −	By ))/2
     }
     return objectArea;
   }
