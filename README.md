@@ -4,19 +4,19 @@
 
 p5-accessibility.js makes the p5 canvas more accessible to people that are blind and visually impaired.
 
-The canvas is an inherently inaccessible element in the web. This library tries to reconstruct what is on the canvas in p5 in words and sound so that it is accessible to screen readers.
+The canvas is an inherently inaccessible element in the web. This library tries to reconstruct the content of the p5 canvas in words and sound accessible to screen readers.
 
-It helps create 3 kinds of outputs:
+The library creates 3 outputs:
 
-1) **Plain Text Output** - This describes the visual content present in the canvas in list form. Each element can be selected so as to get more details
+1) **Plain Text Output** - Describes the visual content present in the canvas in list form. Each element can be selected to get more details
 
-2) **Table Text Output** - Here the visual content in the canvas is laid out in the form of a table based on where each element is - the elements can be selected so as to get more details.
+2) **Table Text Output** - The visual content in the canvas is laid out in the form of a table based on the spatial location of each element- the elements can be selected to get more details.
 
-3) **Sound Output** - This mode explains the movement of the objects present in the canvas. Top to Down movement is represented by a decrease in frequency and left to right by panning the stereo output.
+3) **Sound Output** - This mode explains the movement of the objects present in the canvas. Top to Down movement is represented by a decrease in frequency and left to right through panning.
 
 ### Usage
 
-Link to the library in the end of the html file [https://cdn.rawgit.com/processing/p5.accessibility/v0.1.0/dist/p5-accessibility.js](https://cdn.rawgit.com/processing/p5.accessibility/v0.1.0/dist/p5-accessibility.js)
+Link to the library at the end of your html file [https://cdn.rawgit.com/processing/p5.accessibility/v0.1.0/dist/p5-accessibility.js](https://cdn.rawgit.com/processing/p5.accessibility/v0.1.0/dist/p5-accessibility.js)
 
 To get the **plain text output**, include the following in your HTML file, and place it where you want the output to be available:
 `<section id="textOutput-content"></section>`
