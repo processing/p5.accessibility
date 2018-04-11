@@ -10,7 +10,7 @@ The library creates 3 outputs:
 
 1) **Plain Text Output** - Describes the visual content present in the canvas in list form. Each element can be selected to get more details
 
-2) **Table Text Output** - The visual content in the canvas is laid out in the form of a table based on the spatial location each element is - the elements can be selected to get more details.
+2) **Table Text Output** - The visual content in the canvas is laid out in the form of a table based on the spatial location of each element- the elements can be selected to get more details.
 
 3) **Sound Output** - This mode explains the movement of the objects present in the canvas. Top to Down movement is represented by a decrease in frequency and left to right through panning.
 
