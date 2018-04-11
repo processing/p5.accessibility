@@ -49,13 +49,13 @@ p5.js and p5.accessibility.js are collaborative projects created by many individ
 
 ### How Can I Contribute? 
 #### First Timers
-For first-time contributors or those who want to start with a small task: check out our list of good first bugs. First read the github discussion on that issue and find out if there's currently a person working on that or not. If no one is working on it or if there has was one claimed to but has not been active for a while, ask if it is up for grabs. It's okay to not know how to fix an issue and feel free to ask questions about to approach the problem! We are all just here to learn and make something awesome. Someone from the community would help you out and these are great issues for learning about the library and its development process.
+For first-time contributors or those who want to start with a small task: check out our list of [good first bugs](https://github.com/processing/p5.accessibility/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22). First read the github discussion on that issue and find out if there's currently a person working on that or not. If no one is working on it or if there has was one claimed to but has not been active for a while, ask if it is up for grabs. It's okay to not know how to fix an issue and feel free to ask questions about to approach the problem! We are all just here to learn and make something awesome. Someone from the community would help you out and these are great issues for learning about the library and its development process.
 
 #### Want something more challenging?
-If you're already familiar with the project or would like take on something a little more challenging, please take a look at the priority: high issues.
+If you're already familiar with the project or would like take on something a little more challenging, please take a look at the [priority: high](https://github.com/processing/p5.accessibility/issues?q=is%3Aopen+is%3Aissue+label%3A%22priority%3A+high%22) issues.
 
 #### Feature Enhancement
-If you want to work on building new things, please take a look at type: feature.
+If you want to work on building new things, please take a look at [type: feature](https://github.com/processing/p5.accessibility/issues?q=is%3Aopen+is%3Aissue+label%3A%22type%3A+feature%22).
 
 If you'd like to work on a bug, please comment on it to let the maintainers know. If someone else has already commented and taken up that bug, please refrain from working on it and submitting a PR without asking the maintainers as it leads to unnecessary duplication of effort.
 
