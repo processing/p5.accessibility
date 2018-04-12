@@ -2,7 +2,7 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     curl: {
-      'src/colorNamer.js': 'https://cdn.rawgit.com/lm-n/color-namer/master/lib/colorNamer.js'
+      'src/colorNamer.js': 'https://rawgit.com/lm-n/color-namer/master/lib/colorNamer.js'
     },
     concat: {
       options: {
