@@ -58,7 +58,7 @@ baseInterceptor.prototype.getColorName = function(arguments) {
         });
       }
     } else {
-      var rgb = '(' + arguments[0] + ', ' + arguments[0] + ', ' + arguments[0] + ')';
+      var rgb = '(' + Math.round(arguments[0]) + ', ' + Math.round(arguments[0]) + ', ' + Math.round(arguments[0]) + ')';
       if (trans == 0){
         return ({
           'color': 'gray',
@@ -113,7 +113,7 @@ baseInterceptor.prototype.getColorName = function(arguments) {
 function getRGBAname(arguments){
   var trans = Math.round(100-((arguments[3]*100)));
   var colorName = rgbColorName(arguments[0], arguments[1], arguments[2]);
-  var rgb = '(' + arguments[0] + ', ' + arguments[1] + ', ' + arguments[2] + ')';
+  var rgb = '(' + Math.round(arguments[0]) + ', ' + Math.round(arguments[1]) + ', ' + Math.round(arguments[2]) + ')';
   if (trans>0){
     return ({
       'color': colorName + ' with '+ trans + '% tranparency',
@@ -129,7 +129,7 @@ function getRGBAname(arguments){
 
 function getRGBname(arguments){
   var colorName = rgbColorName(arguments[0], arguments[1], arguments[2]);
-  var rgb = '(' + arguments[0] + ', ' + arguments[1] + ', ' + arguments[2] + ')';
+  var rgb = '(' + Math.round(arguments[0]) + ', ' + Math.round(arguments[1]) + ', ' + Math.round(arguments[2]) + ')';
   return ({
       'color': colorName,
       'rgb': rgb
