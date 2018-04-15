@@ -31,7 +31,6 @@ function ShapeEntity(Interceptor,shapeObject,arguments, canvasX, canvasY) {
       var arcSizeInRadians = ((((arguments[5] - arguments[4]) % (PI * 2)) + (PI * 2)) % (PI * 2)); 
       objectArea = arcSizeInRadians * arguments[2] * arguments[3] / 8;
       if(arguments[6] === 'open' || arguments[6] === 'chord' ){
-	console.log(arcSizeInRadians)
 	// when the arc's mode is OPEN or CHORD, we need to account for the area of the triangle that is formed to close the arc
         // (Ax( By −	Cy) +	Bx(Cy −	Ay) +	Cx(Ay −	By ) )/2
         let Ax = arguments[0];
@@ -47,7 +46,6 @@ function ShapeEntity(Interceptor,shapeObject,arguments, canvasX, canvasY) {
 	  objectArea = objectArea - areaOfExtraTriangle;
 	}
       }
-      else console.log(arguments[6]);
     } else if (!objectType.localeCompare('ellipse')) {
       objectArea = 3.14 * arguments[2] * arguments[3] / 4;
     } else if (!objectType.localeCompare('line')) {
