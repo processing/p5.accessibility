@@ -1312,8 +1312,8 @@ Registry.register(FillEntity);
         if(arcSizeInRadians > PI) {
 	  objectArea = objectArea + areaOfExtraTriangle; 
         } else {
-	  objectArea = objectArea - areaOfExtraTriangle;
-	}
+          objectArea = objectArea - areaOfExtraTriangle;
+        }
       }
     } else if (!objectType.localeCompare('ellipse')) {
       objectArea = 3.14 * arguments[2] * arguments[3] / 4;
