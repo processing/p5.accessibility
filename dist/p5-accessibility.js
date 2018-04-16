@@ -1289,9 +1289,29 @@ Registry.register(FillEntity);
 
   /* return area of the shape */
   this.getObjectArea = function(objectType, arguments) {
-    var objectArea = 0;
+    let objectArea = 0;
     if (!objectType.localeCompare('arc')) {
-      objectArea = 0;
+      // area of full ellipse = PI * horizontal radius * vertical radius.
+      // therefore, area of arc = difference bet. arc's start and end radians * horizontal radius * vertical radius.
+      // the below expression is adjusted for negative values and differences in arc's start and end radians over PI*2  
+      var arcSizeInRadians = ((((arguments[5] - arguments[4]) % (PI * 2)) + (PI * 2)) % (PI * 2)); 
+      objectArea = arcSizeInRadians * arguments[2] * arguments[3] / 8;
+      if(arguments[6] === 'open' || arguments[6] === 'chord' ){
+	// when the arc's mode is OPEN or CHORD, we need to account for the area of the triangle that is formed to close the arc
+        // (Ax( By −	Cy) +	Bx(Cy −	Ay) +	Cx(Ay −	By ) )/2
+        let Ax = arguments[0];
+        let Ay = arguments[1];
+        let Bx = arguments[0] + (arguments[2]/2) * cos(arguments[4]).toFixed(2);
+        let By = arguments[1] + (arguments[3]/2) * sin(arguments[4]).toFixed(2);
+        let Cx = arguments[0] + (arguments[2]/2) * cos(arguments[5]).toFixed(2);
+        let Cy = arguments[1] + (arguments[3]/2) * sin(arguments[5]).toFixed(2);
+        let areaOfExtraTriangle = abs(Ax*(By - Cy) + Bx*(Cy - Ay) + Cx*(Ay - By))/2;
+        if(arcSizeInRadians > PI) {
+	  objectArea = objectArea + areaOfExtraTriangle; 
+        } else {
+          objectArea = objectArea - areaOfExtraTriangle;
+        }
+      }
     } else if (!objectType.localeCompare('ellipse')) {
       objectArea = 3.14 * arguments[2] * arguments[3] / 4;
     } else if (!objectType.localeCompare('line')) {
@@ -1308,8 +1328,8 @@ Registry.register(FillEntity);
       objectArea = arguments[2] * arguments[3];
     } else if (!objectType.localeCompare('triangle')) {
       objectArea = abs(arguments[0] * (arguments[3] - arguments[5]) + arguments[2] * (arguments[5] - arguments[1])
-      + arguments[4] * (arguments[1] - arguments[3]));
-      // Ax( By −	Cy) +	Bx(Cy −	Ay) +	Cx(Ay −	By )
+      + arguments[4] * (arguments[1] - arguments[3]))/2;
+      // (Ax( By −	Cy) +	Bx(Cy −	Ay) +	Cx(Ay −	By ))/2
     }
     return objectArea;
   }
