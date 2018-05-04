@@ -60,6 +60,7 @@ If you want to work on building new things, please take a look at [type: feature
 If you'd like to work on a bug, please comment on it to let the maintainers know. If someone else has already commented and taken up that bug, please refrain from working on it and submitting a PR without asking the maintainers as it leads to unnecessary duplication of effort.
 
 ##### Contribution guides
+You can read more about the [code structure here](https://github.com/processing/p5.accessibility/blob/master/CodeStructure.md).
 * https://guides.github.com/activities/hello-world/
 * https://guides.github.com/activities/forking/
 
