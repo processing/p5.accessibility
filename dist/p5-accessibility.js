@@ -1381,13 +1381,14 @@ TextEntity.handles = function(name) {
 TextEntity.isParameter = false;
 
 /* global Registry */
-Registry.register(TextEntity);;function textInterceptor() { // eslint-disable-line
+Registry.register(TextEntity);;function TextInterceptor() { // eslint-disable-line
     let self = this;
+    /* global baseInterceptor */
     baseInterceptor.call(self);
 }
-textInterceptor.prototype = Object.create(baseInterceptor.prototype);
+TextInterceptor.prototype = Object.create(baseInterceptor.prototype);
 
-textInterceptor.prototype.clearletiables = function(object) {
+TextInterceptor.prototype.clearVariables = function(object) {
     object.objectTypeCount = {};
     object.objectArray = [];
     object.objectCount = 0;
@@ -1395,18 +1396,21 @@ textInterceptor.prototype.clearletiables = function(object) {
     return object;
 }
 
-textInterceptor.prototype.populateObject = function(x, arguments, object, table, isDraw) {
+TextInterceptor.prototype.populateObject = function(x, arguments, object, table, isDraw) {
+    /* global objectCount */
     objectCount = object.objectCount;
+    /* global objectArray */
     objectArray = object.objectArray;
+    /* global objectTypeCount */
     objectTypeCount = object.objectTypeCount;
     if (!isDraw) {
         // check for special function in setup -> createCanvas
-        if (!x.name.localeCompare('createCanvas')) {
+        if (!x.name.localeCompare(`createCanvas`)) {
             this.canvasDetails.width = arguments[0];
             this.canvasDetails.height = arguments[1];
         }
     }
-
+    /* global Registry */
     let entityClass = Registry.entityFor(x.name);
 
     if (entityClass && !entityClass.isParameter) {
@@ -1428,7 +1432,7 @@ textInterceptor.prototype.populateObject = function(x, arguments, object, table,
     });
 }
 
-textInterceptor.prototype.populateTable = function(table, objectArray) {
+TextInterceptor.prototype.populateTable = function(table, objectArray) {
     if (this.totalCount < 100) {
         if (this.prevTotalCount > this.totalCount) {
             for (let j = 0; j < this.totalCount; j++) {
@@ -1438,16 +1442,16 @@ textInterceptor.prototype.populateTable = function(table, objectArray) {
 
                 if (tempCol < properties.length) { // ie - there are more cols now
                     for (let i = 0; i < tempCol; i++) {
-                        if (properties[i].localeCompare('type')) {
-                            row.children[i].innerHTML = properties[i] + ' = ' + objectArray[j][properties[i]];
+                        if (properties[i].localeCompare(`type`)) {
+                            row.children[i].innerHTML = properties[i] + ` = ` + objectArray[j][properties[i]];
                         } else {
                             row.children[i].innerHTML = objectArray[j][properties[i]];
                         }
                     }
                     for (let i = tempCol; i < properties.length; i++) {
-                        let col = document.createElement('td');
-                        if (properties[i].localeCompare('type')) {
-                            col.children[i].innerHTML = properties[i] + ' = ' + objectArray[j][properties[i]];
+                        let col = document.createElement(`td`);
+                        if (properties[i].localeCompare(`type`)) {
+                            col.children[i].innerHTML = properties[i] + ` = ` + objectArray[j][properties[i]];
                         } else {
                             col.children[i].innerHTML = objectArray[j][properties[i]];
                         }
@@ -1456,8 +1460,8 @@ textInterceptor.prototype.populateTable = function(table, objectArray) {
                     }
                 } else { // ie - there are fewer cols now
                     for (let i = 0; i < properties.length; i++) {
-                        if (properties[i].localeCompare('type')) {
-                            row.children[i].innerHTML = properties[i] + ' = ' + objectArray[j][properties[i]];
+                        if (properties[i].localeCompare(`type`)) {
+                            row.children[i].innerHTML = properties[i] + ` = ` + objectArray[j][properties[i]];
                         } else {
                             row.children[i].innerHTML = objectArray[j][properties[i]];
                         }
@@ -1480,17 +1484,17 @@ textInterceptor.prototype.populateTable = function(table, objectArray) {
 
                 if (tempCol < properties.length) { // ie - there are more cols now
                     for (let i = 0; i <= tempCol; i++) {
-                        if (properties[i].localeCompare('type')) {
-                            row.children[i].innerHTML = properties[i] + ' = ' + objectArray[j][properties[i]];
+                        if (properties[i].localeCompare(`type`)) {
+                            row.children[i].innerHTML = properties[i] + ` = ` + objectArray[j][properties[i]];
                         } else {
                             row.children[i].innerHTML = objectArray[j][properties[i]];
                         }
                     }
                     for (let i = tempCol; i < properties.length; i++) {
-                        let col = document.createElement('td');
+                        let col = document.createElement(`td`);
 
-                        if (properties[i].localeCompare('type')) {
-                            col.innerHTML = properties[i] + ' = ' + objectArray[j][properties[i]];
+                        if (properties[i].localeCompare(`type`)) {
+                            col.innerHTML = properties[i] + ` = ` + objectArray[j][properties[i]];
                         } else {
                             col.innerHTML = objectArray[j][properties[i]];
                         }
@@ -1498,8 +1502,8 @@ textInterceptor.prototype.populateTable = function(table, objectArray) {
                     }
                 } else { // ie - there are fewer cols now
                     for (let i = 0; i < properties.length; i++) {
-                        if (properties[i].localeCompare('type')) {
-                            row.children[i].innerHTML = properties[i] + ' = ' + objectArray[j][properties[i]];
+                        if (properties[i].localeCompare(`type`)) {
+                            row.children[i].innerHTML = properties[i] + ` = ` + objectArray[j][properties[i]];
                         } else {
                             row.children[i].innerHTML = objectArray[j][properties[i]];
                         }
@@ -1511,13 +1515,13 @@ textInterceptor.prototype.populateTable = function(table, objectArray) {
                 }
             }
             for (let j = this.prevTotalCount; j < this.totalCount; j++) {
-                let row = document.createElement('tr');
-                row.id = 'object' + j;
+                let row = document.createElement(`tr`);
+                row.id = `object` + j;
                 let properties = Object.keys(objectArray[j].getAttributes());
                 for (let i = 0; i < properties.length; i++) {
-                    let col = document.createElement('td');
-                    if (properties[i].localeCompare('type')) {
-                        col.innerHTML = properties[i] + ' = ' + objectArray[j][properties[i]];
+                    let col = document.createElement(`td`);
+                    if (properties[i].localeCompare(`type`)) {
+                        col.innerHTML = properties[i] + ` = ` + objectArray[j][properties[i]];
                     } else {
                         col.innerHTML = objectArray[j][properties[i]];
                     }
@@ -1529,68 +1533,68 @@ textInterceptor.prototype.populateTable = function(table, objectArray) {
     }
 }
 
-textInterceptor.prototype.getSummary = function(object1, object2, element) {
+TextInterceptor.prototype.getSummary = function(object1, object2, element) {
     this.prevTotalCount = this.totalCount;
     this.totalCount = object1.objectCount + object2.objectCount;
-    element.innerHTML = '';
+    element.innerHTML = ``;
     element.innerHTML +=
-        'Your output is a ' +
+        `Your output is a ` +
         this.canvasDetails.width +
-        ' by ' +
+        ` by ` +
         this.canvasDetails.height +
-        ' ' +
+        ` ` +
         this.bgColor +
-        ' canvas ' +
-        ' containing the following ';
+        ` canvas ` +
+        ` containing the following `;
     if (this.totalCount > 1) {
-        element.innerHTML += this.totalCount + ' objects : ';
+        element.innerHTML += this.totalCount + ` objects : `;
     } else {
-        element.innerHTML += this.totalCount + ' object : ';
+        element.innerHTML += this.totalCount + ` object : `;
     }
 
     if (object2.objectCount > 0 || object1.objectCount > 0) {
 
-        let objectList = document.createElement('ul');
+        let objectList = document.createElement(`ul`);
 
         if (this.totalCount < 100) {
 
             object1.objectArray.forEach(function(objArrayItem, i) {
-                let objectListItem = document.createElement('li');
+                let objectListItem = document.createElement(`li`);
                 objectList.appendChild(objectListItem);
-                let objLink = document.createElement('a');
-                objLink.href = '#object' + i;
-                objLink.target = '_self';
-                objLink.innerHTML = objArrayItem['type'];
+                let objLink = document.createElement(`a`);
+                objLink.href = `#object` + i;
+                objLink.target = `_self`;
+                objLink.innerHTML = objArrayItem[`type`];
                 objectListItem.appendChild(objLink);
                 objectListItem.innerHTML +=
-                    ' at ' +
-                    objArrayItem['location'] +
-                    ' covering ' +
-                    objArrayItem['area'] +
-                    ' of the canvas';
+                    ` at ` +
+                    objArrayItem[`location`] +
+                    ` covering ` +
+                    objArrayItem[`area`] +
+                    ` of the canvas`;
             });
 
             object2.objectArray.forEach(function(objArrayItem, i) {
-                let objectListItem = document.createElement('li');
+                let objectListItem = document.createElement(`li`);
                 objectList.appendChild(objectListItem);
-                let objLink = document.createElement('a');
-                objLink.href = '#object' + (i + object1.objectArray.length);
-                objLink.target = '_self';
-                objLink.innerHTML = objArrayItem['type'];
+                let objLink = document.createElement(`a`);
+                objLink.href = `#object` + (i + object1.objectArray.length);
+                objLink.target = `_self`;
+                objLink.innerHTML = objArrayItem[`type`];
                 objectListItem.appendChild(objLink);
                 objectListItem.innerHTML +=
-                    ' at ' +
-                    objArrayItem['location'] +
-                    ' covering ' +
-                    objArrayItem['area'] +
-                    ' of the canvas';
+                    ` at ` +
+                    objArrayItem[`location`] +
+                    ` covering ` +
+                    objArrayItem[`area`] +
+                    ` of the canvas`;
             });
             element.appendChild(objectList);
         }
     }
 }
 
-let textInterceptor = new textInterceptor();;/* global funcNames */
+const textInterceptor = new TextInterceptor();;/* global funcNames */
 /* global allData */
 funcNames = allData[`classitems`].map(function(x) {
     if (x[`overloads`]) {
@@ -1650,7 +1654,7 @@ if (document.getElementById(`textOutput-content`)) {
     });
 
 };var shadowDOMElement; // eslint-disable-line
-function gridInterceptor() {
+function GridInterceptor() {
     let self = this;
     /* global baseInterceptor */
     baseInterceptor.call(self);
@@ -1659,9 +1663,9 @@ function gridInterceptor() {
         this.coordLoc = {}
 }
 
-gridInterceptor.prototype = Object.create(baseInterceptor.prototype);
+GridInterceptor.prototype = Object.create(baseInterceptor.prototype);
 
-gridInterceptor.prototype.clearVariables = function(object) {
+GridInterceptor.prototype.clearVariables = function(object) {
     object.objectTypeCount = {};
     object.objectArray = [];
     object.objectCount = 0;
@@ -1669,7 +1673,7 @@ gridInterceptor.prototype.clearVariables = function(object) {
     return object;
 }
 
-gridInterceptor.prototype.createShadowDOMElement = function(document) {
+GridInterceptor.prototype.createShadowDOMElement = function(document) {
     let contentTable = document.getElementById(`tableOutput-content-table`);
     for (let i = 0; i < this.noRows; i++) {
         let row = document.createElement(`tr`);
@@ -1684,7 +1688,7 @@ gridInterceptor.prototype.createShadowDOMElement = function(document) {
     }
     shadowDOMElement = document.getElementById(`tableOutput-content`);
 }
-gridInterceptor.prototype.populateObject = function(x, arguments, object, table, isDraw) {
+GridInterceptor.prototype.populateObject = function(x, arguments, object, table, isDraw) {
     /* global objectCount */
     objectCount = object.objectCount;
     /* global objectArray */
@@ -1720,7 +1724,7 @@ gridInterceptor.prototype.populateObject = function(x, arguments, object, table,
     });
 }
 
-gridInterceptor.prototype.populateTable = function(objectArray, documentPassed) {
+GridInterceptor.prototype.populateTable = function(objectArray, documentPassed) {
     if (this.totalCount < 100) {
         let that = this;
         objectArray = [].slice.call(objectArray);
@@ -1740,7 +1744,7 @@ gridInterceptor.prototype.populateTable = function(objectArray, documentPassed) 
 }
 
 /* helper function to populate object Details */
-gridInterceptor.prototype.populateObjectDetails = function(object1, object2, elementSummary, elementDetail) {
+GridInterceptor.prototype.populateObjectDetails = function(object1, object2, elementSummary, elementDetail) {
     this.prevTotalCount = this.totalCount;
     this.totalCount = object1.objectCount + object2.objectCount;
     elementSummary.innerHTML = ``;
@@ -1801,7 +1805,7 @@ gridInterceptor.prototype.populateObjectDetails = function(object1, object2, ele
 }
 
 
-const gridInterceptor = new gridInterceptor();;/* global funcNames */
+const gridInterceptor = new GridInterceptor();;/* global funcNames */
 /* global allData */
 funcNames = allData[`classitems`].map(function(x) {
     if (x[`overloads`]) {

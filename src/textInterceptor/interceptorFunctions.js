@@ -1,10 +1,11 @@
-function textInterceptor() { // eslint-disable-line
+function TextInterceptor() { // eslint-disable-line
     let self = this;
+    /* global baseInterceptor */
     baseInterceptor.call(self);
 }
-textInterceptor.prototype = Object.create(baseInterceptor.prototype);
+TextInterceptor.prototype = Object.create(baseInterceptor.prototype);
 
-textInterceptor.prototype.clearletiables = function(object) {
+TextInterceptor.prototype.clearVariables = function(object) {
     object.objectTypeCount = {};
     object.objectArray = [];
     object.objectCount = 0;
@@ -12,9 +13,12 @@ textInterceptor.prototype.clearletiables = function(object) {
     return object;
 }
 
-textInterceptor.prototype.populateObject = function(x, arguments, object, table, isDraw) {
+TextInterceptor.prototype.populateObject = function(x, arguments, object, table, isDraw) {
+    /* global objectCount */
     objectCount = object.objectCount;
+    /* global objectArray */
     objectArray = object.objectArray;
+    /* global objectTypeCount */
     objectTypeCount = object.objectTypeCount;
     if (!isDraw) {
         // check for special function in setup -> createCanvas
@@ -23,7 +27,7 @@ textInterceptor.prototype.populateObject = function(x, arguments, object, table,
             this.canvasDetails.height = arguments[1];
         }
     }
-
+    /* global Registry */
     let entityClass = Registry.entityFor(x.name);
 
     if (entityClass && !entityClass.isParameter) {
@@ -45,7 +49,7 @@ textInterceptor.prototype.populateObject = function(x, arguments, object, table,
     });
 }
 
-textInterceptor.prototype.populateTable = function(table, objectArray) {
+TextInterceptor.prototype.populateTable = function(table, objectArray) {
     if (this.totalCount < 100) {
         if (this.prevTotalCount > this.totalCount) {
             for (let j = 0; j < this.totalCount; j++) {
@@ -146,7 +150,7 @@ textInterceptor.prototype.populateTable = function(table, objectArray) {
     }
 }
 
-textInterceptor.prototype.getSummary = function(object1, object2, element) {
+TextInterceptor.prototype.getSummary = function(object1, object2, element) {
     this.prevTotalCount = this.totalCount;
     this.totalCount = object1.objectCount + object2.objectCount;
     element.innerHTML = ``;
@@ -207,4 +211,4 @@ textInterceptor.prototype.getSummary = function(object1, object2, element) {
     }
 }
 
-const textInterceptor = new textInterceptor();
+const textInterceptor = new TextInterceptor();

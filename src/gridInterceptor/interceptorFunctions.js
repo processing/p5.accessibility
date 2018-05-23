@@ -1,5 +1,5 @@
 var shadowDOMElement; // eslint-disable-line
-function gridInterceptor() {
+function GridInterceptor() {
     let self = this;
     /* global baseInterceptor */
     baseInterceptor.call(self);
@@ -8,9 +8,9 @@ function gridInterceptor() {
         this.coordLoc = {}
 }
 
-gridInterceptor.prototype = Object.create(baseInterceptor.prototype);
+GridInterceptor.prototype = Object.create(baseInterceptor.prototype);
 
-gridInterceptor.prototype.clearVariables = function(object) {
+GridInterceptor.prototype.clearVariables = function(object) {
     object.objectTypeCount = {};
     object.objectArray = [];
     object.objectCount = 0;
@@ -18,7 +18,7 @@ gridInterceptor.prototype.clearVariables = function(object) {
     return object;
 }
 
-gridInterceptor.prototype.createShadowDOMElement = function(document) {
+GridInterceptor.prototype.createShadowDOMElement = function(document) {
     let contentTable = document.getElementById(`tableOutput-content-table`);
     for (let i = 0; i < this.noRows; i++) {
         let row = document.createElement(`tr`);
@@ -33,7 +33,7 @@ gridInterceptor.prototype.createShadowDOMElement = function(document) {
     }
     shadowDOMElement = document.getElementById(`tableOutput-content`);
 }
-gridInterceptor.prototype.populateObject = function(x, arguments, object, table, isDraw) {
+GridInterceptor.prototype.populateObject = function(x, arguments, object, table, isDraw) {
     /* global objectCount */
     objectCount = object.objectCount;
     /* global objectArray */
@@ -69,7 +69,7 @@ gridInterceptor.prototype.populateObject = function(x, arguments, object, table,
     });
 }
 
-gridInterceptor.prototype.populateTable = function(objectArray, documentPassed) {
+GridInterceptor.prototype.populateTable = function(objectArray, documentPassed) {
     if (this.totalCount < 100) {
         let that = this;
         objectArray = [].slice.call(objectArray);
@@ -89,7 +89,7 @@ gridInterceptor.prototype.populateTable = function(objectArray, documentPassed) 
 }
 
 /* helper function to populate object Details */
-gridInterceptor.prototype.populateObjectDetails = function(object1, object2, elementSummary, elementDetail) {
+GridInterceptor.prototype.populateObjectDetails = function(object1, object2, elementSummary, elementDetail) {
     this.prevTotalCount = this.totalCount;
     this.totalCount = object1.objectCount + object2.objectCount;
     elementSummary.innerHTML = ``;
@@ -150,4 +150,4 @@ gridInterceptor.prototype.populateObjectDetails = function(object1, object2, ele
 }
 
 
-const gridInterceptor = new gridInterceptor();
+const gridInterceptor = new GridInterceptor();
