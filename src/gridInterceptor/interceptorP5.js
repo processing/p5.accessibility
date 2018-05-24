@@ -51,15 +51,15 @@ if (document.getElementById(`tableOutput-content`)) {
                     gridInterceptor.populateObject(x, arguments, gridInterceptor.drawObject, details, true);
                 gridInterceptor.isCleared = false;
 
-                //clean the cells
+                // clean the cells
                 let cells = document.getElementsByClassName(`gridOutput-cell-content`);
                 cells = [].slice.call(cells);
                 cells.forEach((cell) => {
                     cell.innerHTML = ``;
                 });
 
-                //concat the new objects and populate the grid
-                //TODO : make this more efficient so that it happens only ONCE per frame count
+                // concat the new objects and populate the grid
+                // TODO : make this more efficient so that it happens only ONCE per frame count
                 /* global programObjects */
                 programObjects = gridInterceptor.setupObject.objectArray.concat(gridInterceptor.drawObject.objectArray);
                 gridInterceptor.populateObjectDetails(gridInterceptor.setupObject, gridInterceptor.drawObject, summary, details);

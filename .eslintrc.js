@@ -35,6 +35,9 @@ module.exports = {
         }],
         'constructor-super': 2,
         'object-shorthand': 2,
-        'prefer-const': 2
+        'prefer-const': 2,
+        'no-debugger': 2,
+        'spaced-comment': 2,
+        'vars-on-top': 2
     }
 };
