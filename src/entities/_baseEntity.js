@@ -1,4 +1,4 @@
-function BaseEntity(Interceptor, object, arguments, canvasX, canvasY) {
+function BaseEntity(Interceptor, object) {
     this.type = Interceptor.currentColor + ` ` + object.name,
         this.location = ``,
         this.coordinates = ``,

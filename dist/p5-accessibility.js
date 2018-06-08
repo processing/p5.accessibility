@@ -1123,7 +1123,7 @@ function RGBString(arguments) {
         values = [parseInt(values[0]), parseInt(values[1]), parseInt(values[2])];
         return (getRGBname(values));
     }
-};function BaseEntity(Interceptor, object, arguments, canvasX, canvasY) {
+};function BaseEntity(Interceptor, object) {
     this.type = Interceptor.currentColor + ` ` + object.name,
         this.location = ``,
         this.coordinates = ``,
