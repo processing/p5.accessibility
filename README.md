@@ -8,9 +8,13 @@ The canvas is an inherently inaccessible element in the web. This library tries 
 
 The library creates 3 outputs:
 
-1.  **Plain Text Output** - Describes the visual content present in the canvas in list form. Each element can be selected to get more details.
+1.  **Plain Text Output** - This output describes the visual content present on the canvas.
 
-2.  **Table Text Output** - The visual content in the canvas is laid out in the form of a table based on the spatial location of each element- the elements can be selected individually to get more details.
+      The general description of the canvas includes canvas size, canvas color, and number of elements in the canvas          (example: "Your output is a 200 by 200 lavender blue (123, 87, 255) canvas containing the following 4 objects:""). This description is followed by a list of elements where the shape, color, position, and area of each element are described (example: "orange (255, 128, 0) ellipse at top left covering 0.79% of the canvas"), each element can be selected to get more details. A table of elements is also provided. In this table, shape, color, location, coordinates and area are described (example: "orange (255, 128, 0) ellipse location=top left coordinates =20x,20y area=0.79%").
+
+2.  **Table Text Output** - The table output laids out the content of the canvas in the form of a table based on the spatial location of each element.
+
+      A brief description of the canvas is available before the table output. This description includes: color of the background, size of the canvas, number of objects, and object types (example: "lavender blue (123, 87, 255) canvas is 200 by 200 of area 40000 contains 4 objects - 3 ellipse 1 rect"). The table describes the content spatially, each element is placed on a cell of the table depending on its position. Within each cell an element the color and type of shape of that element are available (example: "orange (255, 87, 255) ellipse"). These descriptions can be selected individually to get more details. A list of elements where shape, color, location, coordinates and area are described (example: "orange (255, 128, 0) ellipse location=top left coordinates =20x,20y area=0.79%") is also available.
 
 3.  **Sound Output** - This mode explains the movement of the objects present in the canvas. Top to Down movement is represented by a decrease in frequency and left to right through panning.
 
