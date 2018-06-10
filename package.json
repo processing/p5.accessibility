@@ -1,5 +1,5 @@
 {
-    "name": "p5-accessibility",
+    "name": "p5.accessibility",
     "version": "0.1.1",
     "description": "npm package to provide text and sound additions to p5 sketch output",
     "main": "index.js",
