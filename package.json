@@ -4,7 +4,7 @@
     "description": "npm package to provide text and sound additions to p5 sketch output",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "build": "eslint src/ && grunt"
     },
     "contributors": [
         "MathuraMG",
