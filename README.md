@@ -1,8 +1,8 @@
-# p5-accessibility.js
+# p5.accessibility.js
 
 ## Overview
 
-p5-accessibility.js makes the p5 canvas more accessible to people who are blind and visually impaired.
+p5.accessibility.js makes the p5 canvas more accessible to people who are blind and visually impaired.
 
 The canvas is an inherently inaccessible element in the web. This library tries to reconstruct the content of the p5 canvas in words and sounds accessible to screen readers.
 
@@ -18,9 +18,9 @@ The library creates 3 outputs:
 
 3.  **Sound Output** - This mode explains the movement of the objects present in the canvas. Top to Down movement is represented by a decrease in frequency and left to right through panning.
 
-To learn more about the project please read the following Medium articles: [P5 accessibility](https://medium.com/processing-foundation/p5-accessibility-115d84535fa8) and [Making p5.js Accessible](https://medium.com/processing-foundation/making-p5-js-accessible-e2ce366e05a0).
+To learn more about the project please read the following Medium articles: [P5 accessibility](https://medium.com/processing-foundation/accessibility-115d84535fa8) and [Making p5.js Accessible](https://medium.com/processing-foundation/making-p5-js-accessible-e2ce366e05a0).
 
-If you have found a bug in the p5-accessibility.js library, you can file it here under the [“issues”](https://github.com/processing/p5.accessibility/issues) tab.
+If you have found a bug in the p5.accessibility.js library, you can file it here under the [“issues”](https://github.com/processing/p5.accessibility/issues) tab.
 
 ## Usage
 
@@ -84,8 +84,8 @@ If you'd like to work on a bug, please comment on it to let the maintainers know
 * run `npm install`
 * run `grunt curl` to get the latest versions of the CDN libraries
 * make changes to the source code in the `src` folder
-* run `grunt` in the root folder, this will update the library in `/dist/p5-accessibility.js`
-* keep in mind that the examples here reference the latest CDN link to the library and not the `/dist/p5-accessibility.js` that you might generate. If you want to test your changes with the existing examples, change the index.html files in the examples to point to your local `/dist/p5-accessibility.js`
+* run `grunt` in the root folder, this will update the library in `/dist/p5.accessibility.js`
+* keep in mind that the examples here reference the latest CDN link to the library and not the `/dist/p5.accessibility.js` that you might generate. If you want to test your changes with the existing examples, change the index.html files in the examples to point to your local `/dist/p5.accessibility.js`
 
 ## Tools
 
