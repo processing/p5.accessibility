@@ -10,11 +10,11 @@ The library creates 3 outputs:
 
 1.  **Plain Text Output** - This output describes the visual content present on the canvas.
 
-      The general description of the canvas includes canvas size, canvas color, and number of elements in the canvas          (example: "Your output is a 200 by 200 lavender blue (123, 87, 255) canvas containing the following 4 objects:""). This description is followed by a list of elements where the shape, color, position, and area of each element are described (example: "orange (255, 128, 0) ellipse at top left covering 0.79% of the canvas"), each element can be selected to get more details. A table of elements is also provided. In this table, shape, color, location, coordinates and area are described (example: "orange (255, 128, 0) ellipse location=top left coordinates =20x,20y area=0.79%").
+    The general description of the canvas includes canvas size, canvas color, and number of elements in the canvas (example: "Your output is a 200 by 200 lavender blue (123, 87, 255) canvas containing the following 4 objects:""). This description is followed by a list of elements where the shape, color, position, and area of each element are described (example: "orange (255, 128, 0) ellipse at top left covering 0.79% of the canvas"), each element can be selected to get more details. A table of elements is also provided. In this table, shape, color, location, coordinates and area are described (example: "orange (255, 128, 0) ellipse location=top left coordinates =20x,20y area=0.79%").
 
 2.  **Table Text Output** - The table output laids out the content of the canvas in the form of a table based on the spatial location of each element.
 
-      A brief description of the canvas is available before the table output. This description includes: color of the background, size of the canvas, number of objects, and object types (example: "lavender blue (123, 87, 255) canvas is 200 by 200 of area 40000 contains 4 objects - 3 ellipse 1 rect"). The table describes the content spatially, each element is placed on a cell of the table depending on its position. Within each cell an element the color and type of shape of that element are available (example: "orange (255, 87, 255) ellipse"). These descriptions can be selected individually to get more details. A list of elements where shape, color, location, coordinates and area are described (example: "orange (255, 128, 0) ellipse location=top left coordinates =20x,20y area=0.79%") is also available.
+    A brief description of the canvas is available before the table output. This description includes: color of the background, size of the canvas, number of objects, and object types (example: "lavender blue (123, 87, 255) canvas is 200 by 200 of area 40000 contains 4 objects - 3 ellipse 1 rect"). The table describes the content spatially, each element is placed on a cell of the table depending on its position. Within each cell an element the color and type of shape of that element are available (example: "orange (255, 87, 255) ellipse"). These descriptions can be selected individually to get more details. A list of elements where shape, color, location, coordinates and area are described (example: "orange (255, 128, 0) ellipse location=top left coordinates =20x,20y area=0.79%") is also available.
 
 3.  **Sound Output** - This mode explains the movement of the objects present in the canvas. Top to Down movement is represented by a decrease in frequency and left to right through panning.
 
@@ -73,23 +73,23 @@ If you'd like to work on a bug, please comment on it to let the maintainers know
 
 ##### Contribution guides
 
-* You can read more about the [code structure here](https://github.com/processing/p5.accessibility/blob/master/CodeStructure.md).
-* https://guides.github.com/activities/hello-world/
-* https://guides.github.com/activities/forking/
+- You can read more about the [code structure here](https://github.com/processing/p5.accessibility/blob/master/CodeStructure.md).
+- https://guides.github.com/activities/hello-world/
+- https://guides.github.com/activities/forking/
 
 ### Development installation
 
-* Clone or download this repo
-* `cd` into the repo
-* run `npm install`
-* run `grunt curl` to get the latest versions of the CDN libraries
-* make changes to the source code in the `src` folder
-* run `grunt` in the root folder, this will update the library in `/dist/p5.accessibility.js`
-* keep in mind that the examples here reference the latest CDN link to the library and not the `/dist/p5.accessibility.js` that you might generate. If you want to test your changes with the existing examples, change the index.html files in the examples to point to your local `/dist/p5.accessibility.js`
+- Clone or download this repo
+- `cd` into the repo
+- run `npm install`
+- run `grunt curl` to get the latest versions of the CDN libraries
+- make changes to the source code in the `src` folder
+- run `grunt` in the root folder, this will update the library in `/dist/p5.accessibility.js`
+- keep in mind that the examples here reference the latest CDN link to the library and not the `/dist/p5.accessibility.js` that you might generate. If you want to test your changes with the existing examples, change the index.html files in the examples to point to your local `/dist/p5.accessibility.js`
 
 ## Tools
 
 We use the following tools:
 
-* [grunt-curl](https://github.com/twolfson/grunt-curl) a low-tech dependency manager.
-* [ColorNamer.js](https://github.com/MathuraMG/color-namer) a simple npm module/js client library that gives back an accessible color-name of a hex or rgb value.
+- [grunt-curl](https://github.com/twolfson/grunt-curl) a low-tech dependency manager.
+- [ColorNamer.js](https://github.com/MathuraMG/color-namer) a simple npm module/js client library that gives back an accessible color-name of a hex or rgb value.

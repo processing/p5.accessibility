@@ -4,6 +4,7 @@
     "description": "npm package to provide text and sound additions to p5 sketch output",
     "main": "index.js",
     "scripts": {
+        "test": "grunt run-tests",
         "build": "eslint src/ && grunt"
     },
     "contributors": [
@@ -27,6 +28,9 @@
         "grunt-contrib-cssmin": "~0.10.0",
         "grunt-contrib-sass": "^0.7.3",
         "grunt-contrib-uglify": "^3.3.0",
-        "grunt-contrib-watch": "^1.1.0"
+        "grunt-contrib-watch": "^1.1.0",
+        "grunt-eslint": "^21.0.0",
+        "grunt-mocha": "^1.1.0",
+        "grunt-open": "^0.2.3"
     }
 }
