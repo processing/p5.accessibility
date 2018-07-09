@@ -68,6 +68,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks(`grunt-contrib-watch`);
     grunt.loadNpmTasks(`grunt-contrib-concat`);
     grunt.loadNpmTasks(`grunt-curl`);
+    grunt.loadNpmTasks(`grunt-open`);
 
     grunt.registerTask(`default`, [`concat`]);
     grunt.registerTask(`serve`, `connect:server:keepalive`);
