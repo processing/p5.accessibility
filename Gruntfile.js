@@ -40,14 +40,14 @@ module.exports = function(grunt) {
             }
         },
         open: {
-            // testChrome: {
-            //     path: `http://localhost:8000/test`,
-            //     app: `Chrome`
-            // },
-            // testFirefox: {
-            //     path: `http://localhost:8000/test`,
-            //     app: `Firefox`
-            // },
+            testChrome: {
+                path: `http://localhost:8000/test`,
+                app: `Chrome`
+            },
+            testFirefox: {
+                path: `http://localhost:8000/test`,
+                app: `Firefox`
+            },
             testSafari: {
                 path: `http://localhost:8000/test`,
                 app: `Safari`
@@ -73,5 +73,5 @@ module.exports = function(grunt) {
 
     grunt.registerTask(`default`, [`concat`]);
     grunt.registerTask(`serve`, [`connect:server:keepalive`]);
-    grunt.registerTask(`run-tests`, [`serve`,`open`]);
+    grunt.registerTask(`run-tests`, [`serve`, `open`]);
 };
