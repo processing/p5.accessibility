@@ -16,6 +16,7 @@
     "license": "ISC",
     "dependencies": {
         "grunt-cli": "^1.2.0",
+        "grunt-contrib-connect": "^1.0.2",
         "grunt-curl": "^2.4.1",
         "jquery": "^3.2.1"
     },
