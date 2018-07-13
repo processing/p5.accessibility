@@ -40,14 +40,14 @@ module.exports = function(grunt) {
             }
         },
         open: {
-            testChrome: {
-                path: `http://localhost:8000/test`,
-                app: `Chrome`
-            },
-            testFirefox: {
-                path: `http://localhost:8000/test`,
-                app: `Firefox`
-            },
+            // testChrome: {
+            //     path: `http://localhost:8000/test`,
+            //     app: `Chrome`
+            // },
+            // testFirefox: {
+            //     path: `http://localhost:8000/test`,
+            //     app: `Firefox`
+            // },
             testSafari: {
                 path: `http://localhost:8000/test`,
                 app: `Safari`
@@ -67,10 +67,11 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks(`grunt-contrib-uglify`);
     grunt.loadNpmTasks(`grunt-contrib-watch`);
     grunt.loadNpmTasks(`grunt-contrib-concat`);
+    grunt.loadNpmTasks(`grunt-contrib-connect`);
     grunt.loadNpmTasks(`grunt-curl`);
     grunt.loadNpmTasks(`grunt-open`);
 
     grunt.registerTask(`default`, [`concat`]);
-    grunt.registerTask(`serve`, `connect:server:keepalive`);
-    grunt.registerTask(`run-tests`, [`serve`, `open`]);
+    grunt.registerTask(`serve`, [`connect:server:keepalive`]);
+    grunt.registerTask(`run-tests`, [`serve`,`open`]);
 };
