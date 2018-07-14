@@ -4,6 +4,10 @@
 
 p5.accessibility.js makes the p5 canvas more accessible to people who are blind and visually impaired.
 
+To learn about using p5.js with a screen reader please read the ["Using p5 with a screen reader" tutorial.](https://p5js.org/learn/p5-screen-reader.html)
+
+### About the library
+
 The canvas is an inherently inaccessible element in the web. This library tries to reconstruct the content of the p5 canvas in words and sounds accessible to screen readers.
 
 The library creates 3 outputs:
