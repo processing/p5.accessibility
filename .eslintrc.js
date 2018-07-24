@@ -40,6 +40,6 @@ module.exports = {
         'spaced-comment': 2,
         'vars-on-top': 2,
         'no-irregular-whitespace': 2,
-        'indent': [2, 'tab']
+        'indent': [2, 2]
     }
 };
