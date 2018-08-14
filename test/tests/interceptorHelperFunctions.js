@@ -4,6 +4,11 @@ define([`chai`], chai => {
   /* global describe */
   describe(`Interceptor Helper Functions`, () => {
     /* global it */
+    it(`can pad the string`, () => {
+      const str = `hello`;
+      const pad = `asdf`;
+      expect(str.paddingLeft(pad)).to.equal(`ello`);
+    });
     it(`can recursively merge objects`, () => {
       const object1 = {
         a: 1,
