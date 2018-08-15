@@ -1150,10 +1150,10 @@ function RGBString(arguments) {
       const a = argument;
       if (object.params[i].description.indexOf(`x-coordinate`) > -1) {
         xCoord = a;
-        that.coordinates += a + `x,`;
+        that.coordinates += Math.round(a) + `x,`;
       } else if (object.params[i].description.indexOf(`y-coordinate`) > -1) {
         yCoord = a;
-        that.coordinates += a + `y`;
+        that.coordinates += Math.round(a) + `y`;
       }
       i++;
     });

@@ -1,16 +1,17 @@
 require.config({
-    baseUrl: `./`,
-    paths: {
-        'lib': `../lib`,
-        'chai': `./testDeps/chai`
-    }
+  baseUrl: `./`,
+  paths: {
+    'lib': `../lib`,
+    'chai': `./testDeps/chai`
+  }
 });
 
 const allTests = [
-    `tests/gridInterceptor`
+  `tests/gridInterceptor`,
+  `tests/interceptorHelperFunctions.js`
 ];
 
 require(allTests, () => {
-    /*  global mocha */
-    mocha.run();
+  /*  global mocha */
+  mocha.run();
 });
