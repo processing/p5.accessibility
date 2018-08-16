@@ -1,20 +1,23 @@
-function ColorEntity(Interceptor,sobject,arguments, canvasX, canvasY) {
-  var self = this;
-  var passedArguments = arguments;
+function ColorEntity(Interceptor,object,passedArguments, canvasX, canvasY) {
+  const self = this;
+  console.log(`***********`);
+  console.log(passedArguments);
+  console.log(`***********`);
+  
   this.populate = function(Interceptor) {
     console.log(passedArguments[0]);
     switch (passedArguments[0]) {
-      case 'rgb':
-        Interceptor.colorMode.mode = 0;
-        break;
-      case 'hsb':
-        Interceptor.colorMode.mode = 1;
-        break;
-      case 'hsl':
-        Interceptor.colorMode.mode = 2;
-        break;
-      default:
-        Interceptor.colorMode.mode = -1;
+    case `rgb`:
+      Interceptor.colorMode.mode = 0;
+      break;
+    case `hsb`:
+      Interceptor.colorMode.mode = 1;
+      break;
+    case `hsl`:
+      Interceptor.colorMode.mode = 2;
+      break;
+    default:
+      Interceptor.colorMode.mode = -1;
     }
     if(passedArguments.length == 2) {
       Interceptor.colorMode.max1 = passedArguments[1];
@@ -34,7 +37,7 @@ function ColorEntity(Interceptor,sobject,arguments, canvasX, canvasY) {
   this.populate(Interceptor);
 }
 ColorEntity.handledNames = [
-  'colorMode'
+  `colorMode`
 ]
 
 ColorEntity.handles = function(name) {

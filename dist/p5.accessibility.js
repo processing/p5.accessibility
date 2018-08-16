@@ -903,15 +903,15 @@ Object.defineProperty(Array.prototype, `equals`, {
   this.isCleared = false;
 }
 
-baseInterceptor.prototype.getColorName = function(arguments) {
-  if (arguments.length === 4) {
-    return (getRGBAname(arguments));
-  } else if (arguments.length === 3) {
-    return (getRGBname(arguments));
-  } else if (arguments.length === 2) {
-    const trans = Math.round(100 - ((arguments[1] * 100) / 255));
+baseInterceptor.prototype.getColorName = function(colorArgs) {
+  if (colorArgs.length === 4) {
+    return (getRGBAname(colorArgs));
+  } else if (colorArgs.length === 3) {
+    return (getRGBname(colorArgs));
+  } else if (colorArgs.length === 2) {
+    const trans = Math.round(100 - ((colorArgs[1] * 100) / 255));
     // assuming that we are doing RGB - this would be a grayscale number
-    if (arguments[0] < 10) {
+    if (colorArgs[0] < 10) {
       const rgb = `(0, 0, 0)`;
       if (trans === 0) {
         return ({
@@ -925,7 +925,7 @@ baseInterceptor.prototype.getColorName = function(arguments) {
           rgb
         });
       }
-    } else if (arguments[0] > 240) {
+    } else if (colorArgs[0] > 240) {
       const rgb = `(255, 255, 255)`;
       if (trans === 0) {
         return ({
@@ -940,7 +940,7 @@ baseInterceptor.prototype.getColorName = function(arguments) {
         });
       }
     } else {
-      const rgb = `(` + Math.round(arguments[0]) + `, ` + Math.round(arguments[0]) + `, ` + Math.round(arguments[0]) + `)`;
+      const rgb = `(` + Math.round(colorArgs[0]) + `, ` + Math.round(colorArgs[0]) + `, ` + Math.round(colorArgs[0]) + `)`;
       if (trans === 0) {
         return ({
           'color': `gray`,
@@ -954,50 +954,50 @@ baseInterceptor.prototype.getColorName = function(arguments) {
         });
       }
     }
-  } else if (arguments.length === 1) {
-    if (!(typeof(arguments[0])).localeCompare(`number`)) {
+  } else if (colorArgs.length === 1) {
+    if (!(typeof(colorArgs[0])).localeCompare(`number`)) {
       // assuming that we are doing RGB - this would be a grayscale number
-      if (arguments[0] < 10) {
+      if (colorArgs[0] < 10) {
         const rgb = `(0, 0, 0)`;
         return ({
           'color': `black`,
           rgb
         });
-      } else if (arguments[0] > 240) {
+      } else if (colorArgs[0] > 240) {
         const rgb = `(255, 255, 255)`;
         return ({
           'color': `white`,
           rgb
         });
       } else {
-        const rgb = `(` + arguments[0] + `, ` + arguments[0] + `, ` + arguments[0] + `)`;
+        const rgb = `(` + colorArgs[0] + `, ` + colorArgs[0] + `, ` + colorArgs[0] + `)`;
         return ({
           'color': `grey`,
           rgb
         });
       }
-    } else if (!(typeof(arguments[0])).localeCompare(`string`)) {
-      if (!arguments[0].charAt(0).localeCompare(`#`)) {
+    } else if (!(typeof(colorArgs[0])).localeCompare(`string`)) {
+      if (!colorArgs[0].charAt(0).localeCompare(`#`)) {
         return (getHexname(arguments));
-      } else if (arguments[0].match(/rgba/)) {
+      } else if (colorArgs[0].match(/rgba/)) {
         return (RGBAString(arguments));
-      } else if (arguments[0].match(/rgb/)) {
+      } else if (colorArgs[0].match(/rgb/)) {
         return (RGBString(arguments));
       }
     }
   } else {
     return ({
-      'color': arguments[0],
+      'color': colorArgs[0],
       'rgb': ``
     });
   }
 }
 
-function getRGBAname(arguments) {
-  const trans = Math.round(100 - ((arguments[3] * 100)));
+function getRGBAname(rgbaArgs) {
+  const trans = Math.round(100 - ((rgbaArgs[3] * 100)));
   /* global rgbColorName */
-  const colorName = rgbColorName(arguments[0], arguments[1], arguments[2]);
-  const rgb = `(` + Math.round(arguments[0]) + `, ` + Math.round(arguments[1]) + `, ` + Math.round(arguments[2]) + `)`;
+  const colorName = rgbColorName(rgbaArgs[0], rgbaArgs[1], rgbaArgs[2]);
+  const rgb = `(` + Math.round(rgbaArgs[0]) + `, ` + Math.round(rgbaArgs[1]) + `, ` + Math.round(rgbaArgs[2]) + `)`;
   if (trans > 0) {
     return ({
       'color': colorName + ` with ` + trans + `% tranparency`,
@@ -1011,9 +1011,9 @@ function getRGBAname(arguments) {
   }
 }
 
-function getRGBname(arguments) {
-  const colorName = rgbColorName(arguments[0], arguments[1], arguments[2]);
-  const rgb = `(` + Math.round(arguments[0]) + `, ` + Math.round(arguments[1]) + `, ` + Math.round(arguments[2]) + `)`;
+function getRGBname(rgbArgs) {
+  const colorName = rgbColorName(rgbArgs[0], rgbArgs[1], rgbArgs[2]);
+  const rgb = `(` + Math.round(rgbArgs[0]) + `, ` + Math.round(rgbArgs[1]) + `, ` + Math.round(rgbArgs[2]) + `)`;
   return ({
     'color': colorName,
     rgb
@@ -1252,23 +1252,26 @@ BackgroundEntity.handles = function(name) {
 BackgroundEntity.isParameter = true;
 
 /* global Registry */
-Registry.register(BackgroundEntity);;function ColorEntity(Interceptor,sobject,arguments, canvasX, canvasY) {
-  var self = this;
-  var passedArguments = arguments;
+Registry.register(BackgroundEntity);;function ColorEntity(Interceptor,object,passedArguments, canvasX, canvasY) {
+  const self = this;
+  console.log(`***********`);
+  console.log(passedArguments);
+  console.log(`***********`);
+  
   this.populate = function(Interceptor) {
     console.log(passedArguments[0]);
     switch (passedArguments[0]) {
-      case 'rgb':
-        Interceptor.colorMode.mode = 0;
-        break;
-      case 'hsb':
-        Interceptor.colorMode.mode = 1;
-        break;
-      case 'hsl':
-        Interceptor.colorMode.mode = 2;
-        break;
-      default:
-        Interceptor.colorMode.mode = -1;
+    case `rgb`:
+      Interceptor.colorMode.mode = 0;
+      break;
+    case `hsb`:
+      Interceptor.colorMode.mode = 1;
+      break;
+    case `hsl`:
+      Interceptor.colorMode.mode = 2;
+      break;
+    default:
+      Interceptor.colorMode.mode = -1;
     }
     if(passedArguments.length == 2) {
       Interceptor.colorMode.max1 = passedArguments[1];
@@ -1288,7 +1291,7 @@ Registry.register(BackgroundEntity);;function ColorEntity(Interceptor,sobject,ar
   this.populate(Interceptor);
 }
 ColorEntity.handledNames = [
-  'colorMode'
+  `colorMode`
 ]
 
 ColorEntity.handles = function(name) {
