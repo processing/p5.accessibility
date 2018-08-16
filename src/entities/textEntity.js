@@ -1,7 +1,8 @@
-function TextEntity(Interceptor,shapeObject,arguments, canvasX, canvasY) {
-  var self = this;
-  BaseEntity.call(self,shapeObject,arguments, canvasX, canvasY);
-  this.type = String(arguments[0]).substring(0, 20) + '(' + Interceptor.currentColor + ')';
+function TextEntity(Interceptor, shapeObject, arguments, canvasX, canvasY) {
+  const self = this;
+  /* global BaseEntity */
+  BaseEntity.call(self, shapeObject, arguments, canvasX, canvasY);
+  this.type = String(arguments[0]).substring(0, 20) + `(` + Interceptor.currentColor + `)`;
 
   this.populate = function(shapeObject, arguments, canvasX, canvasY) {
     this.location = this.getLocation(shapeObject, arguments, canvasX, canvasY);
@@ -9,18 +10,18 @@ function TextEntity(Interceptor,shapeObject,arguments, canvasX, canvasY) {
   };
 
   this.getAttributes = function() {
-    return({
+    return ({
       type: this.type,
       location: this.location,
       coordinates: this.coordinates,
     })
   };
 
-  this.populate(shapeObject,arguments, canvasX, canvasY);
+  this.populate(shapeObject, arguments, canvasX, canvasY);
 }
 
 TextEntity.handledNames = [
-  'text'
+  `text`
 ]
 
 TextEntity.handles = function(name) {
@@ -29,4 +30,5 @@ TextEntity.handles = function(name) {
 
 TextEntity.isParameter = false;
 
+/* global Registry */
 Registry.register(TextEntity);

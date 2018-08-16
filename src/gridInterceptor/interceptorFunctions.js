@@ -1,15 +1,16 @@
 var shadowDOMElement; // eslint-disable-line
-function gridInterceptor() {
-  var self = this;
+function GridInterceptor() {
+  const self = this;
+  /* global baseInterceptor */
   baseInterceptor.call(self);
   this.noRows = 10,
-    this.noCols = 10,
-    this.coordLoc = {}
+  this.noCols = 10,
+  this.coordLoc = {}
 }
 
-gridInterceptor.prototype = Object.create(baseInterceptor.prototype);
+GridInterceptor.prototype = Object.create(baseInterceptor.prototype);
 
-gridInterceptor.prototype.clearVariables = function(object) {
+GridInterceptor.prototype.clearVariables = function(object) {
   object.objectTypeCount = {};
   object.objectArray = [];
   object.objectCount = 0;
@@ -17,34 +18,37 @@ gridInterceptor.prototype.clearVariables = function(object) {
   return object;
 }
 
-gridInterceptor.prototype.createShadowDOMElement = function(document) {
-  var contentTable = document.getElementById('tableOutput-content-table');
-  for (var i = 0; i < this.noRows; i++) {
-    var row = document.createElement('tr');
+GridInterceptor.prototype.createShadowDOMElement = function(document) {
+  const contentTable = document.getElementById(`tableOutput-content-table`);
+  for (let i = 0; i < this.noRows; i++) {
+    const row = document.createElement(`tr`);
 
-    for (var j = 0; j < this.noCols; j++) {
-      var col = document.createElement('td');
-      col.className = 'gridOutput-cell-content';
-      col.innerHTML = 'test';
+    for (let j = 0; j < this.noCols; j++) {
+      const col = document.createElement(`td`);
+      col.className = `gridOutput-cell-content`;
+      col.innerHTML = `test`;
       row.appendChild(col);
     }
     contentTable.appendChild(row);
   }
-  shadowDOMElement = document.getElementById('tableOutput-content');
+  shadowDOMElement = document.getElementById(`tableOutput-content`);
 }
-gridInterceptor.prototype.populateObject = function(x, arguments, object, table, isDraw) {
+GridInterceptor.prototype.populateObject = function(x, arguments, object, table, isDraw) {
+  /* global objectCount */
   objectCount = object.objectCount;
+  /* global objectArray */
   objectArray = object.objectArray;
+  /* global objectTypeCount */
   objectTypeCount = object.objectTypeCount;
   if (!isDraw) {
     // check for special function in setup -> createCanvas
-    if (!x.name.localeCompare('createCanvas')) {
+    if (!x.name.localeCompare(`createCanvas`)) {
       this.canvasDetails.width = arguments[0];
       this.canvasDetails.height = arguments[1];
     }
   }
-
-  var entityClass = Registry.entityFor(x.name);
+  /* global Registry */
+  const entityClass = Registry.entityFor(x.name);
 
   if (entityClass && !entityClass.isParameter) {
     objectArray[objectCount] = new entityClass(this, x, arguments, this.canvasDetails.width, this.canvasDetails.height);
@@ -59,25 +63,25 @@ gridInterceptor.prototype.populateObject = function(x, arguments, object, table,
     new entityClass(this, x, arguments, this.canvasDetails.width, this.canvasDetails.height);
   }
   return ({
-    objectCount: objectCount,
-    objectArray: objectArray,
-    objectTypeCount: objectTypeCount
+    objectCount,
+    objectArray,
+    objectTypeCount
   });
 }
 
-gridInterceptor.prototype.populateTable = function(objectArray, documentPassed) {
+GridInterceptor.prototype.populateTable = function(objectArray, documentPassed) {
   if (this.totalCount < 100) {
-    var that = this;
+    const that = this;
     objectArray = [].slice.call(objectArray);
-    objectArray.forEach(function(object,i){
-      var cellLoc = object.coordLoc.locY * that.noRows + object.coordLoc.locX;
+    objectArray.forEach((object, i) => {
+      const cellLoc = object.coordLoc.locY * that.noRows + object.coordLoc.locX;
       // add link in table
-      var cellLink = documentPassed.createElement('a');
+      const cellLink = documentPassed.createElement(`a`);
       cellLink.innerHTML += object.type;
-      var objectId = '#object' + i;
-      cellLink.setAttribute('href', objectId);
-      if(object.coordLoc.locY < that.noCols && object.coordLoc.locX < that.noRows && object.coordLoc.locY> 0 && object.coordLoc.locX > 0 ) {
-        documentPassed.getElementsByClassName('gridOutput-cell-content')[cellLoc].appendChild(cellLink);
+      const objectId = `#object` + i;
+      cellLink.setAttribute(`href`, objectId);
+      if (object.coordLoc.locY < that.noCols && object.coordLoc.locX < that.noRows && object.coordLoc.locY > 0 && object.coordLoc.locX > 0) {
+        documentPassed.getElementsByClassName(`gridOutput-cell-content`)[cellLoc].appendChild(cellLink);
       }
 
     });
@@ -85,55 +89,57 @@ gridInterceptor.prototype.populateTable = function(objectArray, documentPassed) 
 }
 
 /* helper function to populate object Details */
-gridInterceptor.prototype.populateObjectDetails = function(object1, object2, elementSummary, elementDetail) {
+GridInterceptor.prototype.populateObjectDetails = function(object1, object2, elementSummary, elementDetail) {
   this.prevTotalCount = this.totalCount;
   this.totalCount = object1.objectCount + object2.objectCount;
-  elementSummary.innerHTML = '';
-  elementDetail.innerHTML = '';
-  elementSummary.innerHTML += this.bgColor + ' canvas is ' + this.canvasDetails.width + ' by ' +
-    this.canvasDetails.height + ' of area ' + this.canvasDetails.width * this.canvasDetails.height;
+  elementSummary.innerHTML = ``;
+  elementDetail.innerHTML = ``;
+  elementSummary.innerHTML += this.bgColor + ` canvas is ` + this.canvasDetails.width + ` by ` +
+        this.canvasDetails.height + ` of area ` + this.canvasDetails.width * this.canvasDetails.height;
   if (this.totalCount > 1) {
-    elementSummary.innerHTML += ' Contains ' + this.totalCount + ' objects - ';
+    elementSummary.innerHTML += ` Contains ` + this.totalCount + ` objects - `;
   } else {
-    elementSummary.innerHTML += ' Contains ' + this.totalCount + ' object - ';
+    elementSummary.innerHTML += ` Contains ` + this.totalCount + ` object - `;
   }
 
   if (object2.objectCount > 0 || object1.objectCount > 0) {
+    /* global totObjectTypeCount */
+    /* global mergeObjRecursive */
     totObjectTypeCount = mergeObjRecursive(object1.objectTypeCount, object2.objectTypeCount);
-    var keys = Object.keys(totObjectTypeCount);
-    keys.forEach(function(key){
-      elementSummary.innerHTML += totObjectTypeCount[key] + ' ' + key + ' ';
+    const keys = Object.keys(totObjectTypeCount);
+    keys.forEach((key) => {
+      elementSummary.innerHTML += totObjectTypeCount[key] + ` ` + key + ` `;
     });
 
-    var objectList = document.createElement('ul');
+    const objectList = document.createElement(`ul`);
 
     if (this.totalCount < 100) {
-      object1.objectArray.forEach(function(objArrayItem,i){
-        var objectListItem = document.createElement('li');
-        objectListItem.id = 'object' + i;
+      object1.objectArray.forEach((objArrayItem, i) => {
+        const objectListItem = document.createElement(`li`);
+        objectListItem.id = `object` + i;
         objectList.appendChild(objectListItem);
-        var objKeys = Object.keys(objArrayItem.getAttributes());
-        objKeys.forEach(function(objKeyItem){
-          if (objKeyItem.localeCompare('coordLoc')) {
-            if (objKeyItem.localeCompare('type')) {
-              objectListItem.innerHTML += objKeyItem + ' = ' + objArrayItem[objKeyItem] + ' ';
+        const objKeys = Object.keys(objArrayItem.getAttributes());
+        objKeys.forEach((objKeyItem) => {
+          if (objKeyItem.localeCompare(`coordLoc`)) {
+            if (objKeyItem.localeCompare(`type`)) {
+              objectListItem.innerHTML += objKeyItem + ` = ` + objArrayItem[objKeyItem] + ` `;
             } else {
-              objectListItem.innerHTML += objArrayItem[objKeyItem] + ' ';
+              objectListItem.innerHTML += objArrayItem[objKeyItem] + ` `;
             }
           }
         });
       });
-      object2.objectArray.forEach(function(objArrayItem,i){
-        var objectListItem = document.createElement('li');
-        objectListItem.id = 'object' + (object1.objectArray.length + i);
+      object2.objectArray.forEach((objArrayItem, i) => {
+        const objectListItem = document.createElement(`li`);
+        objectListItem.id = `object` + (object1.objectArray.length + i);
         objectList.appendChild(objectListItem);
-        var objKeys = Object.keys(objArrayItem.getAttributes());
-        objKeys.forEach(function(objKeyItem){
-          if (objKeyItem.localeCompare('coordLoc')) {
-            if (objKeyItem.localeCompare('type')) {
-              objectListItem.innerHTML += objKeyItem + ' = ' + objArrayItem[objKeyItem] + ' ';
+        const objKeys = Object.keys(objArrayItem.getAttributes());
+        objKeys.forEach((objKeyItem) => {
+          if (objKeyItem.localeCompare(`coordLoc`)) {
+            if (objKeyItem.localeCompare(`type`)) {
+              objectListItem.innerHTML += objKeyItem + ` = ` + objArrayItem[objKeyItem] + ` `;
             } else {
-              objectListItem.innerHTML += objArrayItem[objKeyItem] + ' ';
+              objectListItem.innerHTML += objArrayItem[objKeyItem] + ` `;
             }
           }
         });
@@ -144,4 +150,4 @@ gridInterceptor.prototype.populateObjectDetails = function(object1, object2, ele
 }
 
 
-var gridInterceptor = new gridInterceptor();
+const gridInterceptor = new GridInterceptor();

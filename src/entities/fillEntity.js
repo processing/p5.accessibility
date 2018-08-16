@@ -1,17 +1,16 @@
-function FillEntity(Interceptor,shapeObject,arguments, canvasX, canvasY) {
-  var self = this;
-  var passedArguments = arguments;
+function FillEntity(Interceptor, shapeObject, arguments, canvasX, canvasY) {
+  let passedArguments = arguments;
   this.populate = function(Interceptor) {
-    if(passedArguments[0].name == 'p5.Color') {
+    if (passedArguments[0].name === `p5.Color`) {
       passedArguments = passedArguments[0].levels;
     }
-    Interceptor.currentColor = Interceptor.getColorName(passedArguments)['color'] + Interceptor.getColorName(passedArguments)['rgb'];
+    Interceptor.currentColor = Interceptor.getColorName(passedArguments).color + Interceptor.getColorName(passedArguments).rgb;
   }
 
   this.populate(Interceptor);
 }
 FillEntity.handledNames = [
-  'fill'
+  `fill`
 ]
 
 FillEntity.handles = function(name) {
@@ -20,4 +19,5 @@ FillEntity.handles = function(name) {
 
 FillEntity.isParameter = true;
 
+/* global Registry */
 Registry.register(FillEntity);

@@ -1,26 +1,38 @@
 {
-  "name": "p5-accessibility",
-  "version": "0.1.0",
-  "description": "npm package to provide text and sound additions to p5 sketch output",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "contributors": ["MathuraMG","lmhyphenn", "CleezyITP"],
-  "bugs": "https://github.com/processing/p5.accessibility/issues",
-  "license": "ISC",
-  "dependencies": {
-    "grunt-cli": "^1.2.0",
-    "grunt-curl": "^2.2.1",
-    "jquery": "^3.2.1"
-  },
-  "devDependencies": {
-    "grunt": "^0.4.5",
-    "grunt-contrib-concat": "^0.5.0",
-    "grunt-contrib-cssmin": "~0.10.0",
-    "grunt-contrib-sass": "^0.7.3",
-    "grunt-contrib-uglify": "^0.5.1",
-    "grunt-contrib-watch": "^0.6.1",
-    "grunt-contrib-coffee": "~0.12.0"
-  }
+    "name": "p5.accessibility",
+    "version": "0.1.1",
+    "description": "npm package to provide text and sound additions to p5 sketch output",
+    "main": "index.js",
+    "scripts": {
+        "test": "grunt run-tests",
+        "build": "eslint src/ && grunt"
+    },
+    "contributors": [
+        "MathuraMG",
+        "lmhyphenn",
+        "CleezyITP"
+    ],
+    "bugs": "https://github.com/processing/p5.accessibility/issues",
+    "license": "ISC",
+    "dependencies": {
+        "grunt-cli": "^1.2.0",
+        "grunt-contrib-connect": "^1.0.2",
+        "grunt-curl": "^2.4.1",
+        "jquery": "^3.2.1"
+    },
+    "devDependencies": {
+        "eslint": "^5.0.1",
+        "eslint-config-p5js": "^1.0.1",
+        "grunt": "^1.0.3",
+        "grunt-contrib-coffee": "^2.0.0",
+        "grunt-contrib-concat": "^0.5.0",
+        "grunt-contrib-cssmin": "~0.10.0",
+        "grunt-contrib-sass": "^0.7.3",
+        "grunt-contrib-uglify": "^3.3.0",
+        "grunt-contrib-watch": "^1.1.0",
+        "grunt-eslint": "^21.0.0",
+        "grunt-mocha": "^1.1.0",
+        "grunt-open": "^0.2.3",
+        "nyc": "^12.0.2"
+    }
 }
