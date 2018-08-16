@@ -53,6 +53,7 @@ if (document.getElementById(`textOutput-content`)) {
         textInterceptor.populateTable(
           table, textInterceptor.setupObject.objectArray.concat(textInterceptor.drawObject.objectArray));
       }
+
       return originalFunc.apply(this, arguments);
     };
   });

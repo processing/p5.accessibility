@@ -70,10 +70,10 @@ GridInterceptor.prototype.populateObject = function(x, arguments, object, table,
 }
 
 GridInterceptor.prototype.populateTable = function(objectArray, documentPassed) {
-  if (this.totalCount < 100) {
-    const that = this;
-    objectArray = [].slice.call(objectArray);
-    objectArray.forEach((object, i) => {
+  const that = this;
+  objectArray = [].slice.call(objectArray);
+  objectArray.forEach((object, i) => {
+    if(i<MAX_OBJECTS) {
       const cellLoc = object.coordLoc.locY * that.noRows + object.coordLoc.locX;
       // add link in table
       const cellLink = documentPassed.createElement(`a`);
@@ -83,13 +83,12 @@ GridInterceptor.prototype.populateTable = function(objectArray, documentPassed) 
       if (object.coordLoc.locY < that.noCols && object.coordLoc.locX < that.noRows && object.coordLoc.locY > 0 && object.coordLoc.locX > 0) {
         documentPassed.getElementsByClassName(`gridOutput-cell-content`)[cellLoc].appendChild(cellLink);
       }
-
-    });
-  }
+    }
+  });
 }
 
 /* helper function to populate object Details */
-GridInterceptor.prototype.populateObjectDetails = function(object1, object2, elementSummary, elementDetail) {
+GridInterceptor.prototype.getSummary = function(object1, object2, elementSummary, elementDetail) {
   this.prevTotalCount = this.totalCount;
   this.totalCount = object1.objectCount + object2.objectCount;
   elementSummary.innerHTML = ``;
@@ -113,36 +112,40 @@ GridInterceptor.prototype.populateObjectDetails = function(object1, object2, ele
 
     const objectList = document.createElement(`ul`);
 
-    if (this.totalCount < 100) {
+    if (true){// }(this.totalCount < MAX_OBJECTS) {
       object1.objectArray.forEach((objArrayItem, i) => {
-        const objectListItem = document.createElement(`li`);
-        objectListItem.id = `object` + i;
-        objectList.appendChild(objectListItem);
-        const objKeys = Object.keys(objArrayItem.getAttributes());
-        objKeys.forEach((objKeyItem) => {
-          if (objKeyItem.localeCompare(`coordLoc`)) {
-            if (objKeyItem.localeCompare(`type`)) {
-              objectListItem.innerHTML += objKeyItem + ` = ` + objArrayItem[objKeyItem] + ` `;
-            } else {
-              objectListItem.innerHTML += objArrayItem[objKeyItem] + ` `;
+        if(i<MAX_OBJECTS){
+          const objectListItem = document.createElement(`li`);
+          objectListItem.id = `object` + i;
+          objectList.appendChild(objectListItem);
+          const objKeys = Object.keys(objArrayItem.getAttributes());
+          objKeys.forEach((objKeyItem) => {
+            if (objKeyItem.localeCompare(`coordLoc`)) {
+              if (objKeyItem.localeCompare(`type`)) {
+                objectListItem.innerHTML += objKeyItem + ` = ` + objArrayItem[objKeyItem] + ` `;
+              } else {
+                objectListItem.innerHTML += objArrayItem[objKeyItem] + ` `;
+              }
             }
-          }
-        });
+          });
+        }
       });
       object2.objectArray.forEach((objArrayItem, i) => {
-        const objectListItem = document.createElement(`li`);
-        objectListItem.id = `object` + (object1.objectArray.length + i);
-        objectList.appendChild(objectListItem);
-        const objKeys = Object.keys(objArrayItem.getAttributes());
-        objKeys.forEach((objKeyItem) => {
-          if (objKeyItem.localeCompare(`coordLoc`)) {
-            if (objKeyItem.localeCompare(`type`)) {
-              objectListItem.innerHTML += objKeyItem + ` = ` + objArrayItem[objKeyItem] + ` `;
-            } else {
-              objectListItem.innerHTML += objArrayItem[objKeyItem] + ` `;
+        if(i<MAX_OBJECTS){
+          const objectListItem = document.createElement(`li`);
+          objectListItem.id = `object` + (object1.objectArray.length + i);
+          objectList.appendChild(objectListItem);
+          const objKeys = Object.keys(objArrayItem.getAttributes());
+          objKeys.forEach((objKeyItem) => {
+            if (objKeyItem.localeCompare(`coordLoc`)) {
+              if (objKeyItem.localeCompare(`type`)) {
+                objectListItem.innerHTML += objKeyItem + ` = ` + objArrayItem[objKeyItem] + ` `;
+              } else {
+                objectListItem.innerHTML += objArrayItem[objKeyItem] + ` `;
+              }
             }
-          }
-        });
+          });
+        }
       });
       elementDetail.appendChild(objectList);
     }
