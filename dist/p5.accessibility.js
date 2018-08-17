@@ -1319,11 +1319,13 @@ Registry.register(FillEntity);;function ShapeEntity(Interceptor, shapeObject, ar
     } else if (!objectType.localeCompare(`point`)) {
       objectArea = 0;
     } else if (!objectType.localeCompare(`quad`)) {
-      // x1y2+x2y3+x3y4+x4y1−x2y1−x3y2−x4y3−x1y4
-      objectArea = (arguments[0] * arguments[1] + arguments[2] * arguments[3] +
-                    arguments[4] * arguments[5] + arguments[6] * arguments[7]) -
-                (arguments[2] * arguments[1] + arguments[4] * arguments[3] +
-                    arguments[6] * arguments[5] + arguments[0] * arguments[7]);
+      // ((x4+x1)*(y4-y1)+(x1+x2)*(y1-y2)+(x2+x3)*(y2-y3)+(x3+x4)*(y3-y4))/2
+      objectArea = abs(
+        (arguments[6] + arguments[0]) * (arguments[7] - arguments[1]) +
+        (arguments[0] + arguments[2]) * (arguments[1] - arguments[3]) +
+        (arguments[2] + arguments[4]) * (arguments[3] - arguments[5]) +
+        (arguments[4] + arguments[6]) * (arguments[5] - arguments[7])
+      )/2;
     } else if (!objectType.localeCompare(`rect`)) {
       objectArea = arguments[2] * arguments[3];
     } else if (!objectType.localeCompare(`triangle`)) {
