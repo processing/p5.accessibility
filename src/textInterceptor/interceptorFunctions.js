@@ -13,7 +13,7 @@ TextInterceptor.prototype.clearVariables = function(object) {
   return object;
 }
 
-TextInterceptor.prototype.populateObject = function(x, passedArgs, object, table, isDraw) {
+TextInterceptor.prototype.populateObject = function(x, passedArgs, object, isDraw) {
   /* global objectCount */
   objectCount = object.objectCount;
   /* global objectArray */

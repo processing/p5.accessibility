@@ -40,7 +40,7 @@ if (document.getElementById(`textOutput-content`)) {
         details.innerHTML = ``;
         summary.innerHTML = ``;
         /* global textInterceptor */
-        textInterceptor.setupObject = textInterceptor.populateObject(x, orgArg, textInterceptor.setupObject, table, false);
+        textInterceptor.setupObject = textInterceptor.populateObject(x, orgArg, textInterceptor.setupObject, false);
         textInterceptor.getSummary(textInterceptor.setupObject, textInterceptor.drawObject, summary);
         textInterceptor.populateTable(table, textInterceptor.setupObject.objectArray);
       } else if (frameCount % 20 === 19) {

@@ -1,4 +1,5 @@
-function FillEntity(Interceptor, shapeObject, fillArgs, canvasX, canvasY) {fillArgs;
+function FillEntity(Interceptor, shapeObject, fillArgs, canvasX, canvasY) // eslint-disable-line no-unused-vars
+{
   this.populate = function(Interceptor) {
     if (fillArgs[0].name === `p5.Color`) {
       fillArgs = fillArgs[0].levels;

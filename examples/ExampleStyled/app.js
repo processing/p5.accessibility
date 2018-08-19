@@ -21,5 +21,4 @@ function draw() {
   if(x>200 || x < 0) {
     speed = -speed;
   }
-  text(`potato`,100,100)
 }

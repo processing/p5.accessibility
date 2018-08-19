@@ -43,7 +43,7 @@ if (document.getElementById(`tableOutput-content`)) {
         /* global gridInterceptor */
         gridInterceptor.createShadowDOMElement(document);
         gridInterceptor.setupObject =
-                    gridInterceptor.populateObject(x, orgArg, gridInterceptor.setupObject, details, false);
+                    gridInterceptor.populateObject(x, orgArg, gridInterceptor.setupObject, false);
         gridInterceptor.populateObjectDetails(gridInterceptor.setupObject, gridInterceptor.drawObject, summary, details);
         gridInterceptor.populateTable(details, gridInterceptor.setupObject);
       } else if (frameCount === 1 || frameCount % 20 === 0) {

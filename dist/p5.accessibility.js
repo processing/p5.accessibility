@@ -1220,7 +1220,7 @@ function RGBString(arguments) {
 }
 
 BaseEntity.isParameter = false;
-;function BackgroundEntity(Interceptor, object, backgroundArgs, canvasX, canvasY) {
+;function BackgroundEntity(Interceptor, object, backgroundArgs, canvasX, canvasY) { // eslint-disable-line no-unused-vars
   this.populate = function(Interceptor) {
     if (backgroundArgs[0].name === `p5.Color`) {
       backgroundArgs = backgroundArgs[0].levels;
@@ -1242,7 +1242,8 @@ BackgroundEntity.isParameter = true;
 
 /* global Registry */
 Registry.register(BackgroundEntity);
-;function FillEntity(Interceptor, shapeObject, fillArgs, canvasX, canvasY) {fillArgs;
+;function FillEntity(Interceptor, shapeObject, fillArgs, canvasX, canvasY) // eslint-disable-line no-unused-vars
+{
   this.populate = function(Interceptor) {
     if (fillArgs[0].name === `p5.Color`) {
       fillArgs = fillArgs[0].levels;
@@ -1405,7 +1406,7 @@ TextInterceptor.prototype.clearVariables = function(object) {
   return object;
 }
 
-TextInterceptor.prototype.populateObject = function(x, passedArgs, object, table, isDraw) {
+TextInterceptor.prototype.populateObject = function(x, passedArgs, object, isDraw) {
   /* global objectCount */
   objectCount = object.objectCount;
   /* global objectArray */
@@ -1646,7 +1647,7 @@ if (document.getElementById(`textOutput-content`)) {
         details.innerHTML = ``;
         summary.innerHTML = ``;
         /* global textInterceptor */
-        textInterceptor.setupObject = textInterceptor.populateObject(x, orgArg, textInterceptor.setupObject, table, false);
+        textInterceptor.setupObject = textInterceptor.populateObject(x, orgArg, textInterceptor.setupObject, false);
         textInterceptor.getSummary(textInterceptor.setupObject, textInterceptor.drawObject, summary);
         textInterceptor.populateTable(table, textInterceptor.setupObject.objectArray);
       } else if (frameCount % 20 === 19) {
@@ -1699,7 +1700,7 @@ GridInterceptor.prototype.createShadowDOMElement = function(document) {
   }
   shadowDOMElement = document.getElementById(`tableOutput-content`);
 }
-GridInterceptor.prototype.populateObject = function(x, passedArgs, object, table, isDraw) {
+GridInterceptor.prototype.populateObject = function(x, passedArgs, object, isDraw) {
   /* global objectCount */
   objectCount = object.objectCount;
   /* global objectArray */
@@ -1862,7 +1863,7 @@ if (document.getElementById(`tableOutput-content`)) {
         /* global gridInterceptor */
         gridInterceptor.createShadowDOMElement(document);
         gridInterceptor.setupObject =
-                    gridInterceptor.populateObject(x, orgArg, gridInterceptor.setupObject, details, false);
+                    gridInterceptor.populateObject(x, orgArg, gridInterceptor.setupObject, false);
         gridInterceptor.populateObjectDetails(gridInterceptor.setupObject, gridInterceptor.drawObject, summary, details);
         gridInterceptor.populateTable(details, gridInterceptor.setupObject);
       } else if (frameCount === 1 || frameCount % 20 === 0) {
