@@ -12,8 +12,3 @@ function mergeObjRecursive(obj1, obj2) {
   }
   return obj3;
 }
-
-// Hide method from for-in loops
-Object.defineProperty(Array.prototype, `equals`, {
-  enumerable: false
-});
