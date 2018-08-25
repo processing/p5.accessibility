@@ -1323,11 +1323,13 @@ Registry.register(FillEntity);
     } else if (!objectType.localeCompare(`point`)) {
       objectArea = 0;
     } else if (!objectType.localeCompare(`quad`)) {
-      // x1y2+x2y3+x3y4+x4y1−x2y1−x3y2−x4y3−x1y4
-      objectArea = (shapeArgs[0] * shapeArgs[1] + shapeArgs[2] * shapeArgs[3] +
-                    shapeArgs[4] * shapeArgs[5] + shapeArgs[6] * shapeArgs[7]) -
-                (shapeArgs[2] * shapeArgs[1] + shapeArgs[4] * shapeArgs[3] +
-                    shapeArgs[6] * shapeArgs[5] + shapeArgs[0] * shapeArgs[7]);
+      // ((x4+x1)*(y4-y1)+(x1+x2)*(y1-y2)+(x2+x3)*(y2-y3)+(x3+x4)*(y3-y4))/2
+      objectArea = abs(
+        (shapeArgs[6] + shapeArgs[0]) * (shapeArgs[7] - shapeArgs[1]) +
+        (shapeArgs[0] + shapeArgs[2]) * (shapeArgs[1] - shapeArgs[3]) +
+        (shapeArgs[2] + shapeArgs[4]) * (shapeArgs[3] - shapeArgs[5]) +
+        (shapeArgs[4] + shapeArgs[6]) * (shapeArgs[5] - shapeArgs[7])
+      )/2;
     } else if (!objectType.localeCompare(`rect`)) {
       objectArea = shapeArgs[2] * shapeArgs[3];
     } else if (!objectType.localeCompare(`triangle`)) {
