@@ -33,7 +33,7 @@ GridInterceptor.prototype.createShadowDOMElement = function(document) {
   }
   shadowDOMElement = document.getElementById(`tableOutput-content`);
 }
-GridInterceptor.prototype.populateObject = function(x, arguments, object, table, isDraw) {
+GridInterceptor.prototype.populateObject = function(x, passedArgs, object, isDraw) {
   /* global objectCount */
   objectCount = object.objectCount;
   /* global objectArray */
@@ -43,15 +43,15 @@ GridInterceptor.prototype.populateObject = function(x, arguments, object, table,
   if (!isDraw) {
     // check for special function in setup -> createCanvas
     if (!x.name.localeCompare(`createCanvas`)) {
-      this.canvasDetails.width = arguments[0];
-      this.canvasDetails.height = arguments[1];
+      this.canvasDetails.width = passedArgs[0];
+      this.canvasDetails.height = passedArgs[1];
     }
   }
   /* global Registry */
   const entityClass = Registry.entityFor(x.name);
 
   if (entityClass && !entityClass.isParameter) {
-    objectArray[objectCount] = new entityClass(this, x, arguments, this.canvasDetails.width, this.canvasDetails.height);
+    objectArray[objectCount] = new entityClass(this, x, passedArgs, this.canvasDetails.width, this.canvasDetails.height);
 
     if (objectTypeCount[x.name]) {
       objectTypeCount[x.name]++;
@@ -60,7 +60,7 @@ GridInterceptor.prototype.populateObject = function(x, arguments, object, table,
     }
     objectCount++;
   } else if (entityClass && entityClass.isParameter) {
-    new entityClass(this, x, arguments, this.canvasDetails.width, this.canvasDetails.height);
+    new entityClass(this, x, passedArgs, this.canvasDetails.width, this.canvasDetails.height);
   }
   return ({
     objectCount,
@@ -70,10 +70,10 @@ GridInterceptor.prototype.populateObject = function(x, arguments, object, table,
 }
 
 GridInterceptor.prototype.populateTable = function(objectArray, documentPassed) {
-  if (this.totalCount < 100) {
-    const that = this;
-    objectArray = [].slice.call(objectArray);
-    objectArray.forEach((object, i) => {
+  const that = this;
+  objectArray = [].slice.call(objectArray);
+  objectArray.forEach((object, i) => {
+    if(i<MAX_OBJECTS) {
       const cellLoc = object.coordLoc.locY * that.noRows + object.coordLoc.locX;
       // add link in table
       const cellLink = documentPassed.createElement(`a`);
@@ -83,13 +83,12 @@ GridInterceptor.prototype.populateTable = function(objectArray, documentPassed) 
       if (object.coordLoc.locY < that.noCols && object.coordLoc.locX < that.noRows && object.coordLoc.locY > 0 && object.coordLoc.locX > 0) {
         documentPassed.getElementsByClassName(`gridOutput-cell-content`)[cellLoc].appendChild(cellLink);
       }
-
-    });
-  }
+    }
+  });
 }
 
 /* helper function to populate object Details */
-GridInterceptor.prototype.populateObjectDetails = function(object1, object2, elementSummary, elementDetail) {
+GridInterceptor.prototype.getSummary = function(object1, object2, elementSummary, elementDetail) {
   this.prevTotalCount = this.totalCount;
   this.totalCount = object1.objectCount + object2.objectCount;
   elementSummary.innerHTML = ``;
@@ -113,36 +112,40 @@ GridInterceptor.prototype.populateObjectDetails = function(object1, object2, ele
 
     const objectList = document.createElement(`ul`);
 
-    if (this.totalCount < 100) {
+    if (true){// }(this.totalCount < MAX_OBJECTS) {
       object1.objectArray.forEach((objArrayItem, i) => {
-        const objectListItem = document.createElement(`li`);
-        objectListItem.id = `object` + i;
-        objectList.appendChild(objectListItem);
-        const objKeys = Object.keys(objArrayItem.getAttributes());
-        objKeys.forEach((objKeyItem) => {
-          if (objKeyItem.localeCompare(`coordLoc`)) {
-            if (objKeyItem.localeCompare(`type`)) {
-              objectListItem.innerHTML += objKeyItem + ` = ` + objArrayItem[objKeyItem] + ` `;
-            } else {
-              objectListItem.innerHTML += objArrayItem[objKeyItem] + ` `;
+        if(i<MAX_OBJECTS){
+          const objectListItem = document.createElement(`li`);
+          objectListItem.id = `object` + i;
+          objectList.appendChild(objectListItem);
+          const objKeys = Object.keys(objArrayItem.getAttributes());
+          objKeys.forEach((objKeyItem) => {
+            if (objKeyItem.localeCompare(`coordLoc`)) {
+              if (objKeyItem.localeCompare(`type`)) {
+                objectListItem.innerHTML += objKeyItem + ` = ` + objArrayItem[objKeyItem] + ` `;
+              } else {
+                objectListItem.innerHTML += objArrayItem[objKeyItem] + ` `;
+              }
             }
-          }
-        });
+          });
+        }
       });
       object2.objectArray.forEach((objArrayItem, i) => {
-        const objectListItem = document.createElement(`li`);
-        objectListItem.id = `object` + (object1.objectArray.length + i);
-        objectList.appendChild(objectListItem);
-        const objKeys = Object.keys(objArrayItem.getAttributes());
-        objKeys.forEach((objKeyItem) => {
-          if (objKeyItem.localeCompare(`coordLoc`)) {
-            if (objKeyItem.localeCompare(`type`)) {
-              objectListItem.innerHTML += objKeyItem + ` = ` + objArrayItem[objKeyItem] + ` `;
-            } else {
-              objectListItem.innerHTML += objArrayItem[objKeyItem] + ` `;
+        if(i<MAX_OBJECTS){
+          const objectListItem = document.createElement(`li`);
+          objectListItem.id = `object` + (object1.objectArray.length + i);
+          objectList.appendChild(objectListItem);
+          const objKeys = Object.keys(objArrayItem.getAttributes());
+          objKeys.forEach((objKeyItem) => {
+            if (objKeyItem.localeCompare(`coordLoc`)) {
+              if (objKeyItem.localeCompare(`type`)) {
+                objectListItem.innerHTML += objKeyItem + ` = ` + objArrayItem[objKeyItem] + ` `;
+              } else {
+                objectListItem.innerHTML += objArrayItem[objKeyItem] + ` `;
+              }
             }
-          }
-        });
+          });
+        }
       });
       elementDetail.appendChild(objectList);
     }

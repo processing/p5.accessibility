@@ -13,7 +13,7 @@ TextInterceptor.prototype.clearVariables = function(object) {
   return object;
 }
 
-TextInterceptor.prototype.populateObject = function(x, arguments, object, table, isDraw) {
+TextInterceptor.prototype.populateObject = function(x, passedArgs, object, isDraw) {
   /* global objectCount */
   objectCount = object.objectCount;
   /* global objectArray */
@@ -23,15 +23,15 @@ TextInterceptor.prototype.populateObject = function(x, arguments, object, table,
   if (!isDraw) {
     // check for special function in setup -> createCanvas
     if (!x.name.localeCompare(`createCanvas`)) {
-      this.canvasDetails.width = arguments[0];
-      this.canvasDetails.height = arguments[1];
+      this.canvasDetails.width = passedArgs[0];
+      this.canvasDetails.height = passedArgs[1];
     }
   }
   /* global Registry */
   const entityClass = Registry.entityFor(x.name);
 
   if (entityClass && !entityClass.isParameter) {
-    objectArray[objectCount] = new entityClass(this, x, arguments, this.canvasDetails.width, this.canvasDetails.height);
+    objectArray[objectCount] = new entityClass(this, x, passedArgs, this.canvasDetails.width, this.canvasDetails.height);
 
     if (objectTypeCount[x.name]) {
       objectTypeCount[x.name]++;
@@ -40,7 +40,7 @@ TextInterceptor.prototype.populateObject = function(x, arguments, object, table,
     }
     objectCount++;
   } else if (entityClass && entityClass.isParameter) {
-    new entityClass(this, x, arguments, this.canvasDetails.width, this.canvasDetails.height);
+    new entityClass(this, x, passedArgs, this.canvasDetails.width, this.canvasDetails.height);
   }
   return ({
     objectCount,
@@ -50,7 +50,7 @@ TextInterceptor.prototype.populateObject = function(x, arguments, object, table,
 }
 
 TextInterceptor.prototype.populateTable = function(table, objectArray) {
-  if (this.totalCount < 100) {
+  if (this.totalCount <= MAX_OBJECTS) {
     if (this.prevTotalCount > this.totalCount) {
       for (let j = 0; j < this.totalCount; j++) {
         const row = table.children[j];
@@ -91,7 +91,9 @@ TextInterceptor.prototype.populateTable = function(table, objectArray) {
       }
       for (let j = this.totalCount; j < this.prevTotalCount; j++) {
         const tempRow = table.children[this.totalCount];
-        table.removeChild(tempRow);
+        if(tempRow){
+          table.removeChild(tempRow);
+        }
       }
     } else if (this.prevTotalCount <= this.totalCount) {
       for (let j = 0; j < this.prevTotalCount; j++) {
@@ -173,9 +175,10 @@ TextInterceptor.prototype.getSummary = function(object1, object2, element) {
 
     const objectList = document.createElement(`ul`);
 
-    if (this.totalCount < 100) {
 
-      object1.objectArray.forEach((objArrayItem, i) => {
+
+    object1.objectArray.forEach((objArrayItem, i) => {
+      if(i<MAX_OBJECTS) {
         const objectListItem = document.createElement(`li`);
         objectList.appendChild(objectListItem);
         const objLink = document.createElement(`a`);
@@ -189,9 +192,11 @@ TextInterceptor.prototype.getSummary = function(object1, object2, element) {
                     ` covering ` +
                     objArrayItem.area +
                     ` of the canvas`;
-      });
+      }
+    });
 
-      object2.objectArray.forEach((objArrayItem, i) => {
+    object2.objectArray.forEach((objArrayItem, i) => {
+      if(i<MAX_OBJECTS) {
         const objectListItem = document.createElement(`li`);
         objectList.appendChild(objectListItem);
         const objLink = document.createElement(`a`);
@@ -205,9 +210,10 @@ TextInterceptor.prototype.getSummary = function(object1, object2, element) {
                     ` covering ` +
                     objArrayItem.area +
                     ` of the canvas`;
-      });
-      element.appendChild(objectList);
-    }
+      }
+    });
+    element.appendChild(objectList);
+
   }
 }
 
