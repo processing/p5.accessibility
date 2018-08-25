@@ -1,16 +1,18 @@
 let x =0, speed =2;
-let red;
+let mycolor;
 let backColor;
 function setup() {
   createCanvas(200,200);
-  red=color(255,128,0);
+  mycolor=color(255,128,0);
   backColor=color(123,87,255);
 }
 
 function draw() {
   background(backColor);
-  fill(red);
+  fill(mycolor);
   ellipse(20,20,20,20);
+  fill('maroon');
+  ellipse(20,50,20,20);
   fill(32,255,65);
   ellipse(50,x,10,10);
   fill("#00ffb2");
