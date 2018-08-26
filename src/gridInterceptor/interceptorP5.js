@@ -42,9 +42,9 @@ if (document.getElementById(`tableOutput-content`)) {
         summary.innerHTML = ``;
         /* global gridInterceptor */
         gridInterceptor.createShadowDOMElement(document);
-        gridInterceptor.setupObject = gridInterceptor.populateObject(x, orgArg, gridInterceptor.setupObject, false);
-        gridInterceptor.populateObjectDetails(gridInterceptor.setupObject, gridInterceptor.drawObject, summary, details);
-
+        gridInterceptor.setupObject =
+                    gridInterceptor.populateObject(x, orgArg, gridInterceptor.setupObject, details, false);
+        gridInterceptor.getSummary(gridInterceptor.setupObject, gridInterceptor.drawObject, summary, details);
         gridInterceptor.populateTable(details, gridInterceptor.setupObject);
       } else if (frameCount === 1 || frameCount % 20 === 0) {
         gridInterceptor.drawObject =
