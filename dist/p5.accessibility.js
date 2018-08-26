@@ -820,11 +820,7 @@ if (getElementById(`tableOutput-content`)) {
       }
     }
   }
-};String.prototype.paddingLeft = function(paddingValue) {
-  return String(paddingValue + this).slice(-paddingValue.length);
-};
-
-function mergeObjRecursive(obj1, obj2) {
+};function mergeObjRecursive(obj1, obj2) {
   const obj3 = {};
   for (const p in obj1) {
     obj3[p] = obj1[p];
@@ -1710,7 +1706,7 @@ GridInterceptor.prototype.createShadowDOMElement = function(document) {
   }
   shadowDOMElement = document.getElementById(`tableOutput-content`);
 }
-GridInterceptor.prototype.populateObject = function(x, passedArgs, object, isDraw) {
+GridInterceptor.prototype.populateObject = function(x, passedArgs, object, table, isDraw) {
   /* global objectCount */
   objectCount = object.objectCount;
   /* global objectArray */
@@ -1830,8 +1826,7 @@ GridInterceptor.prototype.getSummary = function(object1, object2, elementSummary
 }
 
 
-const gridInterceptor = new GridInterceptor();
-;/* global funcNames */
+const gridInterceptor = new GridInterceptor();;/* global funcNames */
 /* global allData */
 funcNames = allData.classitems.map((x) => {
   if (x.overloads) {
@@ -1875,9 +1870,9 @@ if (document.getElementById(`tableOutput-content`)) {
         summary.innerHTML = ``;
         /* global gridInterceptor */
         gridInterceptor.createShadowDOMElement(document);
-        gridInterceptor.setupObject = gridInterceptor.populateObject(x, orgArg, gridInterceptor.setupObject, false);
-        gridInterceptor.populateObjectDetails(gridInterceptor.setupObject, gridInterceptor.drawObject, summary, details);
-
+        gridInterceptor.setupObject =
+                    gridInterceptor.populateObject(x, orgArg, gridInterceptor.setupObject, details, false);
+        gridInterceptor.getSummary(gridInterceptor.setupObject, gridInterceptor.drawObject, summary, details);
         gridInterceptor.populateTable(details, gridInterceptor.setupObject);
       } else if (frameCount === 1 || frameCount % 20 === 0) {
         gridInterceptor.drawObject =
@@ -1906,8 +1901,7 @@ if (document.getElementById(`tableOutput-content`)) {
       return originalFunc.apply(this, orgArg);
     };
   });
-}
-;const baseFreq = 440;
+};const baseFreq = 440;
 let currLogFreq, currVol, currPan;
 
 // initialise parameters
