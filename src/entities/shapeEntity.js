@@ -1,29 +1,23 @@
-function ShapeEntity(Interceptor, shapeObject, shapeArgs, canvasX, canvasY) {
-  const self = this;
-  /* global BaseEntity */
-  BaseEntity.call(self, shapeObject, shapeArgs, canvasX, canvasY);
-  this.areaAbs = 0;
-  this.type = Interceptor.currentColor + ` ` + shapeObject.name;
-  this.area = 0;
-
-  this.populate = function(shapeObject, shapeArgs, canvasX, canvasY) {
+class ShapeEntity extends BaseEntity {
+  constructor(Interceptor, shapeObject, shapeArgs, canvasX, canvasY) {
+    super(Interceptor, shapeObject);
+    this.areaAbs = 0;
+    this.type = `${Interceptor.currentColor} ${shapeObject.name}`;
+    this.area = 0;
+    this.populate(shapeObject, shapeArgs, canvasX, canvasY);
+  }
+  populate(shapeObject, shapeArgs, canvasX, canvasY) {
     this.location = this.getLocation(shapeObject, shapeArgs, canvasX, canvasY);
     this.areaAbs = this.getObjectArea(shapeObject.name, shapeArgs);
     this.coordLoc = this.canvasLocator(shapeObject, shapeArgs, canvasX, canvasY);
     this.area = (this.getObjectArea(shapeObject.name, shapeArgs) * 100 / (canvasX * canvasY)).toFixed(2) + `%`;
   }
-
-  this.getAttributes = function() {
-    return ({
-      type: this.type,
-      location: this.location,
-      coordinates: this.coordinates,
-      area: this.area
-    })
-  };
-
+  getAttributes() {
+    const { type, location, coordinates, area } = this;
+    return ({ type, location, coordinates, area });
+  }
   /* return area of the shape */
-  this.getObjectArea = function(objectType, shapeArgs) {
+  getObjectArea(objectType, shapeArgs) {
     let objectArea = 0;
     if (!objectType.localeCompare(`arc`)) {
       // area of full ellipse = PI * horizontal radius * vertical radius.
@@ -68,19 +62,9 @@ function ShapeEntity(Interceptor, shapeObject, shapeArgs, canvasX, canvasY) {
     }
     return objectArea;
   }
-
-  this.populate(shapeObject, shapeArgs, canvasX, canvasY);
 }
 
-ShapeEntity.handledNames = [
-  `arc`,
-  `ellipse`,
-  `line`,
-  `point`,
-  `quad`,
-  `rect`,
-  `triangle`
-]
+ShapeEntity.handledNames = [`arc`, `ellipse`, `line`, `point`, `quad`, `rect`, `triangle`];
 
 ShapeEntity.handles = function(name) {
   return (this.handledNames.indexOf(name) >= 0);

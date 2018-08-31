@@ -1,17 +1,16 @@
-function FillEntity(Interceptor, shapeObject, fillArgs, canvasX, canvasY) // eslint-disable-line no-unused-vars
-{
-  this.populate = function(Interceptor) {
-    if (fillArgs[0].name === `p5.Color`) {
-      fillArgs = fillArgs[0].levels;
-    }
-    Interceptor.currentColor = Interceptor.getColorName(fillArgs).color + Interceptor.getColorName(fillArgs).rgb;
+class FillEntity {
+  constructor(Interceptor, shapeObject, fillArgs, canvasX, canvasY) {
+    this.fillArgs = [...fillArgs];
+    this.populate(Interceptor);
   }
-
-  this.populate(Interceptor);
+  populate(Interceptor) {
+    if (this.fillArgs[0].name === `p5.Color`) {
+      this.fillArgs = this.backgroundArgs[0].levels;
+    }
+    Interceptor.bgColor = Interceptor.getColorName(this.fillArgs).color + Interceptor.getColorName(this.fillArgs).rgb;
+  }
 }
-FillEntity.handledNames = [
-  `fill`
-]
+FillEntity.handledNames = [`fill`];
 
 FillEntity.handles = function(name) {
   return (this.handledNames.indexOf(name) >= 0);

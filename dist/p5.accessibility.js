@@ -820,11 +820,7 @@ if (getElementById(`tableOutput-content`)) {
       }
     }
   }
-};String.prototype.paddingLeft = function(paddingValue) {
-  return String(paddingValue + this).slice(-paddingValue.length);
-};
-
-function mergeObjRecursive(obj1, obj2) {
+};function mergeObjRecursive(obj1, obj2) {
   const obj3 = {};
   for (const p in obj1) {
     obj3[p] = obj1[p];
@@ -1123,40 +1119,35 @@ function RGBString(arguments) {
     values = [parseInt(values[0]), parseInt(values[1]), parseInt(values[2])];
     return (getRGBname(values));
   }
-};function BaseEntity(Interceptor, object) {
-  this.type = Interceptor.currentColor + ` ` + object.name,
-  this.location = ``,
-  this.coordinates = ``,
-  this.isMember = function() {
-
+};class BaseEntity {
+  constructor(Interceptor, object) {
+    this.type = `${Interceptor.currentColor} ${object.name}`;
+    this.location = ``;
+    this.coordinates = ``;
   }
-
-  this.getAttributes = function() {
-    return ({
-      type: this.type,
-      location: this.location,
-      coordinates: this.coordinates
-    })
-  };
-
-    this.getLocation = function(object, locArgs, canvasX, canvasY) { // eslint-disable-line
+  isMember() {
+    // TODO: What is this empty method for?
+  }
+  getAttributes() {
+    const { type, location, coordinates } = this;
+    return ({ type, location, coordinates });
+  }
+  getLocation(object, locArgs, canvasX, canvasY) {
     let xCoord, yCoord;
-    locArgs = [].slice.call(locArgs);
-    let i = 0;
+    locArgs = [...locArgs];
     const that = this;
     that.coordinates = ``;
-
-    locArgs.forEach((argument) => {
-      const a = argument;
-      if (object.params[i].description.indexOf(`x-coordinate`) > -1) {
+    for (let i = 0; i < locArgs.length; ++i) {
+      const a = locArgs[i];
+      const description = object.params[i].description;
+      if (description.indexOf(`x-coordinate`) !== -1) {
         xCoord = a;
         that.coordinates += Math.round(a) + `x,`;
-      } else if (object.params[i].description.indexOf(`y-coordinate`) > -1) {
+      } else if (description.indexOf(`y-coordinate`) !== -1) {
         yCoord = a;
         that.coordinates += Math.round(a) + `y`;
       }
-      i++;
-    });
+    }
 
     if (xCoord < 0.4 * canvasX) {
       if (yCoord < 0.4 * canvasY) {
@@ -1184,33 +1175,30 @@ function RGBString(arguments) {
       }
     }
   }
-
   /* return which part of the canvas an object os present */
-  this.canvasLocator = function(object, canvasArgs, canvasX, canvasY) {
+  canvasLocator(object, canvasArgs, canvasX, canvasY) {
     let xCoord, yCoord;
-    const noRows = 10,
-      noCols = 10;
+    const noRows = 10;
+    const noCols = 10;
     let locX, locY;
-    let i = 0;
-    canvasArgs = [].slice.call(canvasArgs);
-    canvasArgs.forEach((argument) => {
-      const a = argument;
-
-      if (object.params[i].description.indexOf(`x-coordinate`) > -1) {
+    canvasArgs = [...canvasArgs];
+    for (let i = 0; i < canvasArgs.length; ++i) {
+      const a = canvasArgs[i];
+      const description = object.params[i].description;
+      if (description.indexOf(`x-coordinate`) !== -1) {
         xCoord = a;
-      } else if (object.params[i].description.indexOf(`y-coordinate`) > -1) {
+      } else if (description.indexOf(`y-coordinate`) !== -1) {
         yCoord = a;
       }
-      i++;
-    });
+    }
 
     locX = Math.floor((xCoord / canvasX) * noRows);
     locY = Math.floor((yCoord / canvasY) * noCols);
     if (locX === noRows) {
-      locX = locX - 1;
+      locX -= 1;
     }
     if (locY === noCols) {
-      locY = locY - 1;
+      locY -= 1;
     }
     return ({
       locX,
@@ -1219,20 +1207,19 @@ function RGBString(arguments) {
   }
 }
 
-BaseEntity.isParameter = false;
-;function BackgroundEntity(Interceptor, object, backgroundArgs, canvasX, canvasY) { // eslint-disable-line no-unused-vars
-  this.populate = function(Interceptor) {
-    if (backgroundArgs[0].name === `p5.Color`) {
-      backgroundArgs = backgroundArgs[0].levels;
-    }
-    Interceptor.bgColor = Interceptor.getColorName(backgroundArgs).color + Interceptor.getColorName(backgroundArgs).rgb;
+BaseEntity.isParameter = false;;class BackgroundEntity {
+  constructor(Interceptor, object, backgroundArgs, canvasX, canvasY) {
+    this.backgroundArgs = [...backgroundArgs];
+    this.populate(Interceptor);
   }
-
-  this.populate(Interceptor);
+  populate(Interceptor) {
+    if (this.backgroundArgs[0].name === `p5.Color`) {
+      this.backgroundArgs = this.backgroundArgs[0].levels;
+    }
+    Interceptor.bgColor = Interceptor.getColorName(this.backgroundArgs).color + Interceptor.getColorName(this.backgroundArgs).rgb;
+  }
 }
-BackgroundEntity.handledNames = [
-  `background`
-]
+BackgroundEntity.handledNames = [`background`];
 
 BackgroundEntity.handles = function(name) {
   return (this.handledNames.indexOf(name) >= 0);
@@ -1241,21 +1228,19 @@ BackgroundEntity.handles = function(name) {
 BackgroundEntity.isParameter = true;
 
 /* global Registry */
-Registry.register(BackgroundEntity);
-;function FillEntity(Interceptor, shapeObject, fillArgs, canvasX, canvasY) // eslint-disable-line no-unused-vars
-{
-  this.populate = function(Interceptor) {
-    if (fillArgs[0].name === `p5.Color`) {
-      fillArgs = fillArgs[0].levels;
-    }
-    Interceptor.currentColor = Interceptor.getColorName(fillArgs).color + Interceptor.getColorName(fillArgs).rgb;
+Registry.register(BackgroundEntity);;class FillEntity {
+  constructor(Interceptor, shapeObject, fillArgs, canvasX, canvasY) {
+    this.fillArgs = [...fillArgs];
+    this.populate(Interceptor);
   }
-
-  this.populate(Interceptor);
+  populate(Interceptor) {
+    if (this.fillArgs[0].name === `p5.Color`) {
+      this.fillArgs = this.backgroundArgs[0].levels;
+    }
+    Interceptor.bgColor = Interceptor.getColorName(this.fillArgs).color + Interceptor.getColorName(this.fillArgs).rgb;
+  }
 }
-FillEntity.handledNames = [
-  `fill`
-]
+FillEntity.handledNames = [`fill`];
 
 FillEntity.handles = function(name) {
   return (this.handledNames.indexOf(name) >= 0);
@@ -1264,33 +1249,26 @@ FillEntity.handles = function(name) {
 FillEntity.isParameter = true;
 
 /* global Registry */
-Registry.register(FillEntity);
-;function ShapeEntity(Interceptor, shapeObject, shapeArgs, canvasX, canvasY) {
-  const self = this;
-  /* global BaseEntity */
-  BaseEntity.call(self, shapeObject, shapeArgs, canvasX, canvasY);
-  this.areaAbs = 0;
-  this.type = Interceptor.currentColor + ` ` + shapeObject.name;
-  this.area = 0;
-
-  this.populate = function(shapeObject, shapeArgs, canvasX, canvasY) {
+Registry.register(FillEntity);;class ShapeEntity extends BaseEntity {
+  constructor(Interceptor, shapeObject, shapeArgs, canvasX, canvasY) {
+    super(Interceptor, shapeObject);
+    this.areaAbs = 0;
+    this.type = `${Interceptor.currentColor} ${shapeObject.name}`;
+    this.area = 0;
+    this.populate(shapeObject, shapeArgs, canvasX, canvasY);
+  }
+  populate(shapeObject, shapeArgs, canvasX, canvasY) {
     this.location = this.getLocation(shapeObject, shapeArgs, canvasX, canvasY);
     this.areaAbs = this.getObjectArea(shapeObject.name, shapeArgs);
     this.coordLoc = this.canvasLocator(shapeObject, shapeArgs, canvasX, canvasY);
     this.area = (this.getObjectArea(shapeObject.name, shapeArgs) * 100 / (canvasX * canvasY)).toFixed(2) + `%`;
   }
-
-  this.getAttributes = function() {
-    return ({
-      type: this.type,
-      location: this.location,
-      coordinates: this.coordinates,
-      area: this.area
-    })
-  };
-
+  getAttributes() {
+    const { type, location, coordinates, area } = this;
+    return ({ type, location, coordinates, area });
+  }
   /* return area of the shape */
-  this.getObjectArea = function(objectType, shapeArgs) {
+  getObjectArea(objectType, shapeArgs) {
     let objectArea = 0;
     if (!objectType.localeCompare(`arc`)) {
       // area of full ellipse = PI * horizontal radius * vertical radius.
@@ -1335,19 +1313,9 @@ Registry.register(FillEntity);
     }
     return objectArea;
   }
-
-  this.populate(shapeObject, shapeArgs, canvasX, canvasY);
 }
 
-ShapeEntity.handledNames = [
-  `arc`,
-  `ellipse`,
-  `line`,
-  `point`,
-  `quad`,
-  `rect`,
-  `triangle`
-]
+ShapeEntity.handledNames = [`arc`, `ellipse`, `line`, `point`, `quad`, `rect`, `triangle`];
 
 ShapeEntity.handles = function(name) {
   return (this.handledNames.indexOf(name) >= 0);
@@ -1356,32 +1324,25 @@ ShapeEntity.handles = function(name) {
 ShapeEntity.isParameter = false;
 
 /* global Registry */
-Registry.register(ShapeEntity);
-;function TextEntity(Interceptor, shapeObject, textArgs, canvasX, canvasY) {
-  const self = this;
-  /* global BaseEntity */
-  BaseEntity.call(self, shapeObject, textArgs, canvasX, canvasY);
-  this.type = String(textArgs[0]).substring(0, 20) + `(` + Interceptor.currentColor + `)`;
+Registry.register(ShapeEntity);;/* global BaseEntity */
+class TextEntity extends BaseEntity {
+  constructor(Interceptor, shapeObject, textArgs, canvasX, canvasY) {
+    super(shapeObject, textArgs, canvasX, canvasY);
+    this.type = `${String(textArgs[0]).substring(0, 20)}(${Interceptor.currentColor})`;
+    this.populate(shapeObject, textArgs, canvasX, canvasY);
+  }
 
-  this.populate = function(shapeObject, textArgs, canvasX, canvasY) {
+  populate(shapeObject, textArgs, canvasX, canvasY) {
     this.location = this.getLocation(shapeObject, textArgs, canvasX, canvasY);
     this.coordLoc = this.canvasLocator(shapeObject, textArgs, canvasX, canvasY);
-  };
-
-  this.getAttributes = function() {
-    return ({
-      type: this.type,
-      location: this.location,
-      coordinates: this.coordinates,
-    })
-  };
-
-  this.populate(shapeObject, textArgs, canvasX, canvasY);
+  }
+  getAttributes() {
+    const { type, location, coordinates } = this;
+    return ({ type, location, coordinates });
+  }
 }
 
-TextEntity.handledNames = [
-  `text`
-]
+TextEntity.handledNames = [`text`];
 
 TextEntity.handles = function(name) {
   return (this.handledNames.indexOf(name) >= 0);
@@ -1390,8 +1351,7 @@ TextEntity.handles = function(name) {
 TextEntity.isParameter = false;
 
 /* global Registry */
-Registry.register(TextEntity);
-;function TextInterceptor() { // eslint-disable-line
+Registry.register(TextEntity);;function TextInterceptor() { // eslint-disable-line
   const self = this;
   /* global baseInterceptor */
   baseInterceptor.call(self);
