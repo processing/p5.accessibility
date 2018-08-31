@@ -835,39 +835,11 @@ if (getElementById(`tableOutput-content`)) {
   return obj3;
 }
 
-if (Array.prototype.equals)
-// attach the .equals method to Array's prototype to call it on any array
-{
-  Array.prototype.equals = function(array) {
-    // if the other array is a falsy value, return
-    if (!array) {
-      return false;
-    }
-
-    // compare lengths - can save a lot of time
-    if (this.length !== array.length) {
-      return false;
-    }
-
-    for (let i = 0, l = this.length; i < l; i++) {
-      // Check if we have nested arrays
-      if (this[i] instanceof Array && array[i] instanceof Array) {
-        // recurse into the nested arrays
-        if (!this[i].equals(array[i])) {
-          return false;
-        }
-      } else if (this[i] !== array[i]) {
-        // Warning - two different object instances will never be equal: {x:20} != {x:20}
-        return false;
-      }
-    }
-    return true;
-  }
-}
 // Hide method from for-in loops
 Object.defineProperty(Array.prototype, `equals`, {
   enumerable: false
-});;function baseInterceptor() {
+});;const MAX_OBJECTS = 20;
+function baseInterceptor() {
   this.prevTotalCount = 0,
   this.totalCount = 0,
   this.currentColor = `white`,
@@ -1055,7 +1027,7 @@ function RGBAString(arguments) {
       return (getRGBAname(values));
     } else if (((arguments[0].match(/%/g)).length) === 3) {
       // when arguments[0] is 'rgba(10%,100%,30%,0.5)'
-      // This line creates an array with the values in order the following order ["R","G","B","A"]. The RegEx looks for three values with percentages and one value without percentage.   
+      // This line creates an array with the values in order the following order ["R","G","B","A"]. The RegEx looks for three values with percentages and one value without percentage.
       const values = (((arguments[0].match(/(\(\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?\))/g))[0]).replace(/%|\(|\)/g, ``)).split(`,`);
       for (let i = values.length - 2; i >= 0; i--) {
         if (parseInt(values[i]) < 100) {
@@ -1098,7 +1070,7 @@ function RGBString(arguments) {
   if (arguments[0].match(/%/)) {
     if (((arguments[0].match(/%/g)).length) === 3) {
       // when arguments[0] is 'rgb(10%,100%,30%)'
-      // This line creates an array with the values in order the following order ["R","G","B"]. The RegEx looks for three values with percentages.   
+      // This line creates an array with the values in order the following order ["R","G","B"]. The RegEx looks for three values with percentages.
       const values = (((arguments[0].match(/(\(\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%\s*?\))/g))[0]).replace(/%|\(|\)/g, ``)).split(`,`);
       for (let i = values.length - 1; i >= 0; i--) {
         if (parseInt(values[i]) < 100) {
@@ -1114,7 +1086,7 @@ function RGBString(arguments) {
     }
   } else {
     // when arguments[0] is 'rgb(10,100,30)'
-    // This line creates an array with the values in order the following order ["R","G","B"]. Values must be less than 255.  
+    // This line creates an array with the values in order the following order ["R","G","B"]. Values must be less than 255.
     let values = (((arguments[0].match(/(\(\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?\))/g))[0]).replace(/(\(|\))/g, ``)).split(`,`);
     values = [parseInt(values[0]), parseInt(values[1]), parseInt(values[2])];
     return (getRGBname(values));
@@ -1124,7 +1096,7 @@ function RGBString(arguments) {
     this.type = `${Interceptor.currentColor} ${object.name}`;
     this.location = ``;
     this.coordinates = ``;
-  }
+}
   isMember() {
     // TODO: What is this empty method for?
   }
@@ -1299,11 +1271,13 @@ Registry.register(FillEntity);;class ShapeEntity extends BaseEntity {
     } else if (!objectType.localeCompare(`point`)) {
       objectArea = 0;
     } else if (!objectType.localeCompare(`quad`)) {
-      // x1y2+x2y3+x3y4+x4y1−x2y1−x3y2−x4y3−x1y4
-      objectArea = (shapeArgs[0] * shapeArgs[1] + shapeArgs[2] * shapeArgs[3] +
-                    shapeArgs[4] * shapeArgs[5] + shapeArgs[6] * shapeArgs[7]) -
-                (shapeArgs[2] * shapeArgs[1] + shapeArgs[4] * shapeArgs[3] +
-                    shapeArgs[6] * shapeArgs[5] + shapeArgs[0] * shapeArgs[7]);
+      // ((x4+x1)*(y4-y1)+(x1+x2)*(y1-y2)+(x2+x3)*(y2-y3)+(x3+x4)*(y3-y4))/2
+      objectArea = abs(
+        (shapeArgs[6] + shapeArgs[0]) * (shapeArgs[7] - shapeArgs[1]) +
+        (shapeArgs[0] + shapeArgs[2]) * (shapeArgs[1] - shapeArgs[3]) +
+        (shapeArgs[2] + shapeArgs[4]) * (shapeArgs[3] - shapeArgs[5]) +
+        (shapeArgs[4] + shapeArgs[6]) * (shapeArgs[5] - shapeArgs[7])
+      )/2;
     } else if (!objectType.localeCompare(`rect`)) {
       objectArea = shapeArgs[2] * shapeArgs[3];
     } else if (!objectType.localeCompare(`triangle`)) {
@@ -1403,7 +1377,7 @@ TextInterceptor.prototype.populateObject = function(x, passedArgs, object, isDra
 }
 
 TextInterceptor.prototype.populateTable = function(table, objectArray) {
-  if (this.totalCount < 100) {
+  if (this.totalCount <= MAX_OBJECTS) {
     if (this.prevTotalCount > this.totalCount) {
       for (let j = 0; j < this.totalCount; j++) {
         const row = table.children[j];
@@ -1444,7 +1418,9 @@ TextInterceptor.prototype.populateTable = function(table, objectArray) {
       }
       for (let j = this.totalCount; j < this.prevTotalCount; j++) {
         const tempRow = table.children[this.totalCount];
-        table.removeChild(tempRow);
+        if(tempRow){
+          table.removeChild(tempRow);
+        }
       }
     } else if (this.prevTotalCount <= this.totalCount) {
       for (let j = 0; j < this.prevTotalCount; j++) {
@@ -1526,9 +1502,10 @@ TextInterceptor.prototype.getSummary = function(object1, object2, element) {
 
     const objectList = document.createElement(`ul`);
 
-    if (this.totalCount < 100) {
 
-      object1.objectArray.forEach((objArrayItem, i) => {
+
+    object1.objectArray.forEach((objArrayItem, i) => {
+      if(i<MAX_OBJECTS) {
         const objectListItem = document.createElement(`li`);
         objectList.appendChild(objectListItem);
         const objLink = document.createElement(`a`);
@@ -1542,9 +1519,11 @@ TextInterceptor.prototype.getSummary = function(object1, object2, element) {
                     ` covering ` +
                     objArrayItem.area +
                     ` of the canvas`;
-      });
+      }
+    });
 
-      object2.objectArray.forEach((objArrayItem, i) => {
+    object2.objectArray.forEach((objArrayItem, i) => {
+      if(i<MAX_OBJECTS) {
         const objectListItem = document.createElement(`li`);
         objectList.appendChild(objectListItem);
         const objLink = document.createElement(`a`);
@@ -1558,9 +1537,10 @@ TextInterceptor.prototype.getSummary = function(object1, object2, element) {
                     ` covering ` +
                     objArrayItem.area +
                     ` of the canvas`;
-      });
-      element.appendChild(objectList);
-    }
+      }
+    });
+    element.appendChild(objectList);
+
   }
 }
 
@@ -1660,7 +1640,7 @@ GridInterceptor.prototype.createShadowDOMElement = function(document) {
   }
   shadowDOMElement = document.getElementById(`tableOutput-content`);
 }
-GridInterceptor.prototype.populateObject = function(x, passedArgs, object, isDraw) {
+GridInterceptor.prototype.populateObject = function(x, passedArgs, object, table, isDraw) {
   /* global objectCount */
   objectCount = object.objectCount;
   /* global objectArray */
@@ -1697,10 +1677,10 @@ GridInterceptor.prototype.populateObject = function(x, passedArgs, object, isDra
 }
 
 GridInterceptor.prototype.populateTable = function(objectArray, documentPassed) {
-  if (this.totalCount < 100) {
-    const that = this;
-    objectArray = [].slice.call(objectArray);
-    objectArray.forEach((object, i) => {
+  const that = this;
+  objectArray = [].slice.call(objectArray);
+  objectArray.forEach((object, i) => {
+    if(i<MAX_OBJECTS) {
       const cellLoc = object.coordLoc.locY * that.noRows + object.coordLoc.locX;
       // add link in table
       const cellLink = documentPassed.createElement(`a`);
@@ -1710,13 +1690,12 @@ GridInterceptor.prototype.populateTable = function(objectArray, documentPassed) 
       if (object.coordLoc.locY < that.noCols && object.coordLoc.locX < that.noRows && object.coordLoc.locY > 0 && object.coordLoc.locX > 0) {
         documentPassed.getElementsByClassName(`gridOutput-cell-content`)[cellLoc].appendChild(cellLink);
       }
-
-    });
-  }
+    }
+  });
 }
 
 /* helper function to populate object Details */
-GridInterceptor.prototype.populateObjectDetails = function(object1, object2, elementSummary, elementDetail) {
+GridInterceptor.prototype.getSummary = function(object1, object2, elementSummary, elementDetail) {
   this.prevTotalCount = this.totalCount;
   this.totalCount = object1.objectCount + object2.objectCount;
   elementSummary.innerHTML = ``;
@@ -1740,36 +1719,40 @@ GridInterceptor.prototype.populateObjectDetails = function(object1, object2, ele
 
     const objectList = document.createElement(`ul`);
 
-    if (this.totalCount < 100) {
+    if (true){// }(this.totalCount < MAX_OBJECTS) {
       object1.objectArray.forEach((objArrayItem, i) => {
-        const objectListItem = document.createElement(`li`);
-        objectListItem.id = `object` + i;
-        objectList.appendChild(objectListItem);
-        const objKeys = Object.keys(objArrayItem.getAttributes());
-        objKeys.forEach((objKeyItem) => {
-          if (objKeyItem.localeCompare(`coordLoc`)) {
-            if (objKeyItem.localeCompare(`type`)) {
-              objectListItem.innerHTML += objKeyItem + ` = ` + objArrayItem[objKeyItem] + ` `;
-            } else {
-              objectListItem.innerHTML += objArrayItem[objKeyItem] + ` `;
+        if(i<MAX_OBJECTS){
+          const objectListItem = document.createElement(`li`);
+          objectListItem.id = `object` + i;
+          objectList.appendChild(objectListItem);
+          const objKeys = Object.keys(objArrayItem.getAttributes());
+          objKeys.forEach((objKeyItem) => {
+            if (objKeyItem.localeCompare(`coordLoc`)) {
+              if (objKeyItem.localeCompare(`type`)) {
+                objectListItem.innerHTML += objKeyItem + ` = ` + objArrayItem[objKeyItem] + ` `;
+              } else {
+                objectListItem.innerHTML += objArrayItem[objKeyItem] + ` `;
+              }
             }
-          }
-        });
+          });
+        }
       });
       object2.objectArray.forEach((objArrayItem, i) => {
-        const objectListItem = document.createElement(`li`);
-        objectListItem.id = `object` + (object1.objectArray.length + i);
-        objectList.appendChild(objectListItem);
-        const objKeys = Object.keys(objArrayItem.getAttributes());
-        objKeys.forEach((objKeyItem) => {
-          if (objKeyItem.localeCompare(`coordLoc`)) {
-            if (objKeyItem.localeCompare(`type`)) {
-              objectListItem.innerHTML += objKeyItem + ` = ` + objArrayItem[objKeyItem] + ` `;
-            } else {
-              objectListItem.innerHTML += objArrayItem[objKeyItem] + ` `;
+        if(i<MAX_OBJECTS){
+          const objectListItem = document.createElement(`li`);
+          objectListItem.id = `object` + (object1.objectArray.length + i);
+          objectList.appendChild(objectListItem);
+          const objKeys = Object.keys(objArrayItem.getAttributes());
+          objKeys.forEach((objKeyItem) => {
+            if (objKeyItem.localeCompare(`coordLoc`)) {
+              if (objKeyItem.localeCompare(`type`)) {
+                objectListItem.innerHTML += objKeyItem + ` = ` + objArrayItem[objKeyItem] + ` `;
+              } else {
+                objectListItem.innerHTML += objArrayItem[objKeyItem] + ` `;
+              }
             }
-          }
-        });
+          });
+        }
       });
       elementDetail.appendChild(objectList);
     }
@@ -1777,8 +1760,7 @@ GridInterceptor.prototype.populateObjectDetails = function(object1, object2, ele
 }
 
 
-const gridInterceptor = new GridInterceptor();
-;/* global funcNames */
+const gridInterceptor = new GridInterceptor();;/* global funcNames */
 /* global allData */
 funcNames = allData.classitems.map((x) => {
   if (x.overloads) {
@@ -1823,8 +1805,8 @@ if (document.getElementById(`tableOutput-content`)) {
         /* global gridInterceptor */
         gridInterceptor.createShadowDOMElement(document);
         gridInterceptor.setupObject =
-                    gridInterceptor.populateObject(x, orgArg, gridInterceptor.setupObject, false);
-        gridInterceptor.populateObjectDetails(gridInterceptor.setupObject, gridInterceptor.drawObject, summary, details);
+                    gridInterceptor.populateObject(x, orgArg, gridInterceptor.setupObject, details, false);
+        gridInterceptor.getSummary(gridInterceptor.setupObject, gridInterceptor.drawObject, summary, details);
         gridInterceptor.populateTable(details, gridInterceptor.setupObject);
       } else if (frameCount === 1 || frameCount % 20 === 0) {
         gridInterceptor.drawObject =
@@ -1842,17 +1824,18 @@ if (document.getElementById(`tableOutput-content`)) {
         // TODO : make this more efficient so that it happens only ONCE per frame count
         /* global programObjects */
         programObjects = gridInterceptor.setupObject.objectArray.concat(gridInterceptor.drawObject.objectArray);
-        gridInterceptor.populateObjectDetails(gridInterceptor.setupObject, gridInterceptor.drawObject, summary, details);
+        gridInterceptor.getSummary(gridInterceptor.setupObject, gridInterceptor.drawObject, summary, details);
         gridInterceptor.populateTable(programObjects, document);
       }
-      if (x.name === `redraw`) { // reset some of the variables
-        gridInterceptor.drawObject = gridInterceptor.clearVariables(gridInterceptor.drawObject);
+      else if (frameCount % 20 === 19) {
+        if (x.name === `redraw`) { // reset some of the variables
+          gridInterceptor.drawObject = gridInterceptor.clearVariables(gridInterceptor.drawObject);
+        }
       }
       return originalFunc.apply(this, orgArg);
     };
   });
-}
-;const baseFreq = 440;
+};const baseFreq = 440;
 let currLogFreq, currVol, currPan;
 
 // initialise parameters
