@@ -1,3 +1,4 @@
+const MAX_OBJECTS = 20;
 function baseInterceptor() {
   this.prevTotalCount = 0,
   this.totalCount = 0,

@@ -43,12 +43,12 @@ if (document.getElementById(`tableOutput-content`)) {
         /* global gridInterceptor */
         gridInterceptor.createShadowDOMElement(document);
         gridInterceptor.setupObject =
-                    gridInterceptor.populateObject(x, arguments, gridInterceptor.setupObject, details, false);
-        gridInterceptor.populateObjectDetails(gridInterceptor.setupObject, gridInterceptor.drawObject, summary, details);
+                    gridInterceptor.populateObject(x, orgArg, gridInterceptor.setupObject, details, false);
+        gridInterceptor.getSummary(gridInterceptor.setupObject, gridInterceptor.drawObject, summary, details);
         gridInterceptor.populateTable(details, gridInterceptor.setupObject);
       } else if (frameCount === 1 || frameCount % 20 === 0) {
         gridInterceptor.drawObject =
-                    gridInterceptor.populateObject(x, arguments, gridInterceptor.drawObject, details, true);
+                    gridInterceptor.populateObject(x, orgArg, gridInterceptor.drawObject, details, true);
         gridInterceptor.isCleared = false;
 
         // clean the cells
@@ -62,13 +62,15 @@ if (document.getElementById(`tableOutput-content`)) {
         // TODO : make this more efficient so that it happens only ONCE per frame count
         /* global programObjects */
         programObjects = gridInterceptor.setupObject.objectArray.concat(gridInterceptor.drawObject.objectArray);
-        gridInterceptor.populateObjectDetails(gridInterceptor.setupObject, gridInterceptor.drawObject, summary, details);
+        gridInterceptor.getSummary(gridInterceptor.setupObject, gridInterceptor.drawObject, summary, details);
         gridInterceptor.populateTable(programObjects, document);
       }
-      if (x.name === `redraw`) { // reset some of the variables
-        gridInterceptor.drawObject = gridInterceptor.clearVariables(gridInterceptor.drawObject);
+      else if (frameCount % 20 === 19) {
+        if (x.name === `redraw`) { // reset some of the variables
+          gridInterceptor.drawObject = gridInterceptor.clearVariables(gridInterceptor.drawObject);
+        }
       }
-      return originalFunc.apply(this, arguments);
+      return originalFunc.apply(this, orgArg);
     };
   });
 }
