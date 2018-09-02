@@ -1,3 +1,4 @@
+
 let x =0, speed =2;
 let mycolor;
 let backColor;

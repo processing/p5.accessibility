@@ -973,7 +973,6 @@ baseInterceptor.prototype.getColorName = function(colArgs) {
       } else if (colArgs[0].match(/rgb/)) {
         return (RGBString(colArgs));
       } else if(htmlColors.filter(hc => hc.name === colArgs[0].toUpperCase()).length != 0){
-        //console.log("valid color");
         for (let i = htmlColors.length - 1; i >= 0; i--) {
           if (htmlColors[i].name === colArgs[0].toUpperCase()){
             return(getHexname([htmlColors[i].hex]));
@@ -1034,9 +1033,9 @@ function getHexname(colArgs) {
   }
   /* global hexColorName */
   const colorName = hexColorName(hex);
-  const r = parseInt(hex[1] + hex[2], 16);
-  const g = parseInt(hex[3] + hex[4], 16);
-  const b = parseInt(hex[5] + hex[6], 16);
+  const r = parseInt(hex[0] + hex[1], 16);
+  const g = parseInt(hex[2] + hex[3], 16);
+  const b = parseInt(hex[4] + hex[5], 16);
   const rgb = '(' + r + ', ' + g + ', ' + b + ')';
   return ({
     'color': colorName,
@@ -1048,7 +1047,6 @@ function RGBAString(colArgs) {
   if (colArgs[0].match(/%/)) {
     if (((colArgs[0].match(/%/g)).length) === 4) {
       // when colArgs[0] is 'rgba(10%,100%,30%,0.5%)'
-      console.log(colArgs[0]);
       let values = (((colArgs[0].match(/(\(\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%,\s*?\s*?)/g))[0]).replace(/%|\(|\)/g, '')).split(',');
       values = [values[0], values[1], values[3], 0];
       for (let i = values.length - 2; i >= 0; i--) {
@@ -1062,7 +1060,6 @@ function RGBAString(colArgs) {
 
     } else if (((colArgs[0].match(/%/g)).length) === 3 && ((colArgs[0].match(/,/g)).length) === 2) {
       // when colArgs[0] is 'rgba(10%,100%,30%)'
-      console.log(colArgs[0]);
       let values = (((colArgs[0].match(/(\(\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%\)\s*?\s*?)/g))[0]).replace(/%|\(|\)/g, '')).split(',');
       values = [values[0], values[1], values[2], 0];
       for (let i = values.length - 2; i >= 0; i--) {
@@ -1093,7 +1090,6 @@ function RGBAString(colArgs) {
   } else {
     if (((colArgs[0].match(/,/g)).length) === 2) {
       // when colArgs[0] is 'rgba(10,100,30)'
-      console.log(colArgs[0]);
       let values = (((colArgs[0].match(/(\(\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?\)\s*?\s*?)/g))[0]).replace(/%|\(|\)/g, '')).split(',');
       values = [values[0], values[1], values[2], 0];
       for (let i = values.length - 2; i >= 0; i--) {
