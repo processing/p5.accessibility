@@ -833,12 +833,7 @@ if (getElementById(`tableOutput-content`)) {
     }
   }
   return obj3;
-}
-
-// Hide method from for-in loops
-Object.defineProperty(Array.prototype, `equals`, {
-  enumerable: false
-});;const MAX_OBJECTS = 20;
+};const MAX_OBJECTS = 20;
 function baseInterceptor() {
   this.prevTotalCount = 0,
   this.totalCount = 0,
@@ -1091,12 +1086,13 @@ function RGBString(arguments) {
     values = [parseInt(values[0]), parseInt(values[1]), parseInt(values[2])];
     return (getRGBname(values));
   }
-};class BaseEntity {
+}
+;class BaseEntity {
   constructor(Interceptor, object) {
     this.type = `${Interceptor.currentColor} ${object.name}`;
     this.location = ``;
     this.coordinates = ``;
-}
+  }
   isMember() {
     // TODO: What is this empty method for?
   }
@@ -1207,7 +1203,7 @@ Registry.register(BackgroundEntity);;class FillEntity {
   }
   populate(Interceptor) {
     if (this.fillArgs[0].name === `p5.Color`) {
-      this.fillArgs = this.backgroundArgs[0].levels;
+      this.fillArgs = this.fillArgs[0].levels;
     }
     Interceptor.bgColor = Interceptor.getColorName(this.fillArgs).color + Interceptor.getColorName(this.fillArgs).rgb;
   }
@@ -1640,7 +1636,7 @@ GridInterceptor.prototype.createShadowDOMElement = function(document) {
   }
   shadowDOMElement = document.getElementById(`tableOutput-content`);
 }
-GridInterceptor.prototype.populateObject = function(x, passedArgs, object, table, isDraw) {
+GridInterceptor.prototype.populateObject = function(x, passedArgs, object, isDraw) {
   /* global objectCount */
   objectCount = object.objectCount;
   /* global objectArray */
