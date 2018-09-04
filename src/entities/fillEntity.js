@@ -5,7 +5,7 @@ class FillEntity {
   }
   populate(Interceptor) {
     if (this.fillArgs[0].name === `p5.Color`) {
-      this.fillArgs = this.backgroundArgs[0].levels;
+      this.fillArgs = this.fillArgs[0].levels;
     }
     Interceptor.bgColor = Interceptor.getColorName(this.fillArgs).color + Interceptor.getColorName(this.fillArgs).rgb;
   }
