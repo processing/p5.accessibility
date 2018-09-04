@@ -1205,7 +1205,7 @@ Registry.register(BackgroundEntity);;class FillEntity {
     if (this.fillArgs[0].name === `p5.Color`) {
       this.fillArgs = this.fillArgs[0].levels;
     }
-    Interceptor.bgColor = Interceptor.getColorName(this.fillArgs).color + Interceptor.getColorName(this.fillArgs).rgb;
+    Interceptor.currentColor = Interceptor.getColorName(this.fillArgs).color + Interceptor.getColorName(this.fillArgs).rgb;
   }
 }
 FillEntity.handledNames = [`fill`];
