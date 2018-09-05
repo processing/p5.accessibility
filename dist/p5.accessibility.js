@@ -1176,7 +1176,7 @@ function RGBString(arguments) {
 }
 
 BaseEntity.isParameter = false;;class BackgroundEntity {
-  constructor(Interceptor, object, backgroundArgs, canvasX, canvasY) {
+  constructor(Interceptor, backgroundArgs) {
     this.backgroundArgs = [...backgroundArgs];
     this.populate(Interceptor);
   }
@@ -1197,7 +1197,7 @@ BackgroundEntity.isParameter = true;
 
 /* global Registry */
 Registry.register(BackgroundEntity);;class FillEntity {
-  constructor(Interceptor, shapeObject, fillArgs, canvasX, canvasY) {
+  constructor(Interceptor, fillArgs) {
     this.fillArgs = [...fillArgs];
     this.populate(Interceptor);
   }
@@ -1217,7 +1217,8 @@ FillEntity.handles = function(name) {
 FillEntity.isParameter = true;
 
 /* global Registry */
-Registry.register(FillEntity);;class ShapeEntity extends BaseEntity {
+Registry.register(FillEntity);;/* global BaseEntity */
+class ShapeEntity extends BaseEntity {
   constructor(Interceptor, shapeObject, shapeArgs, canvasX, canvasY) {
     super(Interceptor, shapeObject);
     this.areaAbs = 0;
@@ -1232,8 +1233,18 @@ Registry.register(FillEntity);;class ShapeEntity extends BaseEntity {
     this.area = (this.getObjectArea(shapeObject.name, shapeArgs) * 100 / (canvasX * canvasY)).toFixed(2) + `%`;
   }
   getAttributes() {
-    const { type, location, coordinates, area } = this;
-    return ({ type, location, coordinates, area });
+    const {
+      type,
+      location,
+      coordinates,
+      area
+    } = this;
+    return ({
+      type,
+      location,
+      coordinates,
+      area
+    });
   }
   /* return area of the shape */
   getObjectArea(objectType, shapeArgs) {
@@ -1270,10 +1281,10 @@ Registry.register(FillEntity);;class ShapeEntity extends BaseEntity {
       // ((x4+x1)*(y4-y1)+(x1+x2)*(y1-y2)+(x2+x3)*(y2-y3)+(x3+x4)*(y3-y4))/2
       objectArea = abs(
         (shapeArgs[6] + shapeArgs[0]) * (shapeArgs[7] - shapeArgs[1]) +
-        (shapeArgs[0] + shapeArgs[2]) * (shapeArgs[1] - shapeArgs[3]) +
-        (shapeArgs[2] + shapeArgs[4]) * (shapeArgs[3] - shapeArgs[5]) +
-        (shapeArgs[4] + shapeArgs[6]) * (shapeArgs[5] - shapeArgs[7])
-      )/2;
+                (shapeArgs[0] + shapeArgs[2]) * (shapeArgs[1] - shapeArgs[3]) +
+                (shapeArgs[2] + shapeArgs[4]) * (shapeArgs[3] - shapeArgs[5]) +
+                (shapeArgs[4] + shapeArgs[6]) * (shapeArgs[5] - shapeArgs[7])
+      ) / 2;
     } else if (!objectType.localeCompare(`rect`)) {
       objectArea = shapeArgs[2] * shapeArgs[3];
     } else if (!objectType.localeCompare(`triangle`)) {
@@ -1373,6 +1384,7 @@ TextInterceptor.prototype.populateObject = function(x, passedArgs, object, isDra
 }
 
 TextInterceptor.prototype.populateTable = function(table, objectArray) {
+  /* global MAX_OBJECTS */
   if (this.totalCount <= MAX_OBJECTS) {
     if (this.prevTotalCount > this.totalCount) {
       for (let j = 0; j < this.totalCount; j++) {
@@ -1414,7 +1426,7 @@ TextInterceptor.prototype.populateTable = function(table, objectArray) {
       }
       for (let j = this.totalCount; j < this.prevTotalCount; j++) {
         const tempRow = table.children[this.totalCount];
-        if(tempRow){
+        if (tempRow) {
           table.removeChild(tempRow);
         }
       }
@@ -1501,7 +1513,7 @@ TextInterceptor.prototype.getSummary = function(object1, object2, element) {
 
 
     object1.objectArray.forEach((objArrayItem, i) => {
-      if(i<MAX_OBJECTS) {
+      if (i < MAX_OBJECTS) {
         const objectListItem = document.createElement(`li`);
         objectList.appendChild(objectListItem);
         const objLink = document.createElement(`a`);
@@ -1519,7 +1531,7 @@ TextInterceptor.prototype.getSummary = function(object1, object2, element) {
     });
 
     object2.objectArray.forEach((objArrayItem, i) => {
-      if(i<MAX_OBJECTS) {
+      if (i < MAX_OBJECTS) {
         const objectListItem = document.createElement(`li`);
         objectList.appendChild(objectListItem);
         const objLink = document.createElement(`a`);
@@ -1540,8 +1552,7 @@ TextInterceptor.prototype.getSummary = function(object1, object2, element) {
   }
 }
 
-const textInterceptor = new TextInterceptor();
-;/* global funcNames */
+const textInterceptor = new TextInterceptor();;/* global funcNames */
 /* global allData */
 funcNames = allData.classitems.map((x) => {
   if (x.overloads) {
@@ -1676,7 +1687,8 @@ GridInterceptor.prototype.populateTable = function(objectArray, documentPassed) 
   const that = this;
   objectArray = [].slice.call(objectArray);
   objectArray.forEach((object, i) => {
-    if(i<MAX_OBJECTS) {
+    /* global MAX_OBJECTS */
+    if (i < MAX_OBJECTS) {
       const cellLoc = object.coordLoc.locY * that.noRows + object.coordLoc.locX;
       // add link in table
       const cellLink = documentPassed.createElement(`a`);
@@ -1715,9 +1727,9 @@ GridInterceptor.prototype.getSummary = function(object1, object2, elementSummary
 
     const objectList = document.createElement(`ul`);
 
-    if (true){// }(this.totalCount < MAX_OBJECTS) {
+    if (true) { // }(this.totalCount < MAX_OBJECTS) {
       object1.objectArray.forEach((objArrayItem, i) => {
-        if(i<MAX_OBJECTS){
+        if (i < MAX_OBJECTS) {
           const objectListItem = document.createElement(`li`);
           objectListItem.id = `object` + i;
           objectList.appendChild(objectListItem);
@@ -1734,7 +1746,7 @@ GridInterceptor.prototype.getSummary = function(object1, object2, elementSummary
         }
       });
       object2.objectArray.forEach((objArrayItem, i) => {
-        if(i<MAX_OBJECTS){
+        if (i < MAX_OBJECTS) {
           const objectListItem = document.createElement(`li`);
           objectListItem.id = `object` + (object1.objectArray.length + i);
           objectList.appendChild(objectListItem);
