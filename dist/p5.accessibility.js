@@ -833,12 +833,7 @@ if (getElementById(`tableOutput-content`)) {
     }
   }
   return obj3;
-}
-
-// Hide method from for-in loops
-Object.defineProperty(Array.prototype, `equals`, {
-  enumerable: false
-});;const MAX_OBJECTS = 20;
+};const MAX_OBJECTS = 20;
 function baseInterceptor() {
   this.prevTotalCount = 0,
   this.totalCount = 0,

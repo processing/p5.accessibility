@@ -33,7 +33,7 @@ GridInterceptor.prototype.createShadowDOMElement = function(document) {
   }
   shadowDOMElement = document.getElementById(`tableOutput-content`);
 }
-GridInterceptor.prototype.populateObject = function(x, passedArgs, object, isDraw) {
+GridInterceptor.prototype.populateObject = function(x, passedArgs, object, table, isDraw) {
   /* global objectCount */
   objectCount = object.objectCount;
   /* global objectArray */
