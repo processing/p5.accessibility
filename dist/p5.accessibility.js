@@ -833,12 +833,7 @@ if (getElementById(`tableOutput-content`)) {
     }
   }
   return obj3;
-}
-
-// Hide method from for-in loops
-Object.defineProperty(Array.prototype, `equals`, {
-  enumerable: false
-});;const MAX_OBJECTS = 20;
+};const MAX_OBJECTS = 20;
 function baseInterceptor() {
   this.prevTotalCount = 0,
   this.totalCount = 0,
@@ -1677,7 +1672,7 @@ GridInterceptor.prototype.createShadowDOMElement = function(document) {
   }
   shadowDOMElement = document.getElementById(`tableOutput-content`);
 }
-GridInterceptor.prototype.populateObject = function(x, passedArgs, object, table, isDraw) {
+GridInterceptor.prototype.populateObject = function(x, arguments, object, table, isDraw) {
   /* global objectCount */
   objectCount = object.objectCount;
   /* global objectArray */
@@ -1687,15 +1682,15 @@ GridInterceptor.prototype.populateObject = function(x, passedArgs, object, table
   if (!isDraw) {
     // check for special function in setup -> createCanvas
     if (!x.name.localeCompare(`createCanvas`)) {
-      this.canvasDetails.width = passedArgs[0];
-      this.canvasDetails.height = passedArgs[1];
+      this.canvasDetails.width = arguments[0];
+      this.canvasDetails.height = arguments[1];
     }
   }
   /* global Registry */
   const entityClass = Registry.entityFor(x.name);
 
   if (entityClass && !entityClass.isParameter) {
-    objectArray[objectCount] = new entityClass(this, x, passedArgs, this.canvasDetails.width, this.canvasDetails.height);
+    objectArray[objectCount] = new entityClass(this, x, arguments, this.canvasDetails.width, this.canvasDetails.height);
 
     if (objectTypeCount[x.name]) {
       objectTypeCount[x.name]++;
@@ -1704,7 +1699,7 @@ GridInterceptor.prototype.populateObject = function(x, passedArgs, object, table
     }
     objectCount++;
   } else if (entityClass && entityClass.isParameter) {
-    new entityClass(this, x, passedArgs, this.canvasDetails.width, this.canvasDetails.height);
+    new entityClass(this, x, arguments, this.canvasDetails.width, this.canvasDetails.height);
   }
   return ({
     objectCount,
