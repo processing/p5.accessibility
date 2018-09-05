@@ -1,5 +1,5 @@
 class FillEntity {
-  constructor(Interceptor, shapeObject, fillArgs, canvasX, canvasY) {
+  constructor(Interceptor, fillArgs) {
     this.fillArgs = [...fillArgs];
     this.populate(Interceptor);
   }

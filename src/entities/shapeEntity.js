@@ -1,3 +1,4 @@
+/* global BaseEntity */
 class ShapeEntity extends BaseEntity {
   constructor(Interceptor, shapeObject, shapeArgs, canvasX, canvasY) {
     super(Interceptor, shapeObject);
@@ -13,8 +14,18 @@ class ShapeEntity extends BaseEntity {
     this.area = (this.getObjectArea(shapeObject.name, shapeArgs) * 100 / (canvasX * canvasY)).toFixed(2) + `%`;
   }
   getAttributes() {
-    const { type, location, coordinates, area } = this;
-    return ({ type, location, coordinates, area });
+    const {
+      type,
+      location,
+      coordinates,
+      area
+    } = this;
+    return ({
+      type,
+      location,
+      coordinates,
+      area
+    });
   }
   /* return area of the shape */
   getObjectArea(objectType, shapeArgs) {
@@ -51,10 +62,10 @@ class ShapeEntity extends BaseEntity {
       // ((x4+x1)*(y4-y1)+(x1+x2)*(y1-y2)+(x2+x3)*(y2-y3)+(x3+x4)*(y3-y4))/2
       objectArea = abs(
         (shapeArgs[6] + shapeArgs[0]) * (shapeArgs[7] - shapeArgs[1]) +
-        (shapeArgs[0] + shapeArgs[2]) * (shapeArgs[1] - shapeArgs[3]) +
-        (shapeArgs[2] + shapeArgs[4]) * (shapeArgs[3] - shapeArgs[5]) +
-        (shapeArgs[4] + shapeArgs[6]) * (shapeArgs[5] - shapeArgs[7])
-      )/2;
+                (shapeArgs[0] + shapeArgs[2]) * (shapeArgs[1] - shapeArgs[3]) +
+                (shapeArgs[2] + shapeArgs[4]) * (shapeArgs[3] - shapeArgs[5]) +
+                (shapeArgs[4] + shapeArgs[6]) * (shapeArgs[5] - shapeArgs[7])
+      ) / 2;
     } else if (!objectType.localeCompare(`rect`)) {
       objectArea = shapeArgs[2] * shapeArgs[3];
     } else if (!objectType.localeCompare(`triangle`)) {

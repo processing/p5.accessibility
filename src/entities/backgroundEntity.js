@@ -1,5 +1,5 @@
 class BackgroundEntity {
-  constructor(Interceptor, object, backgroundArgs, canvasX, canvasY) {
+  constructor(Interceptor, backgroundArgs) {
     this.backgroundArgs = [...backgroundArgs];
     this.populate(Interceptor);
   }
