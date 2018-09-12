@@ -1727,7 +1727,7 @@ GridInterceptor.prototype.getSummary = function(object1, object2, elementSummary
 
     const objectList = document.createElement(`ul`);
 
-    if (true) { // }(this.totalCount < MAX_OBJECTS) {
+    if (this.totalCount < MAX_OBJECTS) {
       object1.objectArray.forEach((objArrayItem, i) => {
         if (i < MAX_OBJECTS) {
           const objectListItem = document.createElement(`li`);
