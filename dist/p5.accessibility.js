@@ -1093,12 +1093,18 @@ function RGBString(arguments) {
     this.location = ``;
     this.coordinates = ``;
   }
-  isMember() {
-    // TODO: What is this empty method for?
-  }
+
   getAttributes() {
-    const { type, location, coordinates } = this;
-    return ({ type, location, coordinates });
+    const {
+      type,
+      location,
+      coordinates
+    } = this;
+    return ({
+      type,
+      location,
+      coordinates
+    });
   }
   getLocation(object, locArgs, canvasX, canvasY) {
     let xCoord, yCoord;
