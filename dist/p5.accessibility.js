@@ -1182,8 +1182,8 @@ function RGBString(arguments) {
 }
 
 BaseEntity.isParameter = false;;class BackgroundEntity {
-  constructor(Interceptor, backgroundArgs) {
-    this.backgroundArgs = [...backgroundArgs];
+  constructor(Interceptor, x, backgroundArgs) {
+    this.backgroundArgs = backgroundArgs;
     this.populate(Interceptor);
   }
   populate(Interceptor) {
@@ -1203,8 +1203,8 @@ BackgroundEntity.isParameter = true;
 
 /* global Registry */
 Registry.register(BackgroundEntity);;class FillEntity {
-  constructor(Interceptor, fillArgs) {
-    this.fillArgs = [...fillArgs];
+  constructor(Interceptor, x, fillArgs) {
+    this.fillArgs = fillArgs;
     this.populate(Interceptor);
   }
   populate(Interceptor) {

@@ -1,6 +1,6 @@
 class BackgroundEntity {
-  constructor(Interceptor, backgroundArgs) {
-    this.backgroundArgs = [...backgroundArgs];
+    constructor(Interceptor, x, backgroundArgs) { /* The "x" is unused due to dynamic object creation in InterceptorFunctions entityClass.  */ // eslint-disable-line
+    this.backgroundArgs = backgroundArgs;
     this.populate(Interceptor);
   }
   populate(Interceptor) {

@@ -1,6 +1,6 @@
 class FillEntity {
-  constructor(Interceptor, fillArgs) {
-    this.fillArgs = [...fillArgs];
+    constructor(Interceptor, x, fillArgs) { /* The "x" is unused due to dynamic object creation in InterceptorFunctions entityClass.  */ // eslint-disable-line
+    this.fillArgs = fillArgs;
     this.populate(Interceptor);
   }
   populate(Interceptor) {
