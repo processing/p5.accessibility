@@ -27,6 +27,7 @@ class ShapeEntity extends BaseEntity {
       area
     });
   }
+
   /* return area of the shape */
   getObjectArea(objectType, shapeArgs) {
     let objectArea = 0;
