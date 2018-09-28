@@ -2,6 +2,7 @@
 class ShapeEntity extends BaseEntity {
   constructor(Interceptor, shapeObject, shapeArgs, canvasX, canvasY) {
     super(Interceptor, shapeObject);
+    this.shapeObject = shapeObject;
     this.areaAbs = 0;
     this.type = `${Interceptor.currentColor} ${shapeObject.name}`;
     this.area = 0;
@@ -15,17 +16,43 @@ class ShapeEntity extends BaseEntity {
   }
   getAttributes() {
     const {
+      shapeObject,
       type,
       location,
       coordinates,
       area
     } = this;
-    return ({
-      type,
-      location,
-      coordinates,
-      area
-    });
+    if ((!shapeObject.name.localeCompare(`ellipse`)) || !shapeObject.name.localeCompare(`rect`) || !shapeObject.name.localeCompare(`triangle`) || !shapeObject.name.localeCompare(`quad`)) {
+      return ({
+        type,
+        location,
+        coordinates,
+        area
+      });
+    } else if (!shapeObject.name.localeCompare(`line`)) {
+      return ({
+        type,
+        location,
+        coordinates,
+        length
+      });
+    } else {
+      return ({
+        type,
+        location,
+        coordinates
+      });
+    }
+  }
+
+  /* return length of lines */
+  getLineLength(...args) {
+    const {
+      round,
+      sqrt,
+      pow
+    } = Math;
+    return round(sqrt((pow(args[2] - args[0], 2)) + (pow(args[3] - args[1], 2))));
   }
 
   /* return area of the shape */
