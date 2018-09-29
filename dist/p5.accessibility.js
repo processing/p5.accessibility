@@ -1,722 +1,722 @@
 function calculateColor(hsv) {
-  let colortext;
-  if (hsv[0] !== 0) {
-    hsv[0] = Math.round(hsv[0] * 100);
-    hue = hsv[0].toString().split(``);
-    const last = hue.length - 1;
-    hue[last] = parseInt(hue[last]);
-    if (hue[last] < 2.5) {
-      hue[last] = 0;
-    } else if (hue[last] >= 2.5 && hue[last] < 7.5) {
-      hue[last] = 5;
+    let colortext;
+    if (hsv[0] !== 0) {
+        hsv[0] = Math.round(hsv[0] * 100);
+        hue = hsv[0].toString().split(``);
+        const last = hue.length - 1;
+        hue[last] = parseInt(hue[last]);
+        if (hue[last] < 2.5) {
+            hue[last] = 0;
+        } else if (hue[last] >= 2.5 && hue[last] < 7.5) {
+            hue[last] = 5;
+        }
+        if (hue.length === 2) {
+            hue[0] = parseInt(hue[0]);
+            if (hue[last] >= 7.5) {
+                hue[last] = 0;
+                hue[0] = hue[0] + 1;
+            }
+            hsv[0] = (hue[0] * 10) + hue[1];
+        } else {
+            if (hue[last] >= 7.5) {
+                hsv[0] = 10;
+            } else {
+                hsv[0] = hue[last];
+            }
+        }
     }
-    if (hue.length === 2) {
-      hue[0] = parseInt(hue[0]);
-      if (hue[last] >= 7.5) {
-        hue[last] = 0;
-        hue[0] = hue[0] + 1;
-      }
-      hsv[0] = (hue[0] * 10) + hue[1];
+    for (let i = hsv.length - 1; i >= 1; i--) {
+        if (hsv[i] <= 0.25) {
+            hsv[i] = 0;
+        } else if (hsv[i] > 0.25 && hsv[i] < 0.75) {
+            hsv[i] = 0.5;
+        } else {
+            hsv[i] = 1;
+        }
+    }
+    if ((hsv[0] === 0) && (hsv[1] === 0) && (hsv[2] === 1)) {
+        for (let i = oghsv.length - 1; i >= 0; i--) {
+            oghsv[i] = Math.round(oghsv[i] * 10000) / 10000;
+        }
+        for (let e = 0; e < xcp.length; e++) {
+            if ((xcp[e].h === oghsv[0]) && (xcp[e].s === oghsv[1]) && (xcp[e].b === oghsv[2])) {
+                colortext = xcp[e].name;
+                break;
+            } else {
+                colortext = `white`;
+            }
+        }
     } else {
-      if (hue[last] >= 7.5) {
-        hsv[0] = 10;
-      } else {
-        hsv[0] = hue[last];
-      }
+        for (let i = 0; i < color_lookup.length; i++) {
+            if ((color_lookup[i].h === hsv[0]) && (color_lookup[i].s === hsv[1]) && (color_lookup[i].b === hsv[2])) {
+                colortext = color_lookup[i].name;
+                break;
+            }
+        }
     }
-  }
-  for (let i = hsv.length - 1; i >= 1; i--) {
-    if (hsv[i] <= 0.25) {
-      hsv[i] = 0;
-    } else if (hsv[i] > 0.25 && hsv[i] < 0.75) {
-      hsv[i] = 0.5;
-    } else {
-      hsv[i] = 1;
-    }
-  }
-  if ((hsv[0] === 0) && (hsv[1] === 0) && (hsv[2] === 1)) {
-    for (let i = oghsv.length - 1; i >= 0; i--) {
-      oghsv[i] = Math.round(oghsv[i] * 10000) / 10000;
-    }
-    for (let e = 0; e < xcp.length; e++) {
-      if ((xcp[e].h === oghsv[0]) && (xcp[e].s === oghsv[1]) && (xcp[e].b === oghsv[2])) {
-        colortext = xcp[e].name;
-        break;
-      } else {
-        colortext = `white`;
-      }
-    }
-  } else {
-    for (let i = 0; i < color_lookup.length; i++) {
-      if ((color_lookup[i].h === hsv[0]) && (color_lookup[i].s === hsv[1]) && (color_lookup[i].b === hsv[2])) {
-        colortext = color_lookup[i].name;
-        break;
-      }
-    }
-  }
-  return colortext;
+    return colortext;
 }
 
 function hexToHsv(value) {
-  const r = parseInt(value[0] + value[1], 16);
-  const g = parseInt(value[2] + value[3], 16);
-  const b = parseInt(value[4] + value[5], 16);
-  const hsv = rgbToHsv(r, g, b);
-  return hsv;
+    const r = parseInt(value[0] + value[1], 16);
+    const g = parseInt(value[2] + value[3], 16);
+    const b = parseInt(value[4] + value[5], 16);
+    const hsv = rgbToHsv(r, g, b);
+    return hsv;
 }
 
 function rgbToHsv(r, g, b) {
-  r /= 255, g /= 255, b /= 255;
-  const max = Math.max(r, g, b),
-    min = Math.min(r, g, b),
-    v = max,
-    d = max - min,
-    s = max === 0 ? 0 : d / max;
-  let h;
-  if (max === min) {
-    h = 0; // achromatic
-  } else {
-    switch (max) {
-    case r:
-      h = (g - b) / d + (g < b ? 6 : 0);
-      break;
-    case g:
-      h = (b - r) / d + 2;
-      break;
-    case b:
-      h = (r - g) / d + 4;
-      break;
+    r /= 255, g /= 255, b /= 255;
+    const max = Math.max(r, g, b),
+        min = Math.min(r, g, b),
+        v = max,
+        d = max - min,
+        s = max === 0 ? 0 : d / max;
+    let h;
+    if (max === min) {
+        h = 0; // achromatic
+    } else {
+        switch (max) {
+            case r:
+                h = (g - b) / d + (g < b ? 6 : 0);
+                break;
+            case g:
+                h = (b - r) / d + 2;
+                break;
+            case b:
+                h = (r - g) / d + 4;
+                break;
+        }
+        h /= 6;
     }
-    h /= 6;
-  }
-  oghsv = [h, s, v];
-  return [h, s, v];
+    oghsv = [h, s, v];
+    return [h, s, v];
 }
 
 function rgbColorName(r, g, b) {
-  if (0 <= r && r <= 255 && 0 <= g && g <= 255 && 0 <= b && b <= 255) {
-    const colorname = calculateColor(rgbToHsv(r, g, b));
-    return colorname;
-  } else {
-    return (`Requires a valid rgb value`);
-  }
+    if (0 <= r && r <= 255 && 0 <= g && g <= 255 && 0 <= b && b <= 255) {
+        const colorname = calculateColor(rgbToHsv(r, g, b));
+        return colorname;
+    } else {
+        return (`Requires a valid rgb value`);
+    }
 
 }
 
 function hexColorName(value) {
-  const regEx = /[0-9A-Fa-f]{6}/g;
-  if (regEx.test(value) && value.length === 6) {
-    const colorname = calculateColor(hexToHsv(value));
-    return colorname;
-  } else {
-    return (`Requires a valid hex value`);
-  }
+    const regEx = /[0-9A-Fa-f]{6}/g;
+    if (regEx.test(value) && value.length === 6) {
+        const colorname = calculateColor(hexToHsv(value));
+        return colorname;
+    } else {
+        return (`Requires a valid hex value`);
+    }
 }
 
 let oghsv;
 
 const xcp = [{
-  "h": 0,
-  "s": 0,
-  "b": 0.8275,
-  "name": `gray`
-},
-{
-  "h": 0,
-  "s": 0,
-  "b": 0.8627,
-  "name": `gray`
-},
-{
-  "h": 0,
-  "s": 0,
-  "b": 0.7529,
-  "name": `gray`
-},
-{
-  "h": 0.0167,
-  "s": 0.1176,
-  "b": 1,
-  "name": `light pink`
-},
+        "h": 0,
+        "s": 0,
+        "b": 0.8275,
+        "name": `gray`
+    },
+    {
+        "h": 0,
+        "s": 0,
+        "b": 0.8627,
+        "name": `gray`
+    },
+    {
+        "h": 0,
+        "s": 0,
+        "b": 0.7529,
+        "name": `gray`
+    },
+    {
+        "h": 0.0167,
+        "s": 0.1176,
+        "b": 1,
+        "name": `light pink`
+    },
 ];
 
 const color_lookup = [{
-  "h": 0,
-  "s": 0,
-  "b": 0,
-  "name": `black`
-},
-{
-  "h": 0,
-  "s": 0,
-  "b": 0.5,
-  "name": `gray`
-},
-{
-  "h": 0,
-  "s": 0,
-  "b": 1,
-  "name": `white`
-},
-{
-  "h": 0,
-  "s": 0.5,
-  "b": 0.5,
-  "name": `dark maroon`
-},
-{
-  "h": 0,
-  "s": 0.5,
-  "b": 1,
-  "name": `salmon pink`
-},
-{
-  "h": 0,
-  "s": 1,
-  "b": 0,
-  "name": `black`
-},
-{
-  "h": 0,
-  "s": 1,
-  "b": 0.5,
-  "name": `dark red`
-},
-{
-  "h": 0,
-  "s": 1,
-  "b": 1,
-  "name": `red`
-},
-{
-  "h": 5,
-  "s": 0,
-  "b": 1,
-  "name": `very light peach`
-},
-{
-  "h": 5,
-  "s": 0.5,
-  "b": 0.5,
-  "name": `brown`
-},
-{
-  "h": 5,
-  "s": 0.5,
-  "b": 1,
-  "name": `peach`
-},
-{
-  "h": 5,
-  "s": 1,
-  "b": 0.5,
-  "name": `brick red`
-},
-{
-  "h": 5,
-  "s": 1,
-  "b": 1,
-  "name": `crimson`
-},
-{
-  "h": 10,
-  "s": 0,
-  "b": 1,
-  "name": `light peach`
-},
-{
-  "h": 10,
-  "s": 0.5,
-  "b": 0.5,
-  "name": `brown`
-},
-{
-  "h": 10,
-  "s": 0.5,
-  "b": 1,
-  "name": `light orange`
-},
-{
-  "h": 10,
-  "s": 1,
-  "b": 0.5,
-  "name": `brown`
-},
-{
-  "h": 10,
-  "s": 1,
-  "b": 1,
-  "name": `orange`
-},
-{
-  "h": 15,
-  "s": 0,
-  "b": 1,
-  "name": `very light yellow`
-},
-{
-  "h": 15,
-  "s": 0.5,
-  "b": 0.5,
-  "name": `olive green`
-},
-{
-  "h": 15,
-  "s": 0.5,
-  "b": 1,
-  "name": `light yellow`
-},
-{
-  "h": 15,
-  "s": 1,
-  "b": 0,
-  "name": `dark olive green`
-},
-{
-  "h": 15,
-  "s": 1,
-  "b": 0.5,
-  "name": `olive green`
-},
-{
-  "h": 15,
-  "s": 1,
-  "b": 1,
-  "name": `yellow`
-},
-{
-  "h": 20,
-  "s": 0,
-  "b": 1,
-  "name": `very light yellow`
-},
-{
-  "h": 20,
-  "s": 0.5,
-  "b": 0.5,
-  "name": `olive green`
-},
-{
-  "h": 20,
-  "s": 0.5,
-  "b": 1,
-  "name": `light yellow green`
-},
-{
-  "h": 20,
-  "s": 1,
-  "b": 0,
-  "name": `dark olive green`
-},
-{
-  "h": 20,
-  "s": 1,
-  "b": 0.5,
-  "name": `dark yellow green`
-},
-{
-  "h": 20,
-  "s": 1,
-  "b": 1,
-  "name": `yellow green`
-},
-{
-  "h": 25,
-  "s": 0.5,
-  "b": 0.5,
-  "name": `dark yellow green`
-},
-{
-  "h": 25,
-  "s": 0.5,
-  "b": 1,
-  "name": `light green`
-},
-{
-  "h": 25,
-  "s": 1,
-  "b": 0.5,
-  "name": `dark green`
-},
-{
-  "h": 25,
-  "s": 1,
-  "b": 1,
-  "name": `green`
-},
-{
-  "h": 30,
-  "s": 0.5,
-  "b": 1,
-  "name": `light green`
-},
-{
-  "h": 30,
-  "s": 1,
-  "b": 0.5,
-  "name": `dark green`
-},
-{
-  "h": 30,
-  "s": 1,
-  "b": 1,
-  "name": `green`
-},
-{
-  "h": 35,
-  "s": 0,
-  "b": 0.5,
-  "name": `light green`
-},
-{
-  "h": 35,
-  "s": 0,
-  "b": 1,
-  "name": `very light green`
-},
-{
-  "h": 35,
-  "s": 0.5,
-  "b": 0.5,
-  "name": `dark green`
-},
-{
-  "h": 35,
-  "s": 0.5,
-  "b": 1,
-  "name": `light green`
-},
-{
-  "h": 35,
-  "s": 1,
-  "b": 0,
-  "name": `very dark green`
-},
-{
-  "h": 35,
-  "s": 1,
-  "b": 0.5,
-  "name": `dark green`
-},
-{
-  "h": 35,
-  "s": 1,
-  "b": 1,
-  "name": `green`
-},
-{
-  "h": 40,
-  "s": 0,
-  "b": 1,
-  "name": `very light green`
-},
-{
-  "h": 40,
-  "s": 0.5,
-  "b": 0.5,
-  "name": `dark green`
-},
-{
-  "h": 40,
-  "s": 0.5,
-  "b": 1,
-  "name": `light green`
-},
-{
-  "h": 40,
-  "s": 1,
-  "b": 0.5,
-  "name": `dark green`
-},
-{
-  "h": 40,
-  "s": 1,
-  "b": 1,
-  "name": `green`
-},
-{
-  "h": 45,
-  "s": 0.5,
-  "b": 1,
-  "name": `light turquoise`
-},
-{
-  "h": 45,
-  "s": 1,
-  "b": 0.5,
-  "name": `dark turquoise`
-},
-{
-  "h": 45,
-  "s": 1,
-  "b": 1,
-  "name": `turquoise`
-},
-{
-  "h": 50,
-  "s": 0,
-  "b": 1,
-  "name": `light sky blue`
-},
-{
-  "h": 50,
-  "s": 0.5,
-  "b": 0.5,
-  "name": `dark cyan`
-},
-{
-  "h": 50,
-  "s": 0.5,
-  "b": 1,
-  "name": `light cyan`
-},
-{
-  "h": 50,
-  "s": 1,
-  "b": 0.5,
-  "name": `dark cyan`
-},
-{
-  "h": 50,
-  "s": 1,
-  "b": 1,
-  "name": `cyan`
-},
-{
-  "h": 55,
-  "s": 0,
-  "b": 1,
-  "name": `light sky blue`
-},
-{
-  "h": 55,
-  "s": 0.5,
-  "b": 1,
-  "name": `light sky blue`
-},
-{
-  "h": 55,
-  "s": 1,
-  "b": 0.5,
-  "name": `dark blue`
-},
-{
-  "h": 55,
-  "s": 1,
-  "b": 1,
-  "name": `sky blue`
-},
-{
-  "h": 60,
-  "s": 0,
-  "b": 0.5,
-  "name": `gray`
-},
-{
-  "h": 60,
-  "s": 0,
-  "b": 1,
-  "name": `very light blue`
-},
-{
-  "h": 60,
-  "s": 0.5,
-  "b": 0.5,
-  "name": `blue`
-},
-{
-  "h": 60,
-  "s": 0.5,
-  "b": 1,
-  "name": `light blue`
-},
-{
-  "h": 60,
-  "s": 1,
-  "b": 0.5,
-  "name": `navy blue`
-},
-{
-  "h": 60,
-  "s": 1,
-  "b": 1,
-  "name": `blue`
-},
-{
-  "h": 65,
-  "s": 0,
-  "b": 1,
-  "name": `lavender`
-},
-{
-  "h": 65,
-  "s": 0.5,
-  "b": 0.5,
-  "name": `navy blue`
-},
-{
-  "h": 65,
-  "s": 0.5,
-  "b": 1,
-  "name": `light purple`
-},
-{
-  "h": 65,
-  "s": 1,
-  "b": 0.5,
-  "name": `dark navy blue`
-},
-{
-  "h": 65,
-  "s": 1,
-  "b": 1,
-  "name": `blue`
-},
-{
-  "h": 70,
-  "s": 0,
-  "b": 1,
-  "name": `lavender`
-},
-{
-  "h": 70,
-  "s": 0.5,
-  "b": 0.5,
-  "name": `navy blue`
-},
-{
-  "h": 70,
-  "s": 0.5,
-  "b": 1,
-  "name": `lavender blue`
-},
-{
-  "h": 70,
-  "s": 1,
-  "b": 0.5,
-  "name": `dark navy blue`
-},
-{
-  "h": 70,
-  "s": 1,
-  "b": 1,
-  "name": `blue`
-},
-{
-  "h": 75,
-  "s": 0.5,
-  "b": 1,
-  "name": `lavender`
-},
-{
-  "h": 75,
-  "s": 1,
-  "b": 0.5,
-  "name": `dark purple`
-},
-{
-  "h": 75,
-  "s": 1,
-  "b": 1,
-  "name": `purple`
-},
-{
-  "h": 80,
-  "s": 0.5,
-  "b": 1,
-  "name": `pinkish purple`
-},
-{
-  "h": 80,
-  "s": 1,
-  "b": 0.5,
-  "name": `dark purple`
-},
-{
-  "h": 80,
-  "s": 1,
-  "b": 1,
-  "name": `purple`
-},
-{
-  "h": 85,
-  "s": 0,
-  "b": 1,
-  "name": `light pink`
-},
-{
-  "h": 85,
-  "s": 0.5,
-  "b": 0.5,
-  "name": `purple`
-},
-{
-  "h": 85,
-  "s": 0.5,
-  "b": 1,
-  "name": `light fuchsia`
-},
-{
-  "h": 85,
-  "s": 1,
-  "b": 0.5,
-  "name": `dark fuchsia`
-},
-{
-  "h": 85,
-  "s": 1,
-  "b": 1,
-  "name": `fuchsia`
-},
-{
-  "h": 90,
-  "s": 0.5,
-  "b": 0.5,
-  "name": `dark fuchsia`
-},
-{
-  "h": 90,
-  "s": 0.5,
-  "b": 1,
-  "name": `hot pink`
-},
-{
-  "h": 90,
-  "s": 1,
-  "b": 0.5,
-  "name": `dark fuchsia`
-},
-{
-  "h": 90,
-  "s": 1,
-  "b": 1,
-  "name": `fuchsia`
-},
-{
-  "h": 95,
-  "s": 0,
-  "b": 1,
-  "name": `pink`
-},
-{
-  "h": 95,
-  "s": 0.5,
-  "b": 1,
-  "name": `light pink`
-},
-{
-  "h": 95,
-  "s": 1,
-  "b": 0.5,
-  "name": `dark magenta`
-},
-{
-  "h": 95,
-  "s": 1,
-  "b": 1,
-  "name": `magenta`
-},
+        "h": 0,
+        "s": 0,
+        "b": 0,
+        "name": `black`
+    },
+    {
+        "h": 0,
+        "s": 0,
+        "b": 0.5,
+        "name": `gray`
+    },
+    {
+        "h": 0,
+        "s": 0,
+        "b": 1,
+        "name": `white`
+    },
+    {
+        "h": 0,
+        "s": 0.5,
+        "b": 0.5,
+        "name": `dark maroon`
+    },
+    {
+        "h": 0,
+        "s": 0.5,
+        "b": 1,
+        "name": `salmon pink`
+    },
+    {
+        "h": 0,
+        "s": 1,
+        "b": 0,
+        "name": `black`
+    },
+    {
+        "h": 0,
+        "s": 1,
+        "b": 0.5,
+        "name": `dark red`
+    },
+    {
+        "h": 0,
+        "s": 1,
+        "b": 1,
+        "name": `red`
+    },
+    {
+        "h": 5,
+        "s": 0,
+        "b": 1,
+        "name": `very light peach`
+    },
+    {
+        "h": 5,
+        "s": 0.5,
+        "b": 0.5,
+        "name": `brown`
+    },
+    {
+        "h": 5,
+        "s": 0.5,
+        "b": 1,
+        "name": `peach`
+    },
+    {
+        "h": 5,
+        "s": 1,
+        "b": 0.5,
+        "name": `brick red`
+    },
+    {
+        "h": 5,
+        "s": 1,
+        "b": 1,
+        "name": `crimson`
+    },
+    {
+        "h": 10,
+        "s": 0,
+        "b": 1,
+        "name": `light peach`
+    },
+    {
+        "h": 10,
+        "s": 0.5,
+        "b": 0.5,
+        "name": `brown`
+    },
+    {
+        "h": 10,
+        "s": 0.5,
+        "b": 1,
+        "name": `light orange`
+    },
+    {
+        "h": 10,
+        "s": 1,
+        "b": 0.5,
+        "name": `brown`
+    },
+    {
+        "h": 10,
+        "s": 1,
+        "b": 1,
+        "name": `orange`
+    },
+    {
+        "h": 15,
+        "s": 0,
+        "b": 1,
+        "name": `very light yellow`
+    },
+    {
+        "h": 15,
+        "s": 0.5,
+        "b": 0.5,
+        "name": `olive green`
+    },
+    {
+        "h": 15,
+        "s": 0.5,
+        "b": 1,
+        "name": `light yellow`
+    },
+    {
+        "h": 15,
+        "s": 1,
+        "b": 0,
+        "name": `dark olive green`
+    },
+    {
+        "h": 15,
+        "s": 1,
+        "b": 0.5,
+        "name": `olive green`
+    },
+    {
+        "h": 15,
+        "s": 1,
+        "b": 1,
+        "name": `yellow`
+    },
+    {
+        "h": 20,
+        "s": 0,
+        "b": 1,
+        "name": `very light yellow`
+    },
+    {
+        "h": 20,
+        "s": 0.5,
+        "b": 0.5,
+        "name": `olive green`
+    },
+    {
+        "h": 20,
+        "s": 0.5,
+        "b": 1,
+        "name": `light yellow green`
+    },
+    {
+        "h": 20,
+        "s": 1,
+        "b": 0,
+        "name": `dark olive green`
+    },
+    {
+        "h": 20,
+        "s": 1,
+        "b": 0.5,
+        "name": `dark yellow green`
+    },
+    {
+        "h": 20,
+        "s": 1,
+        "b": 1,
+        "name": `yellow green`
+    },
+    {
+        "h": 25,
+        "s": 0.5,
+        "b": 0.5,
+        "name": `dark yellow green`
+    },
+    {
+        "h": 25,
+        "s": 0.5,
+        "b": 1,
+        "name": `light green`
+    },
+    {
+        "h": 25,
+        "s": 1,
+        "b": 0.5,
+        "name": `dark green`
+    },
+    {
+        "h": 25,
+        "s": 1,
+        "b": 1,
+        "name": `green`
+    },
+    {
+        "h": 30,
+        "s": 0.5,
+        "b": 1,
+        "name": `light green`
+    },
+    {
+        "h": 30,
+        "s": 1,
+        "b": 0.5,
+        "name": `dark green`
+    },
+    {
+        "h": 30,
+        "s": 1,
+        "b": 1,
+        "name": `green`
+    },
+    {
+        "h": 35,
+        "s": 0,
+        "b": 0.5,
+        "name": `light green`
+    },
+    {
+        "h": 35,
+        "s": 0,
+        "b": 1,
+        "name": `very light green`
+    },
+    {
+        "h": 35,
+        "s": 0.5,
+        "b": 0.5,
+        "name": `dark green`
+    },
+    {
+        "h": 35,
+        "s": 0.5,
+        "b": 1,
+        "name": `light green`
+    },
+    {
+        "h": 35,
+        "s": 1,
+        "b": 0,
+        "name": `very dark green`
+    },
+    {
+        "h": 35,
+        "s": 1,
+        "b": 0.5,
+        "name": `dark green`
+    },
+    {
+        "h": 35,
+        "s": 1,
+        "b": 1,
+        "name": `green`
+    },
+    {
+        "h": 40,
+        "s": 0,
+        "b": 1,
+        "name": `very light green`
+    },
+    {
+        "h": 40,
+        "s": 0.5,
+        "b": 0.5,
+        "name": `dark green`
+    },
+    {
+        "h": 40,
+        "s": 0.5,
+        "b": 1,
+        "name": `light green`
+    },
+    {
+        "h": 40,
+        "s": 1,
+        "b": 0.5,
+        "name": `dark green`
+    },
+    {
+        "h": 40,
+        "s": 1,
+        "b": 1,
+        "name": `green`
+    },
+    {
+        "h": 45,
+        "s": 0.5,
+        "b": 1,
+        "name": `light turquoise`
+    },
+    {
+        "h": 45,
+        "s": 1,
+        "b": 0.5,
+        "name": `dark turquoise`
+    },
+    {
+        "h": 45,
+        "s": 1,
+        "b": 1,
+        "name": `turquoise`
+    },
+    {
+        "h": 50,
+        "s": 0,
+        "b": 1,
+        "name": `light sky blue`
+    },
+    {
+        "h": 50,
+        "s": 0.5,
+        "b": 0.5,
+        "name": `dark cyan`
+    },
+    {
+        "h": 50,
+        "s": 0.5,
+        "b": 1,
+        "name": `light cyan`
+    },
+    {
+        "h": 50,
+        "s": 1,
+        "b": 0.5,
+        "name": `dark cyan`
+    },
+    {
+        "h": 50,
+        "s": 1,
+        "b": 1,
+        "name": `cyan`
+    },
+    {
+        "h": 55,
+        "s": 0,
+        "b": 1,
+        "name": `light sky blue`
+    },
+    {
+        "h": 55,
+        "s": 0.5,
+        "b": 1,
+        "name": `light sky blue`
+    },
+    {
+        "h": 55,
+        "s": 1,
+        "b": 0.5,
+        "name": `dark blue`
+    },
+    {
+        "h": 55,
+        "s": 1,
+        "b": 1,
+        "name": `sky blue`
+    },
+    {
+        "h": 60,
+        "s": 0,
+        "b": 0.5,
+        "name": `gray`
+    },
+    {
+        "h": 60,
+        "s": 0,
+        "b": 1,
+        "name": `very light blue`
+    },
+    {
+        "h": 60,
+        "s": 0.5,
+        "b": 0.5,
+        "name": `blue`
+    },
+    {
+        "h": 60,
+        "s": 0.5,
+        "b": 1,
+        "name": `light blue`
+    },
+    {
+        "h": 60,
+        "s": 1,
+        "b": 0.5,
+        "name": `navy blue`
+    },
+    {
+        "h": 60,
+        "s": 1,
+        "b": 1,
+        "name": `blue`
+    },
+    {
+        "h": 65,
+        "s": 0,
+        "b": 1,
+        "name": `lavender`
+    },
+    {
+        "h": 65,
+        "s": 0.5,
+        "b": 0.5,
+        "name": `navy blue`
+    },
+    {
+        "h": 65,
+        "s": 0.5,
+        "b": 1,
+        "name": `light purple`
+    },
+    {
+        "h": 65,
+        "s": 1,
+        "b": 0.5,
+        "name": `dark navy blue`
+    },
+    {
+        "h": 65,
+        "s": 1,
+        "b": 1,
+        "name": `blue`
+    },
+    {
+        "h": 70,
+        "s": 0,
+        "b": 1,
+        "name": `lavender`
+    },
+    {
+        "h": 70,
+        "s": 0.5,
+        "b": 0.5,
+        "name": `navy blue`
+    },
+    {
+        "h": 70,
+        "s": 0.5,
+        "b": 1,
+        "name": `lavender blue`
+    },
+    {
+        "h": 70,
+        "s": 1,
+        "b": 0.5,
+        "name": `dark navy blue`
+    },
+    {
+        "h": 70,
+        "s": 1,
+        "b": 1,
+        "name": `blue`
+    },
+    {
+        "h": 75,
+        "s": 0.5,
+        "b": 1,
+        "name": `lavender`
+    },
+    {
+        "h": 75,
+        "s": 1,
+        "b": 0.5,
+        "name": `dark purple`
+    },
+    {
+        "h": 75,
+        "s": 1,
+        "b": 1,
+        "name": `purple`
+    },
+    {
+        "h": 80,
+        "s": 0.5,
+        "b": 1,
+        "name": `pinkish purple`
+    },
+    {
+        "h": 80,
+        "s": 1,
+        "b": 0.5,
+        "name": `dark purple`
+    },
+    {
+        "h": 80,
+        "s": 1,
+        "b": 1,
+        "name": `purple`
+    },
+    {
+        "h": 85,
+        "s": 0,
+        "b": 1,
+        "name": `light pink`
+    },
+    {
+        "h": 85,
+        "s": 0.5,
+        "b": 0.5,
+        "name": `purple`
+    },
+    {
+        "h": 85,
+        "s": 0.5,
+        "b": 1,
+        "name": `light fuchsia`
+    },
+    {
+        "h": 85,
+        "s": 1,
+        "b": 0.5,
+        "name": `dark fuchsia`
+    },
+    {
+        "h": 85,
+        "s": 1,
+        "b": 1,
+        "name": `fuchsia`
+    },
+    {
+        "h": 90,
+        "s": 0.5,
+        "b": 0.5,
+        "name": `dark fuchsia`
+    },
+    {
+        "h": 90,
+        "s": 0.5,
+        "b": 1,
+        "name": `hot pink`
+    },
+    {
+        "h": 90,
+        "s": 1,
+        "b": 0.5,
+        "name": `dark fuchsia`
+    },
+    {
+        "h": 90,
+        "s": 1,
+        "b": 1,
+        "name": `fuchsia`
+    },
+    {
+        "h": 95,
+        "s": 0,
+        "b": 1,
+        "name": `pink`
+    },
+    {
+        "h": 95,
+        "s": 0.5,
+        "b": 1,
+        "name": `light pink`
+    },
+    {
+        "h": 95,
+        "s": 1,
+        "b": 0.5,
+        "name": `dark magenta`
+    },
+    {
+        "h": 95,
+        "s": 1,
+        "b": 1,
+        "name": `magenta`
+    },
 ];;function getElementById(id) {
   return document.getElementById(id);
 }
@@ -820,11 +820,7 @@ if (getElementById(`tableOutput-content`)) {
       }
     }
   }
-};String.prototype.paddingLeft = function(paddingValue) {
-  return String(paddingValue + this).slice(-paddingValue.length);
-};
-
-function mergeObjRecursive(obj1, obj2) {
+};function mergeObjRecursive(obj1, obj2) {
   const obj3 = {};
   for (const p in obj1) {
     obj3[p] = obj1[p];
@@ -837,48 +833,15 @@ function mergeObjRecursive(obj1, obj2) {
     }
   }
   return obj3;
-}
-
-if (Array.prototype.equals)
-// attach the .equals method to Array's prototype to call it on any array
-{
-  Array.prototype.equals = function(array) {
-    // if the other array is a falsy value, return
-    if (!array) {
-      return false;
-    }
-
-    // compare lengths - can save a lot of time
-    if (this.length !== array.length) {
-      return false;
-    }
-
-    for (let i = 0, l = this.length; i < l; i++) {
-      // Check if we have nested arrays
-      if (this[i] instanceof Array && array[i] instanceof Array) {
-        // recurse into the nested arrays
-        if (!this[i].equals(array[i])) {
-          return false;
-        }
-      } else if (this[i] !== array[i]) {
-        // Warning - two different object instances will never be equal: {x:20} != {x:20}
-        return false;
-      }
-    }
-    return true;
-  }
-}
-// Hide method from for-in loops
-Object.defineProperty(Array.prototype, `equals`, {
-  enumerable: false
-});;function baseInterceptor() {
+};const MAX_OBJECTS = 20;
+function baseInterceptor() {
   this.prevTotalCount = 0,
   this.totalCount = 0,
-  this.currentColor = `white`,
-  this.bgColor = `white`,
+  this.currentColor = 'white',
+  this.bgColor = 'white',
   this.objectArea = 0,
   this.coordinates = [],
-  this.objectDescription = ``,
+  this.objectDescription = '',
   this.canvasDetails = {
     width: 0,
     height: 0
@@ -896,101 +859,116 @@ Object.defineProperty(Array.prototype, `equals`, {
   this.isCleared = false;
 }
 
-baseInterceptor.prototype.getColorName = function(arguments) {
-  if (arguments.length === 4) {
-    return (getRGBAname(arguments));
-  } else if (arguments.length === 3) {
-    return (getRGBname(arguments));
-  } else if (arguments.length === 2) {
-    const trans = Math.round(100 - ((arguments[1] * 100) / 255));
+baseInterceptor.prototype.getColorName = function(colArgs) {
+  if (colArgs.length === 4) {
+    return (getRGBAname(colArgs));
+  } else if (colArgs.length === 3) {
+    return (getRGBname(colArgs));
+  } else if (colArgs.length === 2) {
+    const trans = Math.round(100 - ((colArgs[1] * 100) / 255));
     // assuming that we are doing RGB - this would be a grayscale number
-    if (arguments[0] < 10) {
-      const rgb = `(0, 0, 0)`;
+    if (colArgs[0] < 10) {
+      const rgb = '(0, 0, 0)';
       if (trans === 0) {
         return ({
-          'color': `black`,
+          'color': 'black',
           rgb
         });
       } else {
         return ({
-          'color': `black with ` + trans + `% tranparency`,
+          'color': 'black with ' + trans + '% tranparency',
           rgb
         });
       }
-    } else if (arguments[0] > 240) {
-      const rgb = `(255, 255, 255)`;
+    } else if (colArgs[0] > 240) {
+      const rgb = '(255, 255, 255)';
       if (trans === 0) {
         return ({
-          'color': `white`,
+          'color': 'white',
           rgb
         });
       } else {
         return ({
-          'color': `white with ` + trans + `% tranparency`,
+          'color': 'white with ' + trans + '% tranparency',
           rgb
         });
       }
     } else {
-      const rgb = `(` + Math.round(arguments[0]) + `, ` + Math.round(arguments[0]) + `, ` + Math.round(arguments[0]) + `)`;
+      const rgb = '(' + Math.round(colArgs[0]) + ', ' + Math.round(colArgs[0]) + ', ' + Math.round(colArgs[0]) + ')';
       if (trans === 0) {
         return ({
-          'color': `gray`,
+          'color': 'gray',
           rgb
         });
       } else {
         return ({
-          'color': `gray with ` + trans + `% tranparency`,
+          'color': 'gray with ' + trans + '% tranparency',
           rgb
         });
       }
     }
-  } else if (arguments.length === 1) {
-    if (!(typeof(arguments[0])).localeCompare(`number`)) {
-      // assuming that we are doing RGB - this would be a grayscale number
-      if (arguments[0] < 10) {
-        const rgb = `(0, 0, 0)`;
+  } else if (colArgs.length === 1) {
+    if (!(typeof(colArgs[0])).localeCompare('number')) {
+      if (colArgs[0] < 10) {
+        const rgb = '(0, 0, 0)';
         return ({
-          'color': `black`,
+          'color': 'black',
           rgb
         });
-      } else if (arguments[0] > 240) {
-        const rgb = `(255, 255, 255)`;
+      } else if (colArgs[0] > 240) {
+        const rgb = '(255, 255, 255)';
         return ({
-          'color': `white`,
+          'color': 'white',
           rgb
         });
       } else {
-        const rgb = `(` + arguments[0] + `, ` + arguments[0] + `, ` + arguments[0] + `)`;
+        const rgb = '(' + colArgs[0] + ', ' + colArgs[0] + ', ' + colArgs[0] + ')';
         return ({
-          'color': `grey`,
+          'color': 'grey',
           rgb
         });
       }
-    } else if (!(typeof(arguments[0])).localeCompare(`string`)) {
-      if (!arguments[0].charAt(0).localeCompare(`#`)) {
-        return (getHexname(arguments));
-      } else if (arguments[0].match(/rgba/)) {
-        return (RGBAString(arguments));
-      } else if (arguments[0].match(/rgb/)) {
-        return (RGBString(arguments));
+    } else if (!(typeof(colArgs[0])).localeCompare('string')) {
+      if (!colArgs[0].charAt(0).localeCompare('#')) {
+        return (getHexname(colArgs));
+      } else if (colArgs[0].match(/rgba/)) {
+        return (RGBAString(colArgs));
+      } else if (colArgs[0].match(/rgb/)) {
+        return (RGBString(colArgs));
+      } else if(htmlColors.filter(hc => hc.name === colArgs[0].toUpperCase()).length != 0){
+        for (let i = htmlColors.length - 1; i >= 0; i--) {
+          if (htmlColors[i].name === colArgs[0].toUpperCase()){
+            return(getHexname([htmlColors[i].hex]));
+            break;
+          }
+        }
+      }else{
+        return ({
+          'color': 'white',
+          'rgb' : '(255, 255, 255)'
+        });
       }
     }
   } else {
     return ({
-      'color': arguments[0],
-      'rgb': ``
+      'color': 'white',
+      'rgb' : '(255, 255, 255)'
     });
   }
 }
 
-function getRGBAname(arguments) {
-  const trans = Math.round(100 - ((arguments[3] * 100)));
+const htmlColors = [
+  {'name':'ALICEBLUE', 'hex':'#F0F8FF'},{'name':'ANTIQUEWHITE', 'hex':'#FAEBD7'},{'name':'AQUA', 'hex':'#00FFFF'},{'name':'AQUAMARINE', 'hex':'#7FFFD4'},{'name':'AZURE', 'hex':'#F0FFFF'},{'name':'BEIGE', 'hex':'#F5F5DC'},{'name':'BISQUE', 'hex':'#FFE4C4'},{'name':'BLACK', 'hex':'#000000'},{'name':'BLANCHEDALMOND', 'hex':'#FFEBCD'},{'name':'BLUE', 'hex':'#0000FF'},{'name':'BLUEVIOLET', 'hex':'#8A2BE2'},{'name':'BROWN', 'hex':'#A52A2A'},{'name':'BURLYWOOD', 'hex':'#DEB887'},{'name':'CADETBLUE', 'hex':'#5F9EA0'},{'name':'CHARTREUSE', 'hex':'#7FFF00'},{'name':'CHOCOLATE', 'hex':'#D2691E'},{'name':'CORAL', 'hex':'#FF7F50'},{'name':'CORNFLOWERBLUE', 'hex':'#6495ED'},{'name':'CORNSILK', 'hex':'#FFF8DC'},{'name':'CRIMSON', 'hex':'#DC143C'},{'name':'CYAN', 'hex':'#00FFFF'},{'name':'DARKBLUE', 'hex':'#00008B'},{'name':'DARKCYAN', 'hex':'#008B8B'},{'name':'DARKGOLDENROD', 'hex':'#B8860B'},{'name':'DARKGRAY', 'hex':'#A9A9A9'},{'name':'DARKGREY', 'hex':'#A9A9A9'},{'name':'DARKGREEN', 'hex':'#006400'},{'name':'DARKKHAKI', 'hex':'#BDB76B'},{'name':'DARKMAGENTA', 'hex':'#8B008B'},{'name':'DARKOLIVEGREEN', 'hex':'#556B2F'},{'name':'DARKORANGE', 'hex':'#FF8C00'},{'name':'DARKORCHID', 'hex':'#9932CC'},{'name':'DARKRED', 'hex':'#8B0000'},{'name':'DARKSALMON', 'hex':'#E9967A'},{'name':'DARKSEAGREEN', 'hex':'#8FBC8F'},{'name':'DARKSLATEBLUE', 'hex':'#483D8B'},{'name':'DARKSLATEGRAY', 'hex':'#2F4F4F'},{'name':'DARKSLATEGREY', 'hex':'#2F4F4F'},{'name':'DARKTURQUOISE', 'hex':'#00CED1'},{'name':'DARKVIOLET', 'hex':'#9400D3'},{'name':'DEEPPINK', 'hex':'#FF1493'},{'name':'DEEPSKYBLUE', 'hex':'#00BFFF'},{'name':'DIMGRAY', 'hex':'#696969'},{'name':'DIMGREY', 'hex':'#696969'},{'name':'DODGERBLUE', 'hex':'#1E90FF'},{'name':'FIREBRICK', 'hex':'#B22222'},{'name':'FLORALWHITE', 'hex':'#FFFAF0'},{'name':'FORESTGREEN', 'hex':'#228B22'},{'name':'FUCHSIA', 'hex':'#FF00FF'},{'name':'GAINSBORO', 'hex':'#DCDCDC'},{'name':'GHOSTWHITE', 'hex':'#F8F8FF'},{'name':'GOLD', 'hex':'#FFD700'},{'name':'GOLDENROD', 'hex':'#DAA520'},{'name':'GRAY', 'hex':'#808080'},{'name':'GREY', 'hex':'#808080'},{'name':'GREEN', 'hex':'#008000'},{'name':'GREENYELLOW', 'hex':'#ADFF2F'},{'name':'HONEYDEW', 'hex':'#F0FFF0'},{'name':'HOTPINK', 'hex':'#FF69B4'},{'name':'INDIANRED', 'hex':'#CD5C5C'},{'name':'INDIGO', 'hex':'#4B0082'},{'name':'IVORY', 'hex':'#FFFFF0'},{'name':'KHAKI', 'hex':'#F0E68C'},{'name':'LAVENDER', 'hex':'#E6E6FA'},{'name':'LAVENDERBLUSH', 'hex':'#FFF0F5'},{'name':'LAWNGREEN', 'hex':'#7CFC00'},{'name':'LEMONCHIFFON', 'hex':'#FFFACD'},{'name':'LIGHTBLUE', 'hex':'#ADD8E6'},{'name':'LIGHTCORAL', 'hex':'#F08080'},{'name':'LIGHTCYAN', 'hex':'#E0FFFF'},{'name':'LIGHTGOLDENRODYELLOW', 'hex':'#FAFAD2'},{'name':'LIGHTGRAY', 'hex':'#D3D3D3'},{'name':'LIGHTGREY', 'hex':'#D3D3D3'},{'name':'LIGHTGREEN', 'hex':'#90EE90'},{'name':'LIGHTPINK', 'hex':'#FFB6C1'},{'name':'LIGHTSALMON', 'hex':'#FFA07A'},{'name':'LIGHTSEAGREEN', 'hex':'#20B2AA'},{'name':'LIGHTSKYBLUE', 'hex':'#87CEFA'},{'name':'LIGHTSLATEGRAY', 'hex':'#778899'},{'name':'LIGHTSLATEGREY', 'hex':'#778899'},{'name':'LIGHTSTEELBLUE', 'hex':'#B0C4DE'},{'name':'LIGHTYELLOW', 'hex':'#FFFFE0'},{'name':'LIME', 'hex':'#00FF00'},{'name':'LIMEGREEN', 'hex':'#32CD32'},{'name':'LINEN', 'hex':'#FAF0E6'},{'name':'MAGENTA', 'hex':'#FF00FF'},{'name':'MAROON', 'hex':'#800000'},{'name':'MEDIUMAQUAMARINE', 'hex':'#66CDAA'},{'name':'MEDIUMBLUE', 'hex':'#0000CD'},{'name':'MEDIUMORCHID', 'hex':'#BA55D3'},{'name':'MEDIUMPURPLE', 'hex':'#9370DB'},{'name':'MEDIUMSEAGREEN', 'hex':'#3CB371'},{'name':'MEDIUMSLATEBLUE', 'hex':'#7B68EE'},{'name':'MEDIUMSPRINGGREEN', 'hex':'#00FA9A'},{'name':'MEDIUMTURQUOISE', 'hex':'#48D1CC'},{'name':'MEDIUMVIOLETRED', 'hex':'#C71585'},{'name':'MIDNIGHTBLUE', 'hex':'#191970'},{'name':'MINTCREAM', 'hex':'#F5FFFA'},{'name':'MISTYROSE', 'hex':'#FFE4E1'},{'name':'MOCCASIN', 'hex':'#FFE4B5'},{'name':'NAVAJOWHITE', 'hex':'#FFDEAD'},{'name':'NAVY', 'hex':'#000080'},{'name':'OLDLACE', 'hex':'#FDF5E6'},{'name':'OLIVE', 'hex':'#808000'},{'name':'OLIVEDRAB', 'hex':'#6B8E23'},{'name':'ORANGE', 'hex':'#FFA500'},{'name':'ORANGERED', 'hex':'#FF4500'},{'name':'ORCHID', 'hex':'#DA70D6'},{'name':'PALEGOLDENROD', 'hex':'#EEE8AA'},{'name':'PALEGREEN', 'hex':'#98FB98'},{'name':'PALETURQUOISE', 'hex':'#AFEEEE'},{'name':'PALEVIOLETRED', 'hex':'#DB7093'},{'name':'PAPAYAWHIP', 'hex':'#FFEFD5'},{'name':'PEACHPUFF', 'hex':'#FFDAB9'},{'name':'PERU', 'hex':'#CD853F'},{'name':'PINK', 'hex':'#FFC0CB'},{'name':'PLUM', 'hex':'#DDA0DD'},{'name':'POWDERBLUE', 'hex':'#B0E0E6'},{'name':'PURPLE', 'hex':'#800080'},{'name':'REBECCAPURPLE', 'hex':'#663399'},{'name':'RED', 'hex':'#FF0000'},{'name':'ROSYBROWN', 'hex':'#BC8F8F'},{'name':'ROYALBLUE', 'hex':'#4169E1'},{'name':'SADDLEBROWN', 'hex':'#8B4513'},{'name':'SALMON', 'hex':'#FA8072'},{'name':'SANDYBROWN', 'hex':'#F4A460'},{'name':'SEAGREEN', 'hex':'#2E8B57'},{'name':'SEASHELL', 'hex':'#FFF5EE'},{'name':'SIENNA', 'hex':'#A0522D'},{'name':'SILVER', 'hex':'#C0C0C0'},{'name':'SKYBLUE', 'hex':'#87CEEB'},{'name':'SLATEBLUE', 'hex':'#6A5ACD'},{'name':'SLATEGRAY', 'hex':'#708090'},{'name':'SLATEGREY', 'hex':'#708090'},{'name':'SNOW', 'hex':'#FFFAFA'},{'name':'SPRINGGREEN', 'hex':'#00FF7F'},{'name':'STEELBLUE', 'hex':'#4682B4'},{'name':'TAN', 'hex':'#D2B48C'},{'name':'TEAL', 'hex':'#008080'},{'name':'THISTLE', 'hex':'#D8BFD8'},{'name':'TOMATO', 'hex':'#FF6347'},{'name':'TURQUOISE', 'hex':'#40E0D0'},{'name':'VIOLET', 'hex':'#EE82EE'},{'name':'WHEAT', 'hex':'#F5DEB3'},{'name':'WHITE', 'hex':'#FFFFFF'},{'name':'WHITESMOKE', 'hex':'#F5F5F5'},{'name':'YELLOW', 'hex':'#FFFF00'},{'name':'YELLOWGREEN', 'hex':'#9ACD32'} 
+];
+
+function getRGBAname(colArgs) {
+  const trans = Math.round(100 - ((colArgs[3] * 100)));
   /* global rgbColorName */
-  const colorName = rgbColorName(arguments[0], arguments[1], arguments[2]);
-  const rgb = `(` + Math.round(arguments[0]) + `, ` + Math.round(arguments[1]) + `, ` + Math.round(arguments[2]) + `)`;
+  const colorName = rgbColorName(colArgs[0], colArgs[1], colArgs[2]);
+  const rgb = '(' + Math.round(colArgs[0]) + ', ' + Math.round(colArgs[1]) + ', ' + Math.round(colArgs[2]) + ')';
   if (trans > 0) {
     return ({
-      'color': colorName + ` with ` + trans + `% tranparency`,
+      'color': colorName + ' with ' + trans + '% tranparency',
       rgb
     });
   } else {
@@ -1001,39 +979,38 @@ function getRGBAname(arguments) {
   }
 }
 
-function getRGBname(arguments) {
-  const colorName = rgbColorName(arguments[0], arguments[1], arguments[2]);
-  const rgb = `(` + Math.round(arguments[0]) + `, ` + Math.round(arguments[1]) + `, ` + Math.round(arguments[2]) + `)`;
+function getRGBname(colArgs) {
+  const colorName = rgbColorName(colArgs[0], colArgs[1], colArgs[2]);
+  const rgb = '(' + Math.round(colArgs[0]) + ', ' + Math.round(colArgs[1]) + ', ' + Math.round(colArgs[2]) + ')';
   return ({
     'color': colorName,
     rgb
   });
 }
 
-function getHexname(arguments) {
-  let hex = arguments[0].slice(1);
-  if ((arguments[0].match(/\w/g)).length === 3) { // 3digithex
+function getHexname(colArgs) {
+  let hex = colArgs[0].slice(1);
+  if ((colArgs[0].match(/\w/g)).length === 3) { // 3digithex
     const h3x = hex.match(/\w/g)
-    hex = [h3x[0], h3x[0], h3x[1], h3x[1], h3x[2], h3x[2]].join(``);
+    hex = [h3x[0], h3x[0], h3x[1], h3x[1], h3x[2], h3x[2]].join('');
   }
   /* global hexColorName */
   const colorName = hexColorName(hex);
-  const r = parseInt(hex[1] + hex[2], 16);
-  const g = parseInt(hex[3] + hex[4], 16);
-  const b = parseInt(hex[5] + hex[6], 16);
-  const rgb = `(` + r + `, ` + g + `, ` + b + `)`;
+  const r = parseInt(hex[0] + hex[1], 16);
+  const g = parseInt(hex[2] + hex[3], 16);
+  const b = parseInt(hex[4] + hex[5], 16);
+  const rgb = '(' + r + ', ' + g + ', ' + b + ')';
   return ({
     'color': colorName,
     rgb
   });
 }
 
-function RGBAString(arguments) {
-  if (arguments[0].match(/%/)) {
-    if (((arguments[0].match(/%/g)).length) === 4) {
-      // when arguments[0] is 'rgba(10%,100%,30%,0.5%)'
-      console.log(arguments[0]);
-      let values = (((arguments[0].match(/(\(\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%,\s*?\s*?)/g))[0]).replace(/%|\(|\)/g, ``)).split(`,`);
+function RGBAString(colArgs) {
+  if (colArgs[0].match(/%/)) {
+    if (((colArgs[0].match(/%/g)).length) === 4) {
+      // when colArgs[0] is 'rgba(10%,100%,30%,0.5%)'
+      let values = (((colArgs[0].match(/(\(\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%,\s*?\s*?)/g))[0]).replace(/%|\(|\)/g, '')).split(',');
       values = [values[0], values[1], values[3], 0];
       for (let i = values.length - 2; i >= 0; i--) {
         if (parseInt(values[i]) < 100) {
@@ -1044,10 +1021,9 @@ function RGBAString(arguments) {
       }
       return (getRGBAname(values));
 
-    } else if (((arguments[0].match(/%/g)).length) === 3 && ((arguments[0].match(/,/g)).length) === 2) {
-      // when arguments[0] is 'rgba(10%,100%,30%)'
-      console.log(arguments[0]);
-      let values = (((arguments[0].match(/(\(\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%\)\s*?\s*?)/g))[0]).replace(/%|\(|\)/g, ``)).split(`,`);
+    } else if (((colArgs[0].match(/%/g)).length) === 3 && ((colArgs[0].match(/,/g)).length) === 2) {
+      // when colArgs[0] is 'rgba(10%,100%,30%)'
+      let values = (((colArgs[0].match(/(\(\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%\)\s*?\s*?)/g))[0]).replace(/%|\(|\)/g, '')).split(',');
       values = [values[0], values[1], values[2], 0];
       for (let i = values.length - 2; i >= 0; i--) {
         if (parseInt(values[i]) < 100) {
@@ -1057,10 +1033,10 @@ function RGBAString(arguments) {
         }
       }
       return (getRGBAname(values));
-    } else if (((arguments[0].match(/%/g)).length) === 3) {
-      // when arguments[0] is 'rgba(10%,100%,30%,0.5)'
-      // This line creates an array with the values in order the following order ["R","G","B","A"]. The RegEx looks for three values with percentages and one value without percentage.   
-      const values = (((arguments[0].match(/(\(\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?\))/g))[0]).replace(/%|\(|\)/g, ``)).split(`,`);
+    } else if (((colArgs[0].match(/%/g)).length) === 3) {
+      // when colArgs[0] is 'rgba(10%,100%,30%,0.5)'
+      // This line creates an array with the values in order the following order ['R','G','B','A']. The RegEx looks for three values with percentages and one value without percentage.   
+      const values = (((colArgs[0].match(/(\(\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?\))/g))[0]).replace(/%|\(|\)/g, '')).split(',');
       for (let i = values.length - 2; i >= 0; i--) {
         if (parseInt(values[i]) < 100) {
           values[i] = Math.round(parseInt(values[i]) * 2.55);
@@ -1075,10 +1051,9 @@ function RGBAString(arguments) {
       return (getRGBAname(values));
     }
   } else {
-    if (((arguments[0].match(/,/g)).length) === 2) {
-      // when arguments[0] is 'rgba(10,100,30)'
-      console.log(arguments[0]);
-      let values = (((arguments[0].match(/(\(\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?\)\s*?\s*?)/g))[0]).replace(/%|\(|\)/g, ``)).split(`,`);
+    if (((colArgs[0].match(/,/g)).length) === 2) {
+      // when colArgs[0] is 'rgba(10,100,30)'
+      let values = (((colArgs[0].match(/(\(\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?\)\s*?\s*?)/g))[0]).replace(/%|\(|\)/g, '')).split(',');
       values = [values[0], values[1], values[2], 0];
       for (let i = values.length - 2; i >= 0; i--) {
         if (parseInt(values[i]) < 100) {
@@ -1089,21 +1064,20 @@ function RGBAString(arguments) {
       }
       return (getRGBAname(values));
     } else {
-      // when arguments[0] is 'rgba(10,100,30,0.5)'
-      // This line creates an array with the values in order the following order ["R","G","B","A"]. Values must be less than 255.
-      let values = (((arguments[0].match(/(\(\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?\))/g))[0]).replace(/(\(|\))/g, ``)).split(`,`);
+      // when colArgs[0] is 'rgba(10,100,30,0.5)'
+      // This line creates an array with the values in order the following order ['R','G','B','A']. Values must be less than 255.
+      let values = (((colArgs[0].match(/(\(\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?\))/g))[0]).replace(/(\(|\))/g, '')).split(',');
       values = [parseInt(values[0]), parseInt(values[1]), parseInt(values[2]), parseFloat(values[3])];
       return (getRGBAname(values));
     }
   }
 }
-
-function RGBString(arguments) {
-  if (arguments[0].match(/%/)) {
-    if (((arguments[0].match(/%/g)).length) === 3) {
-      // when arguments[0] is 'rgb(10%,100%,30%)'
-      // This line creates an array with the values in order the following order ["R","G","B"]. The RegEx looks for three values with percentages.   
-      const values = (((arguments[0].match(/(\(\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%\s*?\))/g))[0]).replace(/%|\(|\)/g, ``)).split(`,`);
+function RGBString(colArgs) {
+  if (colArgs[0].match(/%/)) {
+    if (((colArgs[0].match(/%/g)).length) === 3) {
+      // when colArgs[0] is 'rgb(10%,100%,30%)'
+      // This line creates an array with the values in order the following order ['R','G','B']. The RegEx looks for three values with percentages.   
+      const values = (((colArgs[0].match(/(\(\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?%\s*?\))/g))[0]).replace(/%|\(|\)/g, '')).split(',');
       for (let i = values.length - 1; i >= 0; i--) {
         if (parseInt(values[i]) < 100) {
           values[i] = Math.round(parseInt(values[i]) * 2.55);
@@ -1117,13 +1091,14 @@ function RGBString(arguments) {
       return (getRGBname(values));
     }
   } else {
-    // when arguments[0] is 'rgb(10,100,30)'
-    // This line creates an array with the values in order the following order ["R","G","B"]. Values must be less than 255.  
-    let values = (((arguments[0].match(/(\(\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?\))/g))[0]).replace(/(\(|\))/g, ``)).split(`,`);
+    // when colArgs[0] is 'rgb(10,100,30)'
+    // This line creates an array with the values in order the following order ['R','G','B']. Values must be less than 255.  
+    let values = (((colArgs[0].match(/(\(\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?,\s*?((000|0?\d{1,2}|1\d\d|2[0-4]\d|25[0-5])|(000(?:\.+\d*)|0?\d{1,2}(?:\.+\d*)|1\d\d(?:\.+\d*)|2[0-4]\d(?:\.+\d*)|25[0-5](?:\.+\d*)))\s*?\))/g))[0]).replace(/(\(|\))/g, '')).split(',');
     values = [parseInt(values[0]), parseInt(values[1]), parseInt(values[2])];
     return (getRGBname(values));
   }
-};function BaseEntity(Interceptor, object) {
+}
+;function BaseEntity(Interceptor, object) {
   this.type = Interceptor.currentColor + ` ` + object.name,
   this.location = ``,
   this.coordinates = ``,
@@ -1139,14 +1114,14 @@ function RGBString(arguments) {
     })
   };
 
-    this.getLocation = function(object, arguments, canvasX, canvasY) { // eslint-disable-line
+    this.getLocation = function(object, locArgs, canvasX, canvasY) { // eslint-disable-line
     let xCoord, yCoord;
-    arguments = [].slice.call(arguments);
+    locArgs = [].slice.call(locArgs);
     let i = 0;
     const that = this;
     that.coordinates = ``;
 
-    arguments.forEach((argument) => {
+    locArgs.forEach((argument) => {
       const a = argument;
       if (object.params[i].description.indexOf(`x-coordinate`) > -1) {
         xCoord = a;
@@ -1186,14 +1161,14 @@ function RGBString(arguments) {
   }
 
   /* return which part of the canvas an object os present */
-  this.canvasLocator = function(object, arguments, canvasX, canvasY) {
+  this.canvasLocator = function(object, canvasArgs, canvasX, canvasY) {
     let xCoord, yCoord;
     const noRows = 10,
       noCols = 10;
     let locX, locY;
     let i = 0;
-    arguments = [].slice.call(arguments);
-    arguments.forEach((argument) => {
+    canvasArgs = [].slice.call(canvasArgs);
+    canvasArgs.forEach((argument) => {
       const a = argument;
 
       if (object.params[i].description.indexOf(`x-coordinate`) > -1) {
@@ -1219,13 +1194,13 @@ function RGBString(arguments) {
   }
 }
 
-BaseEntity.isParameter = false;;function BackgroundEntity(Interceptor, object, arguments, canvasX, canvasY) {
-  let passedArguments = arguments;
+BaseEntity.isParameter = false;
+;function BackgroundEntity(Interceptor, object, backgroundArgs, canvasX, canvasY) { // eslint-disable-line no-unused-vars
   this.populate = function(Interceptor) {
-    if (passedArguments[0].name === `p5.Color`) {
-      passedArguments = passedArguments[0].levels;
+    if (backgroundArgs[0].name === `p5.Color`) {
+      backgroundArgs = backgroundArgs[0].levels;
     }
-    Interceptor.bgColor = Interceptor.getColorName(passedArguments).color + Interceptor.getColorName(passedArguments).rgb;
+    Interceptor.bgColor = Interceptor.getColorName(backgroundArgs).color + Interceptor.getColorName(backgroundArgs).rgb;
   }
 
   this.populate(Interceptor);
@@ -1241,13 +1216,14 @@ BackgroundEntity.handles = function(name) {
 BackgroundEntity.isParameter = true;
 
 /* global Registry */
-Registry.register(BackgroundEntity);;function FillEntity(Interceptor, shapeObject, arguments, canvasX, canvasY) {
-  let passedArguments = arguments;
+Registry.register(BackgroundEntity);
+;function FillEntity(Interceptor, shapeObject, fillArgs, canvasX, canvasY) // eslint-disable-line no-unused-vars
+{
   this.populate = function(Interceptor) {
-    if (passedArguments[0].name === `p5.Color`) {
-      passedArguments = passedArguments[0].levels;
+    if (fillArgs[0].name === `p5.Color`) {
+      fillArgs = fillArgs[0].levels;
     }
-    Interceptor.currentColor = Interceptor.getColorName(passedArguments).color + Interceptor.getColorName(passedArguments).rgb;
+    Interceptor.currentColor = Interceptor.getColorName(fillArgs).color + Interceptor.getColorName(fillArgs).rgb;
   }
 
   this.populate(Interceptor);
@@ -1263,48 +1239,77 @@ FillEntity.handles = function(name) {
 FillEntity.isParameter = true;
 
 /* global Registry */
-Registry.register(FillEntity);;function ShapeEntity(Interceptor, shapeObject, arguments, canvasX, canvasY) {
+Registry.register(FillEntity);
+;function ShapeEntity(Interceptor, shapeObject, shapeArgs, canvasX, canvasY) {
   const self = this;
   /* global BaseEntity */
-  BaseEntity.call(self, shapeObject, arguments, canvasX, canvasY);
+  BaseEntity.call(self, shapeObject, shapeArgs, canvasX, canvasY);
   this.areaAbs = 0;
   this.type = Interceptor.currentColor + ` ` + shapeObject.name;
   this.area = 0;
+  this.length = 0;
 
   this.populate = function(shapeObject, arguments, canvasX, canvasY) {
     this.location = this.getLocation(shapeObject, arguments, canvasX, canvasY);
-    this.areaAbs = this.getObjectArea(shapeObject.name, arguments);
     this.coordLoc = this.canvasLocator(shapeObject, arguments, canvasX, canvasY);
-    this.area = (this.getObjectArea(shapeObject.name, arguments) * 100 / (canvasX * canvasY)).toFixed(2) + `%`;
+    if(!shapeObject.name.localeCompare(`ellipse`) || !shapeObject.name.localeCompare(`rect`)  || !shapeObject.name.localeCompare(`triangle`) || !shapeObject.name.localeCompare(`quad`)) {
+      this.areaAbs = this.getObjectArea(shapeObject.name, arguments);
+      this.area = (this.getObjectArea(shapeObject.name, arguments) * 100 / (canvasX * canvasY)).toFixed(2) + `%`;
+    } else if(!shapeObject.name.localeCompare(`line`)) {
+      this.length = this.getLineLength(arguments);
+    }
   }
 
   this.getAttributes = function() {
-    return ({
-      type: this.type,
-      location: this.location,
-      coordinates: this.coordinates,
-      area: this.area
-    })
+    if((!shapeObject.name.localeCompare(`ellipse`)) || !shapeObject.name.localeCompare(`rect`)  || !shapeObject.name.localeCompare(`triangle`) || !shapeObject.name.localeCompare(`quad`)) {
+      return ({
+        type: this.type,
+        location: this.location,
+        coordinates: this.coordinates,
+        area: this.area
+      })
+    } 
+    else if(!shapeObject.name.localeCompare(`line`)) {
+      return ({
+        type: this.type,
+        location: this.location,
+        coordinates: this.coordinates,
+        length : this.length
+      })
+    } 
+    else {
+      return ({
+        type: this.type,
+        location: this.location,
+        coordinates: this.coordinates         
+      })
+    }
   };
 
+  /* return length of lines */
+  this.getLineLength = function(arguments){
+    const lineLength = Math.round(Math.sqrt((Math.pow(arguments[2]-arguments[0],2)) + (Math.pow(arguments[3]-arguments[1],2))));
+    return lineLength;
+  }
+
   /* return area of the shape */
-  this.getObjectArea = function(objectType, arguments) {
+  this.getObjectArea = function(objectType, shapeArgs) {
     let objectArea = 0;
     if (!objectType.localeCompare(`arc`)) {
       // area of full ellipse = PI * horizontal radius * vertical radius.
       // therefore, area of arc = difference bet. arc's start and end radians * horizontal radius * vertical radius.
-      // the below expression is adjusted for negative values and differences in arc's start and end radians over PI*2  
-      const arcSizeInRadians = ((((arguments[5] - arguments[4]) % (PI * 2)) + (PI * 2)) % (PI * 2));
-      objectArea = arcSizeInRadians * arguments[2] * arguments[3] / 8;
-      if (arguments[6] === `open` || arguments[6] === `chord`) {
+      // the below expression is adjusted for negative values and differences in arc's start and end radians over PI*2
+      const arcSizeInRadians = ((((shapeArgs[5] - shapeArgs[4]) % (PI * 2)) + (PI * 2)) % (PI * 2));
+      objectArea = arcSizeInRadians * shapeArgs[2] * shapeArgs[3] / 8;
+      if (shapeArgs[6] === `open` || shapeArgs[6] === `chord`) {
         // when the arc's mode is OPEN or CHORD, we need to account for the area of the triangle that is formed to close the arc
         // (Ax( By −	Cy) +	Bx(Cy −	Ay) +	Cx(Ay −	By ) )/2
-        const Ax = arguments[0];
-        const Ay = arguments[1];
-        const Bx = arguments[0] + (arguments[2] / 2) * cos(arguments[4]).toFixed(2);
-        const By = arguments[1] + (arguments[3] / 2) * sin(arguments[4]).toFixed(2);
-        const Cx = arguments[0] + (arguments[2] / 2) * cos(arguments[5]).toFixed(2);
-        const Cy = arguments[1] + (arguments[3] / 2) * sin(arguments[5]).toFixed(2);
+        const Ax = shapeArgs[0];
+        const Ay = shapeArgs[1];
+        const Bx = shapeArgs[0] + (shapeArgs[2] / 2) * cos(shapeArgs[4]).toFixed(2);
+        const By = shapeArgs[1] + (shapeArgs[3] / 2) * sin(shapeArgs[4]).toFixed(2);
+        const Cx = shapeArgs[0] + (shapeArgs[2] / 2) * cos(shapeArgs[5]).toFixed(2);
+        const Cy = shapeArgs[1] + (shapeArgs[3] / 2) * sin(shapeArgs[5]).toFixed(2);
         const areaOfExtraTriangle = abs(Ax * (By - Cy) + Bx * (Cy - Ay) + Cx * (Ay - By)) / 2;
         if (arcSizeInRadians > PI) {
           objectArea = objectArea + areaOfExtraTriangle;
@@ -1313,28 +1318,30 @@ Registry.register(FillEntity);;function ShapeEntity(Interceptor, shapeObject, ar
         }
       }
     } else if (!objectType.localeCompare(`ellipse`)) {
-      objectArea = 3.14 * arguments[2] * arguments[3] / 4;
+      objectArea = 3.14 * shapeArgs[2] * shapeArgs[3] / 4;
     } else if (!objectType.localeCompare(`line`)) {
       objectArea = 0;
     } else if (!objectType.localeCompare(`point`)) {
       objectArea = 0;
     } else if (!objectType.localeCompare(`quad`)) {
-      // x1y2+x2y3+x3y4+x4y1−x2y1−x3y2−x4y3−x1y4
-      objectArea = (arguments[0] * arguments[1] + arguments[2] * arguments[3] +
-                    arguments[4] * arguments[5] + arguments[6] * arguments[7]) -
-                (arguments[2] * arguments[1] + arguments[4] * arguments[3] +
-                    arguments[6] * arguments[5] + arguments[0] * arguments[7]);
+      // ((x4+x1)*(y4-y1)+(x1+x2)*(y1-y2)+(x2+x3)*(y2-y3)+(x3+x4)*(y3-y4))/2
+      objectArea = abs(
+        (shapeArgs[6] + shapeArgs[0]) * (shapeArgs[7] - shapeArgs[1]) +
+        (shapeArgs[0] + shapeArgs[2]) * (shapeArgs[1] - shapeArgs[3]) +
+        (shapeArgs[2] + shapeArgs[4]) * (shapeArgs[3] - shapeArgs[5]) +
+        (shapeArgs[4] + shapeArgs[6]) * (shapeArgs[5] - shapeArgs[7])
+      )/2;
     } else if (!objectType.localeCompare(`rect`)) {
-      objectArea = arguments[2] * arguments[3];
+      objectArea = shapeArgs[2] * shapeArgs[3];
     } else if (!objectType.localeCompare(`triangle`)) {
-      objectArea = abs(arguments[0] * (arguments[3] - arguments[5]) + arguments[2] * (arguments[5] - arguments[1]) +
-                arguments[4] * (arguments[1] - arguments[3])) / 2;
+      objectArea = abs(shapeArgs[0] * (shapeArgs[3] - shapeArgs[5]) + shapeArgs[2] * (shapeArgs[5] - shapeArgs[1]) +
+                shapeArgs[4] * (shapeArgs[1] - shapeArgs[3])) / 2;
       // (Ax( By −	Cy) +	Bx(Cy −	Ay) +	Cx(Ay −	By ))/2
     }
     return objectArea;
   }
 
-  this.populate(shapeObject, arguments, canvasX, canvasY);
+  this.populate(shapeObject, shapeArgs, canvasX, canvasY);
 }
 
 ShapeEntity.handledNames = [
@@ -1354,15 +1361,17 @@ ShapeEntity.handles = function(name) {
 ShapeEntity.isParameter = false;
 
 /* global Registry */
-Registry.register(ShapeEntity);;function TextEntity(Interceptor, shapeObject, arguments, canvasX, canvasY) {
+Registry.register(ShapeEntity);
+;function TextEntity(Interceptor, shapeObject, arguments, canvasX, canvasY) {
+
   const self = this;
   /* global BaseEntity */
-  BaseEntity.call(self, shapeObject, arguments, canvasX, canvasY);
-  this.type = String(arguments[0]).substring(0, 20) + `(` + Interceptor.currentColor + `)`;
+  BaseEntity.call(self, shapeObject, textArgs, canvasX, canvasY);
+  this.type = String(textArgs[0]).substring(0, 20) + `(` + Interceptor.currentColor + `)`;
 
-  this.populate = function(shapeObject, arguments, canvasX, canvasY) {
-    this.location = this.getLocation(shapeObject, arguments, canvasX, canvasY);
-    this.coordLoc = this.canvasLocator(shapeObject, arguments, canvasX, canvasY);
+  this.populate = function(shapeObject, textArgs, canvasX, canvasY) {
+    this.location = this.getLocation(shapeObject, textArgs, canvasX, canvasY);
+    this.coordLoc = this.canvasLocator(shapeObject, textArgs, canvasX, canvasY);
   };
 
   this.getAttributes = function() {
@@ -1373,7 +1382,7 @@ Registry.register(ShapeEntity);;function TextEntity(Interceptor, shapeObject, ar
     })
   };
 
-  this.populate(shapeObject, arguments, canvasX, canvasY);
+  this.populate(shapeObject, textArgs, canvasX, canvasY);
 }
 
 TextEntity.handledNames = [
@@ -1387,7 +1396,8 @@ TextEntity.handles = function(name) {
 TextEntity.isParameter = false;
 
 /* global Registry */
-Registry.register(TextEntity);;function TextInterceptor() { // eslint-disable-line
+Registry.register(TextEntity);
+;function TextInterceptor() { // eslint-disable-line
   const self = this;
   /* global baseInterceptor */
   baseInterceptor.call(self);
@@ -1402,7 +1412,7 @@ TextInterceptor.prototype.clearVariables = function(object) {
   return object;
 }
 
-TextInterceptor.prototype.populateObject = function(x, arguments, object, table, isDraw) {
+TextInterceptor.prototype.populateObject = function(x, passedArgs, object, isDraw) {
   /* global objectCount */
   objectCount = object.objectCount;
   /* global objectArray */
@@ -1412,15 +1422,15 @@ TextInterceptor.prototype.populateObject = function(x, arguments, object, table,
   if (!isDraw) {
     // check for special function in setup -> createCanvas
     if (!x.name.localeCompare(`createCanvas`)) {
-      this.canvasDetails.width = arguments[0];
-      this.canvasDetails.height = arguments[1];
+      this.canvasDetails.width = passedArgs[0];
+      this.canvasDetails.height = passedArgs[1];
     }
   }
   /* global Registry */
   const entityClass = Registry.entityFor(x.name);
 
   if (entityClass && !entityClass.isParameter) {
-    objectArray[objectCount] = new entityClass(this, x, arguments, this.canvasDetails.width, this.canvasDetails.height);
+    objectArray[objectCount] = new entityClass(this, x, passedArgs, this.canvasDetails.width, this.canvasDetails.height);
 
     if (objectTypeCount[x.name]) {
       objectTypeCount[x.name]++;
@@ -1429,7 +1439,7 @@ TextInterceptor.prototype.populateObject = function(x, arguments, object, table,
     }
     objectCount++;
   } else if (entityClass && entityClass.isParameter) {
-    new entityClass(this, x, arguments, this.canvasDetails.width, this.canvasDetails.height);
+    new entityClass(this, x, passedArgs, this.canvasDetails.width, this.canvasDetails.height);
   }
   return ({
     objectCount,
@@ -1439,7 +1449,7 @@ TextInterceptor.prototype.populateObject = function(x, arguments, object, table,
 }
 
 TextInterceptor.prototype.populateTable = function(table, objectArray) {
-  if (this.totalCount < 100) {
+  if (this.totalCount <= MAX_OBJECTS) {
     if (this.prevTotalCount > this.totalCount) {
       for (let j = 0; j < this.totalCount; j++) {
         const row = table.children[j];
@@ -1480,7 +1490,9 @@ TextInterceptor.prototype.populateTable = function(table, objectArray) {
       }
       for (let j = this.totalCount; j < this.prevTotalCount; j++) {
         const tempRow = table.children[this.totalCount];
-        table.removeChild(tempRow);
+        if(tempRow){
+          table.removeChild(tempRow);
+        }
       }
     } else if (this.prevTotalCount <= this.totalCount) {
       for (let j = 0; j < this.prevTotalCount; j++) {
@@ -1562,9 +1574,10 @@ TextInterceptor.prototype.getSummary = function(object1, object2, element) {
 
     const objectList = document.createElement(`ul`);
 
-    if (this.totalCount < 100) {
 
-      object1.objectArray.forEach((objArrayItem, i) => {
+
+    object1.objectArray.forEach((objArrayItem, i) => {
+      if(i<MAX_OBJECTS) {
         const objectListItem = document.createElement(`li`);
         objectList.appendChild(objectListItem);
         const objLink = document.createElement(`a`);
@@ -1578,9 +1591,11 @@ TextInterceptor.prototype.getSummary = function(object1, object2, element) {
                     ` covering ` +
                     objArrayItem.area +
                     ` of the canvas`;
-      });
+      }
+    });
 
-      object2.objectArray.forEach((objArrayItem, i) => {
+    object2.objectArray.forEach((objArrayItem, i) => {
+      if(i<MAX_OBJECTS) {
         const objectListItem = document.createElement(`li`);
         objectList.appendChild(objectListItem);
         const objLink = document.createElement(`a`);
@@ -1594,13 +1609,15 @@ TextInterceptor.prototype.getSummary = function(object1, object2, element) {
                     ` covering ` +
                     objArrayItem.area +
                     ` of the canvas`;
-      });
-      element.appendChild(objectList);
-    }
+      }
+    });
+    element.appendChild(objectList);
+
   }
 }
 
-const textInterceptor = new TextInterceptor();;/* global funcNames */
+const textInterceptor = new TextInterceptor();
+;/* global funcNames */
 /* global allData */
 funcNames = allData.classitems.map((x) => {
   if (x.overloads) {
@@ -1642,7 +1659,7 @@ if (document.getElementById(`textOutput-content`)) {
         details.innerHTML = ``;
         summary.innerHTML = ``;
         /* global textInterceptor */
-        textInterceptor.setupObject = textInterceptor.populateObject(x, arguments, textInterceptor.setupObject, table, false);
+        textInterceptor.setupObject = textInterceptor.populateObject(x, orgArg, textInterceptor.setupObject, false);
         textInterceptor.getSummary(textInterceptor.setupObject, textInterceptor.drawObject, summary);
         textInterceptor.populateTable(table, textInterceptor.setupObject.objectArray);
       } else if (frameCount % 20 === 19) {
@@ -1650,16 +1667,17 @@ if (document.getElementById(`textOutput-content`)) {
           textInterceptor.drawObject = textInterceptor.clearVariables(textInterceptor.drawObject);
         }
       } else if (frameCount === 1 || frameCount % 20 === 0) {
-        textInterceptor.drawObject = textInterceptor.populateObject(x, arguments, textInterceptor.drawObject, details, true);
+        textInterceptor.drawObject = textInterceptor.populateObject(x, orgArg, textInterceptor.drawObject, details, true);
         textInterceptor.getSummary(textInterceptor.setupObject, textInterceptor.drawObject, summary);
         textInterceptor.populateTable(
           table, textInterceptor.setupObject.objectArray.concat(textInterceptor.drawObject.objectArray));
       }
-      return originalFunc.apply(this, arguments);
+      return originalFunc.apply(this, orgArg);
     };
   });
 
-};var shadowDOMElement; // eslint-disable-line
+}
+;var shadowDOMElement; // eslint-disable-line
 function GridInterceptor() {
   const self = this;
   /* global baseInterceptor */
@@ -1694,7 +1712,7 @@ GridInterceptor.prototype.createShadowDOMElement = function(document) {
   }
   shadowDOMElement = document.getElementById(`tableOutput-content`);
 }
-GridInterceptor.prototype.populateObject = function(x, arguments, object, table, isDraw) {
+GridInterceptor.prototype.populateObject = function(x, passedArgs, object, table, isDraw) {
   /* global objectCount */
   objectCount = object.objectCount;
   /* global objectArray */
@@ -1704,15 +1722,15 @@ GridInterceptor.prototype.populateObject = function(x, arguments, object, table,
   if (!isDraw) {
     // check for special function in setup -> createCanvas
     if (!x.name.localeCompare(`createCanvas`)) {
-      this.canvasDetails.width = arguments[0];
-      this.canvasDetails.height = arguments[1];
+      this.canvasDetails.width = passedArgs[0];
+      this.canvasDetails.height = passedArgs[1];
     }
   }
   /* global Registry */
   const entityClass = Registry.entityFor(x.name);
 
   if (entityClass && !entityClass.isParameter) {
-    objectArray[objectCount] = new entityClass(this, x, arguments, this.canvasDetails.width, this.canvasDetails.height);
+    objectArray[objectCount] = new entityClass(this, x, passedArgs, this.canvasDetails.width, this.canvasDetails.height);
 
     if (objectTypeCount[x.name]) {
       objectTypeCount[x.name]++;
@@ -1721,7 +1739,7 @@ GridInterceptor.prototype.populateObject = function(x, arguments, object, table,
     }
     objectCount++;
   } else if (entityClass && entityClass.isParameter) {
-    new entityClass(this, x, arguments, this.canvasDetails.width, this.canvasDetails.height);
+    new entityClass(this, x, passedArgs, this.canvasDetails.width, this.canvasDetails.height);
   }
   return ({
     objectCount,
@@ -1731,26 +1749,25 @@ GridInterceptor.prototype.populateObject = function(x, arguments, object, table,
 }
 
 GridInterceptor.prototype.populateTable = function(objectArray, documentPassed) {
-  if (this.totalCount < 100) {
-    const that = this;
-    objectArray = [].slice.call(objectArray);
-    objectArray.forEach((object, i) => {
+  const that = this;
+  objectArray = [].slice.call(objectArray);
+  objectArray.forEach((object, i) => {
+    if(i<MAX_OBJECTS) {
       const cellLoc = object.coordLoc.locY * that.noRows + object.coordLoc.locX;
       // add link in table
       const cellLink = documentPassed.createElement(`a`);
       cellLink.innerHTML += object.type;
       const objectId = `#object` + i;
       cellLink.setAttribute(`href`, objectId);
-      if (object.coordLoc.locY < that.noCols && object.coordLoc.locX < that.noRows && object.coordLoc.locY > 0 && object.coordLoc.locX > 0) {
+      if (object.coordLoc.locY < that.noCols && object.coordLoc.locX < that.noRows && object.coordLoc.locY >= 0 && object.coordLoc.locX >= 0) {
         documentPassed.getElementsByClassName(`gridOutput-cell-content`)[cellLoc].appendChild(cellLink);
       }
-
-    });
-  }
+    }
+  });
 }
 
 /* helper function to populate object Details */
-GridInterceptor.prototype.populateObjectDetails = function(object1, object2, elementSummary, elementDetail) {
+GridInterceptor.prototype.getSummary = function(object1, object2, elementSummary, elementDetail) {
   this.prevTotalCount = this.totalCount;
   this.totalCount = object1.objectCount + object2.objectCount;
   elementSummary.innerHTML = ``;
@@ -1774,36 +1791,40 @@ GridInterceptor.prototype.populateObjectDetails = function(object1, object2, ele
 
     const objectList = document.createElement(`ul`);
 
-    if (this.totalCount < 100) {
+    if (true){// }(this.totalCount < MAX_OBJECTS) {
       object1.objectArray.forEach((objArrayItem, i) => {
-        const objectListItem = document.createElement(`li`);
-        objectListItem.id = `object` + i;
-        objectList.appendChild(objectListItem);
-        const objKeys = Object.keys(objArrayItem.getAttributes());
-        objKeys.forEach((objKeyItem) => {
-          if (objKeyItem.localeCompare(`coordLoc`)) {
-            if (objKeyItem.localeCompare(`type`)) {
-              objectListItem.innerHTML += objKeyItem + ` = ` + objArrayItem[objKeyItem] + ` `;
-            } else {
-              objectListItem.innerHTML += objArrayItem[objKeyItem] + ` `;
+        if(i<MAX_OBJECTS){
+          const objectListItem = document.createElement(`li`);
+          objectListItem.id = `object` + i;
+          objectList.appendChild(objectListItem);
+          const objKeys = Object.keys(objArrayItem.getAttributes());
+          objKeys.forEach((objKeyItem) => {
+            if (objKeyItem.localeCompare(`coordLoc`)) {
+              if (objKeyItem.localeCompare(`type`)) {
+                objectListItem.innerHTML += objKeyItem + ` = ` + objArrayItem[objKeyItem] + ` `;
+              } else {
+                objectListItem.innerHTML += objArrayItem[objKeyItem] + ` `;
+              }
             }
-          }
-        });
+          });
+        }
       });
       object2.objectArray.forEach((objArrayItem, i) => {
-        const objectListItem = document.createElement(`li`);
-        objectListItem.id = `object` + (object1.objectArray.length + i);
-        objectList.appendChild(objectListItem);
-        const objKeys = Object.keys(objArrayItem.getAttributes());
-        objKeys.forEach((objKeyItem) => {
-          if (objKeyItem.localeCompare(`coordLoc`)) {
-            if (objKeyItem.localeCompare(`type`)) {
-              objectListItem.innerHTML += objKeyItem + ` = ` + objArrayItem[objKeyItem] + ` `;
-            } else {
-              objectListItem.innerHTML += objArrayItem[objKeyItem] + ` `;
+        if(i<MAX_OBJECTS){
+          const objectListItem = document.createElement(`li`);
+          objectListItem.id = `object` + (object1.objectArray.length + i);
+          objectList.appendChild(objectListItem);
+          const objKeys = Object.keys(objArrayItem.getAttributes());
+          objKeys.forEach((objKeyItem) => {
+            if (objKeyItem.localeCompare(`coordLoc`)) {
+              if (objKeyItem.localeCompare(`type`)) {
+                objectListItem.innerHTML += objKeyItem + ` = ` + objArrayItem[objKeyItem] + ` `;
+              } else {
+                objectListItem.innerHTML += objArrayItem[objKeyItem] + ` `;
+              }
             }
-          }
-        });
+          });
+        }
       });
       elementDetail.appendChild(objectList);
     }
@@ -1856,12 +1877,12 @@ if (document.getElementById(`tableOutput-content`)) {
         /* global gridInterceptor */
         gridInterceptor.createShadowDOMElement(document);
         gridInterceptor.setupObject =
-                    gridInterceptor.populateObject(x, arguments, gridInterceptor.setupObject, details, false);
-        gridInterceptor.populateObjectDetails(gridInterceptor.setupObject, gridInterceptor.drawObject, summary, details);
+                    gridInterceptor.populateObject(x, orgArg, gridInterceptor.setupObject, details, false);
+        gridInterceptor.getSummary(gridInterceptor.setupObject, gridInterceptor.drawObject, summary, details);
         gridInterceptor.populateTable(details, gridInterceptor.setupObject);
       } else if (frameCount === 1 || frameCount % 20 === 0) {
         gridInterceptor.drawObject =
-                    gridInterceptor.populateObject(x, arguments, gridInterceptor.drawObject, details, true);
+                    gridInterceptor.populateObject(x, orgArg, gridInterceptor.drawObject, details, true);
         gridInterceptor.isCleared = false;
 
         // clean the cells
@@ -1875,13 +1896,15 @@ if (document.getElementById(`tableOutput-content`)) {
         // TODO : make this more efficient so that it happens only ONCE per frame count
         /* global programObjects */
         programObjects = gridInterceptor.setupObject.objectArray.concat(gridInterceptor.drawObject.objectArray);
-        gridInterceptor.populateObjectDetails(gridInterceptor.setupObject, gridInterceptor.drawObject, summary, details);
+        gridInterceptor.getSummary(gridInterceptor.setupObject, gridInterceptor.drawObject, summary, details);
         gridInterceptor.populateTable(programObjects, document);
       }
-      if (x.name === `redraw`) { // reset some of the variables
-        gridInterceptor.drawObject = gridInterceptor.clearVariables(gridInterceptor.drawObject);
+      else if (frameCount % 20 === 19) {
+        if (x.name === `redraw`) { // reset some of the variables
+          gridInterceptor.drawObject = gridInterceptor.clearVariables(gridInterceptor.drawObject);
+        }
       }
-      return originalFunc.apply(this, arguments);
+      return originalFunc.apply(this, orgArg);
     };
   });
 };const baseFreq = 440;
@@ -1929,7 +1952,7 @@ if (document.getElementById(`soundOutput-content`)) {
     const originalFunc = p5.prototype[x.name];
     p5.prototype[x.name] = function() {
       /* global orgArg */
-      orgArg = arguments;
+      const orgArg = arguments;
 
       if (frameCount === 1 && (x.module.localeCompare(`Shape`) === 0)) {
         i = 0;
@@ -2020,7 +2043,7 @@ if (document.getElementById(`soundOutput-content`)) {
           gainNodes[movingObjectCount - 1].gain.value = 0;
         }
       }
-      return originalFunc.apply(this, arguments);
+      return originalFunc.apply(this, orgArg);
     };
   });
 }
