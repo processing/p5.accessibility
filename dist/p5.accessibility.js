@@ -2,7 +2,7 @@ function calculateColor(hsv) {
     let colortext;
     if (hsv[0] !== 0) {
         hsv[0] = Math.round(hsv[0] * 100);
-        hue = hsv[0].toString().split(``);
+        let hue = hsv[0].toString().split(``);
         const last = hue.length - 1;
         hue[last] = parseInt(hue[last]);
         if (hue[last] < 2.5) {
@@ -47,9 +47,9 @@ function calculateColor(hsv) {
             }
         }
     } else {
-        for (let i = 0; i < color_lookup.length; i++) {
-            if ((color_lookup[i].h === hsv[0]) && (color_lookup[i].s === hsv[1]) && (color_lookup[i].b === hsv[2])) {
-                colortext = color_lookup[i].name;
+        for (let i = 0; i < colorLookUp.length; i++) {
+            if ((colorLookUp[i].h === hsv[0]) && (colorLookUp[i].s === hsv[1]) && (colorLookUp[i].b === hsv[2])) {
+                colortext = colorLookUp[i].name;
                 break;
             }
         }
@@ -141,7 +141,7 @@ const xcp = [{
     },
 ];
 
-const color_lookup = [{
+const colorLookUp = [{
         "h": 0,
         "s": 0,
         "b": 0,
@@ -1072,6 +1072,7 @@ function RGBAString(colArgs) {
     }
   }
 }
+
 function RGBString(colArgs) {
   if (colArgs[0].match(/%/)) {
     if (((colArgs[0].match(/%/g)).length) === 3) {
@@ -1249,6 +1250,7 @@ Registry.register(FillEntity);
   this.area = 0;
   this.length = 0;
 
+
   this.populate = function(shapeObject, arguments, canvasX, canvasY) {
     this.location = this.getLocation(shapeObject, arguments, canvasX, canvasY);
     this.coordLoc = this.canvasLocator(shapeObject, arguments, canvasX, canvasY);
@@ -1362,12 +1364,13 @@ ShapeEntity.isParameter = false;
 
 /* global Registry */
 Registry.register(ShapeEntity);
-;function TextEntity(Interceptor, shapeObject, arguments, canvasX, canvasY) {
-
+;function TextEntity(Interceptor, shapeObject, textArgs, canvasX, canvasY) {
   const self = this;
+
+  // console.log(textArgs );
   /* global BaseEntity */
   BaseEntity.call(self, shapeObject, textArgs, canvasX, canvasY);
-  this.type = String(textArgs[0]).substring(0, 20) + `(` + Interceptor.currentColor + `)`;
+  this.type = Interceptor.currentColor + ` ` + shapeObject.name + `: ` + String(textArgs[0]).substring(0, 20);
 
   this.populate = function(shapeObject, textArgs, canvasX, canvasY) {
     this.location = this.getLocation(shapeObject, textArgs, canvasX, canvasY);
