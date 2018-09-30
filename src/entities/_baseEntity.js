@@ -1,38 +1,37 @@
-class BaseEntity {
-  constructor(Interceptor, object) {
-    this.type = `${Interceptor.currentColor} ${object.name}`;
-    this.location = ``;
-    this.coordinates = ``;
+function BaseEntity(Interceptor, object) {
+  this.type = Interceptor.currentColor + ` ` + object.name,
+  this.location = ``,
+  this.coordinates = ``,
+  this.isMember = function() {
+
   }
 
-  getAttributes() {
-    const {
-      type,
-      location,
-      coordinates
-    } = this;
+  this.getAttributes = function() {
     return ({
-      type,
-      location,
-      coordinates
-    });
-  }
-  getLocation(object, locArgs, canvasX, canvasY) {
+      type: this.type,
+      location: this.location,
+      coordinates: this.coordinates
+    })
+  };
+
+    this.getLocation = function(object, locArgs, canvasX, canvasY) { // eslint-disable-line
     let xCoord, yCoord;
-    locArgs = [...locArgs];
+    locArgs = [].slice.call(locArgs);
+    let i = 0;
     const that = this;
     that.coordinates = ``;
-    for (let i = 0; i < locArgs.length; ++i) {
-      const a = locArgs[i];
-      const description = object.params[i].description;
-      if (description.indexOf(`x-coordinate`) !== -1) {
+
+    locArgs.forEach((argument) => {
+      const a = argument;
+      if (object.params[i].description.indexOf(`x-coordinate`) > -1) {
         xCoord = a;
         that.coordinates += Math.round(a) + `x,`;
-      } else if (description.indexOf(`y-coordinate`) !== -1) {
+      } else if (object.params[i].description.indexOf(`y-coordinate`) > -1) {
         yCoord = a;
         that.coordinates += Math.round(a) + `y`;
       }
-    }
+      i++;
+    });
 
     if (xCoord < 0.4 * canvasX) {
       if (yCoord < 0.4 * canvasY) {
@@ -60,30 +59,33 @@ class BaseEntity {
       }
     }
   }
+
   /* return which part of the canvas an object os present */
-  canvasLocator(object, canvasArgs, canvasX, canvasY) {
+  this.canvasLocator = function(object, canvasArgs, canvasX, canvasY) {
     let xCoord, yCoord;
-    const noRows = 10;
-    const noCols = 10;
+    const noRows = 10,
+      noCols = 10;
     let locX, locY;
-    canvasArgs = [...canvasArgs];
-    for (let i = 0; i < canvasArgs.length; ++i) {
-      const a = canvasArgs[i];
-      const description = object.params[i].description;
-      if (description.indexOf(`x-coordinate`) !== -1) {
+    let i = 0;
+    canvasArgs = [].slice.call(canvasArgs);
+    canvasArgs.forEach((argument) => {
+      const a = argument;
+
+      if (object.params[i].description.indexOf(`x-coordinate`) > -1) {
         xCoord = a;
-      } else if (description.indexOf(`y-coordinate`) !== -1) {
+      } else if (object.params[i].description.indexOf(`y-coordinate`) > -1) {
         yCoord = a;
       }
-    }
+      i++;
+    });
 
     locX = Math.floor((xCoord / canvasX) * noRows);
     locY = Math.floor((yCoord / canvasY) * noCols);
     if (locX === noRows) {
-      locX -= 1;
+      locX = locX - 1;
     }
     if (locY === noCols) {
-      locY -= 1;
+      locY = locY - 1;
     }
     return ({
       locX,
