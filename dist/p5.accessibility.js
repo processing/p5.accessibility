@@ -1,722 +1,722 @@
 function calculateColor(hsv) {
-  let colortext;
-  if (hsv[0] !== 0) {
-    hsv[0] = Math.round(hsv[0] * 100);
-    hue = hsv[0].toString().split(``);
-    const last = hue.length - 1;
-    hue[last] = parseInt(hue[last]);
-    if (hue[last] < 2.5) {
-      hue[last] = 0;
-    } else if (hue[last] >= 2.5 && hue[last] < 7.5) {
-      hue[last] = 5;
+    let colortext;
+    if (hsv[0] !== 0) {
+        hsv[0] = Math.round(hsv[0] * 100);
+        hue = hsv[0].toString().split(``);
+        const last = hue.length - 1;
+        hue[last] = parseInt(hue[last]);
+        if (hue[last] < 2.5) {
+            hue[last] = 0;
+        } else if (hue[last] >= 2.5 && hue[last] < 7.5) {
+            hue[last] = 5;
+        }
+        if (hue.length === 2) {
+            hue[0] = parseInt(hue[0]);
+            if (hue[last] >= 7.5) {
+                hue[last] = 0;
+                hue[0] = hue[0] + 1;
+            }
+            hsv[0] = (hue[0] * 10) + hue[1];
+        } else {
+            if (hue[last] >= 7.5) {
+                hsv[0] = 10;
+            } else {
+                hsv[0] = hue[last];
+            }
+        }
     }
-    if (hue.length === 2) {
-      hue[0] = parseInt(hue[0]);
-      if (hue[last] >= 7.5) {
-        hue[last] = 0;
-        hue[0] = hue[0] + 1;
-      }
-      hsv[0] = (hue[0] * 10) + hue[1];
+    for (let i = hsv.length - 1; i >= 1; i--) {
+        if (hsv[i] <= 0.25) {
+            hsv[i] = 0;
+        } else if (hsv[i] > 0.25 && hsv[i] < 0.75) {
+            hsv[i] = 0.5;
+        } else {
+            hsv[i] = 1;
+        }
+    }
+    if ((hsv[0] === 0) && (hsv[1] === 0) && (hsv[2] === 1)) {
+        for (let i = oghsv.length - 1; i >= 0; i--) {
+            oghsv[i] = Math.round(oghsv[i] * 10000) / 10000;
+        }
+        for (let e = 0; e < xcp.length; e++) {
+            if ((xcp[e].h === oghsv[0]) && (xcp[e].s === oghsv[1]) && (xcp[e].b === oghsv[2])) {
+                colortext = xcp[e].name;
+                break;
+            } else {
+                colortext = `white`;
+            }
+        }
     } else {
-      if (hue[last] >= 7.5) {
-        hsv[0] = 10;
-      } else {
-        hsv[0] = hue[last];
-      }
+        for (let i = 0; i < color_lookup.length; i++) {
+            if ((color_lookup[i].h === hsv[0]) && (color_lookup[i].s === hsv[1]) && (color_lookup[i].b === hsv[2])) {
+                colortext = color_lookup[i].name;
+                break;
+            }
+        }
     }
-  }
-  for (let i = hsv.length - 1; i >= 1; i--) {
-    if (hsv[i] <= 0.25) {
-      hsv[i] = 0;
-    } else if (hsv[i] > 0.25 && hsv[i] < 0.75) {
-      hsv[i] = 0.5;
-    } else {
-      hsv[i] = 1;
-    }
-  }
-  if ((hsv[0] === 0) && (hsv[1] === 0) && (hsv[2] === 1)) {
-    for (let i = oghsv.length - 1; i >= 0; i--) {
-      oghsv[i] = Math.round(oghsv[i] * 10000) / 10000;
-    }
-    for (let e = 0; e < xcp.length; e++) {
-      if ((xcp[e].h === oghsv[0]) && (xcp[e].s === oghsv[1]) && (xcp[e].b === oghsv[2])) {
-        colortext = xcp[e].name;
-        break;
-      } else {
-        colortext = `white`;
-      }
-    }
-  } else {
-    for (let i = 0; i < color_lookup.length; i++) {
-      if ((color_lookup[i].h === hsv[0]) && (color_lookup[i].s === hsv[1]) && (color_lookup[i].b === hsv[2])) {
-        colortext = color_lookup[i].name;
-        break;
-      }
-    }
-  }
-  return colortext;
+    return colortext;
 }
 
 function hexToHsv(value) {
-  const r = parseInt(value[0] + value[1], 16);
-  const g = parseInt(value[2] + value[3], 16);
-  const b = parseInt(value[4] + value[5], 16);
-  const hsv = rgbToHsv(r, g, b);
-  return hsv;
+    const r = parseInt(value[0] + value[1], 16);
+    const g = parseInt(value[2] + value[3], 16);
+    const b = parseInt(value[4] + value[5], 16);
+    const hsv = rgbToHsv(r, g, b);
+    return hsv;
 }
 
 function rgbToHsv(r, g, b) {
-  r /= 255, g /= 255, b /= 255;
-  const max = Math.max(r, g, b),
-    min = Math.min(r, g, b),
-    v = max,
-    d = max - min,
-    s = max === 0 ? 0 : d / max;
-  let h;
-  if (max === min) {
-    h = 0; // achromatic
-  } else {
-    switch (max) {
-    case r:
-      h = (g - b) / d + (g < b ? 6 : 0);
-      break;
-    case g:
-      h = (b - r) / d + 2;
-      break;
-    case b:
-      h = (r - g) / d + 4;
-      break;
+    r /= 255, g /= 255, b /= 255;
+    const max = Math.max(r, g, b),
+        min = Math.min(r, g, b),
+        v = max,
+        d = max - min,
+        s = max === 0 ? 0 : d / max;
+    let h;
+    if (max === min) {
+        h = 0; // achromatic
+    } else {
+        switch (max) {
+            case r:
+                h = (g - b) / d + (g < b ? 6 : 0);
+                break;
+            case g:
+                h = (b - r) / d + 2;
+                break;
+            case b:
+                h = (r - g) / d + 4;
+                break;
+        }
+        h /= 6;
     }
-    h /= 6;
-  }
-  oghsv = [h, s, v];
-  return [h, s, v];
+    oghsv = [h, s, v];
+    return [h, s, v];
 }
 
 function rgbColorName(r, g, b) {
-  if (0 <= r && r <= 255 && 0 <= g && g <= 255 && 0 <= b && b <= 255) {
-    const colorname = calculateColor(rgbToHsv(r, g, b));
-    return colorname;
-  } else {
-    return (`Requires a valid rgb value`);
-  }
+    if (0 <= r && r <= 255 && 0 <= g && g <= 255 && 0 <= b && b <= 255) {
+        const colorname = calculateColor(rgbToHsv(r, g, b));
+        return colorname;
+    } else {
+        return (`Requires a valid rgb value`);
+    }
 
 }
 
 function hexColorName(value) {
-  const regEx = /[0-9A-Fa-f]{6}/g;
-  if (regEx.test(value) && value.length === 6) {
-    const colorname = calculateColor(hexToHsv(value));
-    return colorname;
-  } else {
-    return (`Requires a valid hex value`);
-  }
+    const regEx = /[0-9A-Fa-f]{6}/g;
+    if (regEx.test(value) && value.length === 6) {
+        const colorname = calculateColor(hexToHsv(value));
+        return colorname;
+    } else {
+        return (`Requires a valid hex value`);
+    }
 }
 
 let oghsv;
 
 const xcp = [{
-  "h": 0,
-  "s": 0,
-  "b": 0.8275,
-  "name": `gray`
-},
-{
-  "h": 0,
-  "s": 0,
-  "b": 0.8627,
-  "name": `gray`
-},
-{
-  "h": 0,
-  "s": 0,
-  "b": 0.7529,
-  "name": `gray`
-},
-{
-  "h": 0.0167,
-  "s": 0.1176,
-  "b": 1,
-  "name": `light pink`
-},
+        "h": 0,
+        "s": 0,
+        "b": 0.8275,
+        "name": `gray`
+    },
+    {
+        "h": 0,
+        "s": 0,
+        "b": 0.8627,
+        "name": `gray`
+    },
+    {
+        "h": 0,
+        "s": 0,
+        "b": 0.7529,
+        "name": `gray`
+    },
+    {
+        "h": 0.0167,
+        "s": 0.1176,
+        "b": 1,
+        "name": `light pink`
+    },
 ];
 
 const color_lookup = [{
-  "h": 0,
-  "s": 0,
-  "b": 0,
-  "name": `black`
-},
-{
-  "h": 0,
-  "s": 0,
-  "b": 0.5,
-  "name": `gray`
-},
-{
-  "h": 0,
-  "s": 0,
-  "b": 1,
-  "name": `white`
-},
-{
-  "h": 0,
-  "s": 0.5,
-  "b": 0.5,
-  "name": `dark maroon`
-},
-{
-  "h": 0,
-  "s": 0.5,
-  "b": 1,
-  "name": `salmon pink`
-},
-{
-  "h": 0,
-  "s": 1,
-  "b": 0,
-  "name": `black`
-},
-{
-  "h": 0,
-  "s": 1,
-  "b": 0.5,
-  "name": `dark red`
-},
-{
-  "h": 0,
-  "s": 1,
-  "b": 1,
-  "name": `red`
-},
-{
-  "h": 5,
-  "s": 0,
-  "b": 1,
-  "name": `very light peach`
-},
-{
-  "h": 5,
-  "s": 0.5,
-  "b": 0.5,
-  "name": `brown`
-},
-{
-  "h": 5,
-  "s": 0.5,
-  "b": 1,
-  "name": `peach`
-},
-{
-  "h": 5,
-  "s": 1,
-  "b": 0.5,
-  "name": `brick red`
-},
-{
-  "h": 5,
-  "s": 1,
-  "b": 1,
-  "name": `crimson`
-},
-{
-  "h": 10,
-  "s": 0,
-  "b": 1,
-  "name": `light peach`
-},
-{
-  "h": 10,
-  "s": 0.5,
-  "b": 0.5,
-  "name": `brown`
-},
-{
-  "h": 10,
-  "s": 0.5,
-  "b": 1,
-  "name": `light orange`
-},
-{
-  "h": 10,
-  "s": 1,
-  "b": 0.5,
-  "name": `brown`
-},
-{
-  "h": 10,
-  "s": 1,
-  "b": 1,
-  "name": `orange`
-},
-{
-  "h": 15,
-  "s": 0,
-  "b": 1,
-  "name": `very light yellow`
-},
-{
-  "h": 15,
-  "s": 0.5,
-  "b": 0.5,
-  "name": `olive green`
-},
-{
-  "h": 15,
-  "s": 0.5,
-  "b": 1,
-  "name": `light yellow`
-},
-{
-  "h": 15,
-  "s": 1,
-  "b": 0,
-  "name": `dark olive green`
-},
-{
-  "h": 15,
-  "s": 1,
-  "b": 0.5,
-  "name": `olive green`
-},
-{
-  "h": 15,
-  "s": 1,
-  "b": 1,
-  "name": `yellow`
-},
-{
-  "h": 20,
-  "s": 0,
-  "b": 1,
-  "name": `very light yellow`
-},
-{
-  "h": 20,
-  "s": 0.5,
-  "b": 0.5,
-  "name": `olive green`
-},
-{
-  "h": 20,
-  "s": 0.5,
-  "b": 1,
-  "name": `light yellow green`
-},
-{
-  "h": 20,
-  "s": 1,
-  "b": 0,
-  "name": `dark olive green`
-},
-{
-  "h": 20,
-  "s": 1,
-  "b": 0.5,
-  "name": `dark yellow green`
-},
-{
-  "h": 20,
-  "s": 1,
-  "b": 1,
-  "name": `yellow green`
-},
-{
-  "h": 25,
-  "s": 0.5,
-  "b": 0.5,
-  "name": `dark yellow green`
-},
-{
-  "h": 25,
-  "s": 0.5,
-  "b": 1,
-  "name": `light green`
-},
-{
-  "h": 25,
-  "s": 1,
-  "b": 0.5,
-  "name": `dark green`
-},
-{
-  "h": 25,
-  "s": 1,
-  "b": 1,
-  "name": `green`
-},
-{
-  "h": 30,
-  "s": 0.5,
-  "b": 1,
-  "name": `light green`
-},
-{
-  "h": 30,
-  "s": 1,
-  "b": 0.5,
-  "name": `dark green`
-},
-{
-  "h": 30,
-  "s": 1,
-  "b": 1,
-  "name": `green`
-},
-{
-  "h": 35,
-  "s": 0,
-  "b": 0.5,
-  "name": `light green`
-},
-{
-  "h": 35,
-  "s": 0,
-  "b": 1,
-  "name": `very light green`
-},
-{
-  "h": 35,
-  "s": 0.5,
-  "b": 0.5,
-  "name": `dark green`
-},
-{
-  "h": 35,
-  "s": 0.5,
-  "b": 1,
-  "name": `light green`
-},
-{
-  "h": 35,
-  "s": 1,
-  "b": 0,
-  "name": `very dark green`
-},
-{
-  "h": 35,
-  "s": 1,
-  "b": 0.5,
-  "name": `dark green`
-},
-{
-  "h": 35,
-  "s": 1,
-  "b": 1,
-  "name": `green`
-},
-{
-  "h": 40,
-  "s": 0,
-  "b": 1,
-  "name": `very light green`
-},
-{
-  "h": 40,
-  "s": 0.5,
-  "b": 0.5,
-  "name": `dark green`
-},
-{
-  "h": 40,
-  "s": 0.5,
-  "b": 1,
-  "name": `light green`
-},
-{
-  "h": 40,
-  "s": 1,
-  "b": 0.5,
-  "name": `dark green`
-},
-{
-  "h": 40,
-  "s": 1,
-  "b": 1,
-  "name": `green`
-},
-{
-  "h": 45,
-  "s": 0.5,
-  "b": 1,
-  "name": `light turquoise`
-},
-{
-  "h": 45,
-  "s": 1,
-  "b": 0.5,
-  "name": `dark turquoise`
-},
-{
-  "h": 45,
-  "s": 1,
-  "b": 1,
-  "name": `turquoise`
-},
-{
-  "h": 50,
-  "s": 0,
-  "b": 1,
-  "name": `light sky blue`
-},
-{
-  "h": 50,
-  "s": 0.5,
-  "b": 0.5,
-  "name": `dark cyan`
-},
-{
-  "h": 50,
-  "s": 0.5,
-  "b": 1,
-  "name": `light cyan`
-},
-{
-  "h": 50,
-  "s": 1,
-  "b": 0.5,
-  "name": `dark cyan`
-},
-{
-  "h": 50,
-  "s": 1,
-  "b": 1,
-  "name": `cyan`
-},
-{
-  "h": 55,
-  "s": 0,
-  "b": 1,
-  "name": `light sky blue`
-},
-{
-  "h": 55,
-  "s": 0.5,
-  "b": 1,
-  "name": `light sky blue`
-},
-{
-  "h": 55,
-  "s": 1,
-  "b": 0.5,
-  "name": `dark blue`
-},
-{
-  "h": 55,
-  "s": 1,
-  "b": 1,
-  "name": `sky blue`
-},
-{
-  "h": 60,
-  "s": 0,
-  "b": 0.5,
-  "name": `gray`
-},
-{
-  "h": 60,
-  "s": 0,
-  "b": 1,
-  "name": `very light blue`
-},
-{
-  "h": 60,
-  "s": 0.5,
-  "b": 0.5,
-  "name": `blue`
-},
-{
-  "h": 60,
-  "s": 0.5,
-  "b": 1,
-  "name": `light blue`
-},
-{
-  "h": 60,
-  "s": 1,
-  "b": 0.5,
-  "name": `navy blue`
-},
-{
-  "h": 60,
-  "s": 1,
-  "b": 1,
-  "name": `blue`
-},
-{
-  "h": 65,
-  "s": 0,
-  "b": 1,
-  "name": `lavender`
-},
-{
-  "h": 65,
-  "s": 0.5,
-  "b": 0.5,
-  "name": `navy blue`
-},
-{
-  "h": 65,
-  "s": 0.5,
-  "b": 1,
-  "name": `light purple`
-},
-{
-  "h": 65,
-  "s": 1,
-  "b": 0.5,
-  "name": `dark navy blue`
-},
-{
-  "h": 65,
-  "s": 1,
-  "b": 1,
-  "name": `blue`
-},
-{
-  "h": 70,
-  "s": 0,
-  "b": 1,
-  "name": `lavender`
-},
-{
-  "h": 70,
-  "s": 0.5,
-  "b": 0.5,
-  "name": `navy blue`
-},
-{
-  "h": 70,
-  "s": 0.5,
-  "b": 1,
-  "name": `lavender blue`
-},
-{
-  "h": 70,
-  "s": 1,
-  "b": 0.5,
-  "name": `dark navy blue`
-},
-{
-  "h": 70,
-  "s": 1,
-  "b": 1,
-  "name": `blue`
-},
-{
-  "h": 75,
-  "s": 0.5,
-  "b": 1,
-  "name": `lavender`
-},
-{
-  "h": 75,
-  "s": 1,
-  "b": 0.5,
-  "name": `dark purple`
-},
-{
-  "h": 75,
-  "s": 1,
-  "b": 1,
-  "name": `purple`
-},
-{
-  "h": 80,
-  "s": 0.5,
-  "b": 1,
-  "name": `pinkish purple`
-},
-{
-  "h": 80,
-  "s": 1,
-  "b": 0.5,
-  "name": `dark purple`
-},
-{
-  "h": 80,
-  "s": 1,
-  "b": 1,
-  "name": `purple`
-},
-{
-  "h": 85,
-  "s": 0,
-  "b": 1,
-  "name": `light pink`
-},
-{
-  "h": 85,
-  "s": 0.5,
-  "b": 0.5,
-  "name": `purple`
-},
-{
-  "h": 85,
-  "s": 0.5,
-  "b": 1,
-  "name": `light fuchsia`
-},
-{
-  "h": 85,
-  "s": 1,
-  "b": 0.5,
-  "name": `dark fuchsia`
-},
-{
-  "h": 85,
-  "s": 1,
-  "b": 1,
-  "name": `fuchsia`
-},
-{
-  "h": 90,
-  "s": 0.5,
-  "b": 0.5,
-  "name": `dark fuchsia`
-},
-{
-  "h": 90,
-  "s": 0.5,
-  "b": 1,
-  "name": `hot pink`
-},
-{
-  "h": 90,
-  "s": 1,
-  "b": 0.5,
-  "name": `dark fuchsia`
-},
-{
-  "h": 90,
-  "s": 1,
-  "b": 1,
-  "name": `fuchsia`
-},
-{
-  "h": 95,
-  "s": 0,
-  "b": 1,
-  "name": `pink`
-},
-{
-  "h": 95,
-  "s": 0.5,
-  "b": 1,
-  "name": `light pink`
-},
-{
-  "h": 95,
-  "s": 1,
-  "b": 0.5,
-  "name": `dark magenta`
-},
-{
-  "h": 95,
-  "s": 1,
-  "b": 1,
-  "name": `magenta`
-},
+        "h": 0,
+        "s": 0,
+        "b": 0,
+        "name": `black`
+    },
+    {
+        "h": 0,
+        "s": 0,
+        "b": 0.5,
+        "name": `gray`
+    },
+    {
+        "h": 0,
+        "s": 0,
+        "b": 1,
+        "name": `white`
+    },
+    {
+        "h": 0,
+        "s": 0.5,
+        "b": 0.5,
+        "name": `dark maroon`
+    },
+    {
+        "h": 0,
+        "s": 0.5,
+        "b": 1,
+        "name": `salmon pink`
+    },
+    {
+        "h": 0,
+        "s": 1,
+        "b": 0,
+        "name": `black`
+    },
+    {
+        "h": 0,
+        "s": 1,
+        "b": 0.5,
+        "name": `dark red`
+    },
+    {
+        "h": 0,
+        "s": 1,
+        "b": 1,
+        "name": `red`
+    },
+    {
+        "h": 5,
+        "s": 0,
+        "b": 1,
+        "name": `very light peach`
+    },
+    {
+        "h": 5,
+        "s": 0.5,
+        "b": 0.5,
+        "name": `brown`
+    },
+    {
+        "h": 5,
+        "s": 0.5,
+        "b": 1,
+        "name": `peach`
+    },
+    {
+        "h": 5,
+        "s": 1,
+        "b": 0.5,
+        "name": `brick red`
+    },
+    {
+        "h": 5,
+        "s": 1,
+        "b": 1,
+        "name": `crimson`
+    },
+    {
+        "h": 10,
+        "s": 0,
+        "b": 1,
+        "name": `light peach`
+    },
+    {
+        "h": 10,
+        "s": 0.5,
+        "b": 0.5,
+        "name": `brown`
+    },
+    {
+        "h": 10,
+        "s": 0.5,
+        "b": 1,
+        "name": `light orange`
+    },
+    {
+        "h": 10,
+        "s": 1,
+        "b": 0.5,
+        "name": `brown`
+    },
+    {
+        "h": 10,
+        "s": 1,
+        "b": 1,
+        "name": `orange`
+    },
+    {
+        "h": 15,
+        "s": 0,
+        "b": 1,
+        "name": `very light yellow`
+    },
+    {
+        "h": 15,
+        "s": 0.5,
+        "b": 0.5,
+        "name": `olive green`
+    },
+    {
+        "h": 15,
+        "s": 0.5,
+        "b": 1,
+        "name": `light yellow`
+    },
+    {
+        "h": 15,
+        "s": 1,
+        "b": 0,
+        "name": `dark olive green`
+    },
+    {
+        "h": 15,
+        "s": 1,
+        "b": 0.5,
+        "name": `olive green`
+    },
+    {
+        "h": 15,
+        "s": 1,
+        "b": 1,
+        "name": `yellow`
+    },
+    {
+        "h": 20,
+        "s": 0,
+        "b": 1,
+        "name": `very light yellow`
+    },
+    {
+        "h": 20,
+        "s": 0.5,
+        "b": 0.5,
+        "name": `olive green`
+    },
+    {
+        "h": 20,
+        "s": 0.5,
+        "b": 1,
+        "name": `light yellow green`
+    },
+    {
+        "h": 20,
+        "s": 1,
+        "b": 0,
+        "name": `dark olive green`
+    },
+    {
+        "h": 20,
+        "s": 1,
+        "b": 0.5,
+        "name": `dark yellow green`
+    },
+    {
+        "h": 20,
+        "s": 1,
+        "b": 1,
+        "name": `yellow green`
+    },
+    {
+        "h": 25,
+        "s": 0.5,
+        "b": 0.5,
+        "name": `dark yellow green`
+    },
+    {
+        "h": 25,
+        "s": 0.5,
+        "b": 1,
+        "name": `light green`
+    },
+    {
+        "h": 25,
+        "s": 1,
+        "b": 0.5,
+        "name": `dark green`
+    },
+    {
+        "h": 25,
+        "s": 1,
+        "b": 1,
+        "name": `green`
+    },
+    {
+        "h": 30,
+        "s": 0.5,
+        "b": 1,
+        "name": `light green`
+    },
+    {
+        "h": 30,
+        "s": 1,
+        "b": 0.5,
+        "name": `dark green`
+    },
+    {
+        "h": 30,
+        "s": 1,
+        "b": 1,
+        "name": `green`
+    },
+    {
+        "h": 35,
+        "s": 0,
+        "b": 0.5,
+        "name": `light green`
+    },
+    {
+        "h": 35,
+        "s": 0,
+        "b": 1,
+        "name": `very light green`
+    },
+    {
+        "h": 35,
+        "s": 0.5,
+        "b": 0.5,
+        "name": `dark green`
+    },
+    {
+        "h": 35,
+        "s": 0.5,
+        "b": 1,
+        "name": `light green`
+    },
+    {
+        "h": 35,
+        "s": 1,
+        "b": 0,
+        "name": `very dark green`
+    },
+    {
+        "h": 35,
+        "s": 1,
+        "b": 0.5,
+        "name": `dark green`
+    },
+    {
+        "h": 35,
+        "s": 1,
+        "b": 1,
+        "name": `green`
+    },
+    {
+        "h": 40,
+        "s": 0,
+        "b": 1,
+        "name": `very light green`
+    },
+    {
+        "h": 40,
+        "s": 0.5,
+        "b": 0.5,
+        "name": `dark green`
+    },
+    {
+        "h": 40,
+        "s": 0.5,
+        "b": 1,
+        "name": `light green`
+    },
+    {
+        "h": 40,
+        "s": 1,
+        "b": 0.5,
+        "name": `dark green`
+    },
+    {
+        "h": 40,
+        "s": 1,
+        "b": 1,
+        "name": `green`
+    },
+    {
+        "h": 45,
+        "s": 0.5,
+        "b": 1,
+        "name": `light turquoise`
+    },
+    {
+        "h": 45,
+        "s": 1,
+        "b": 0.5,
+        "name": `dark turquoise`
+    },
+    {
+        "h": 45,
+        "s": 1,
+        "b": 1,
+        "name": `turquoise`
+    },
+    {
+        "h": 50,
+        "s": 0,
+        "b": 1,
+        "name": `light sky blue`
+    },
+    {
+        "h": 50,
+        "s": 0.5,
+        "b": 0.5,
+        "name": `dark cyan`
+    },
+    {
+        "h": 50,
+        "s": 0.5,
+        "b": 1,
+        "name": `light cyan`
+    },
+    {
+        "h": 50,
+        "s": 1,
+        "b": 0.5,
+        "name": `dark cyan`
+    },
+    {
+        "h": 50,
+        "s": 1,
+        "b": 1,
+        "name": `cyan`
+    },
+    {
+        "h": 55,
+        "s": 0,
+        "b": 1,
+        "name": `light sky blue`
+    },
+    {
+        "h": 55,
+        "s": 0.5,
+        "b": 1,
+        "name": `light sky blue`
+    },
+    {
+        "h": 55,
+        "s": 1,
+        "b": 0.5,
+        "name": `dark blue`
+    },
+    {
+        "h": 55,
+        "s": 1,
+        "b": 1,
+        "name": `sky blue`
+    },
+    {
+        "h": 60,
+        "s": 0,
+        "b": 0.5,
+        "name": `gray`
+    },
+    {
+        "h": 60,
+        "s": 0,
+        "b": 1,
+        "name": `very light blue`
+    },
+    {
+        "h": 60,
+        "s": 0.5,
+        "b": 0.5,
+        "name": `blue`
+    },
+    {
+        "h": 60,
+        "s": 0.5,
+        "b": 1,
+        "name": `light blue`
+    },
+    {
+        "h": 60,
+        "s": 1,
+        "b": 0.5,
+        "name": `navy blue`
+    },
+    {
+        "h": 60,
+        "s": 1,
+        "b": 1,
+        "name": `blue`
+    },
+    {
+        "h": 65,
+        "s": 0,
+        "b": 1,
+        "name": `lavender`
+    },
+    {
+        "h": 65,
+        "s": 0.5,
+        "b": 0.5,
+        "name": `navy blue`
+    },
+    {
+        "h": 65,
+        "s": 0.5,
+        "b": 1,
+        "name": `light purple`
+    },
+    {
+        "h": 65,
+        "s": 1,
+        "b": 0.5,
+        "name": `dark navy blue`
+    },
+    {
+        "h": 65,
+        "s": 1,
+        "b": 1,
+        "name": `blue`
+    },
+    {
+        "h": 70,
+        "s": 0,
+        "b": 1,
+        "name": `lavender`
+    },
+    {
+        "h": 70,
+        "s": 0.5,
+        "b": 0.5,
+        "name": `navy blue`
+    },
+    {
+        "h": 70,
+        "s": 0.5,
+        "b": 1,
+        "name": `lavender blue`
+    },
+    {
+        "h": 70,
+        "s": 1,
+        "b": 0.5,
+        "name": `dark navy blue`
+    },
+    {
+        "h": 70,
+        "s": 1,
+        "b": 1,
+        "name": `blue`
+    },
+    {
+        "h": 75,
+        "s": 0.5,
+        "b": 1,
+        "name": `lavender`
+    },
+    {
+        "h": 75,
+        "s": 1,
+        "b": 0.5,
+        "name": `dark purple`
+    },
+    {
+        "h": 75,
+        "s": 1,
+        "b": 1,
+        "name": `purple`
+    },
+    {
+        "h": 80,
+        "s": 0.5,
+        "b": 1,
+        "name": `pinkish purple`
+    },
+    {
+        "h": 80,
+        "s": 1,
+        "b": 0.5,
+        "name": `dark purple`
+    },
+    {
+        "h": 80,
+        "s": 1,
+        "b": 1,
+        "name": `purple`
+    },
+    {
+        "h": 85,
+        "s": 0,
+        "b": 1,
+        "name": `light pink`
+    },
+    {
+        "h": 85,
+        "s": 0.5,
+        "b": 0.5,
+        "name": `purple`
+    },
+    {
+        "h": 85,
+        "s": 0.5,
+        "b": 1,
+        "name": `light fuchsia`
+    },
+    {
+        "h": 85,
+        "s": 1,
+        "b": 0.5,
+        "name": `dark fuchsia`
+    },
+    {
+        "h": 85,
+        "s": 1,
+        "b": 1,
+        "name": `fuchsia`
+    },
+    {
+        "h": 90,
+        "s": 0.5,
+        "b": 0.5,
+        "name": `dark fuchsia`
+    },
+    {
+        "h": 90,
+        "s": 0.5,
+        "b": 1,
+        "name": `hot pink`
+    },
+    {
+        "h": 90,
+        "s": 1,
+        "b": 0.5,
+        "name": `dark fuchsia`
+    },
+    {
+        "h": 90,
+        "s": 1,
+        "b": 1,
+        "name": `fuchsia`
+    },
+    {
+        "h": 95,
+        "s": 0,
+        "b": 1,
+        "name": `pink`
+    },
+    {
+        "h": 95,
+        "s": 0.5,
+        "b": 1,
+        "name": `light pink`
+    },
+    {
+        "h": 95,
+        "s": 1,
+        "b": 0.5,
+        "name": `dark magenta`
+    },
+    {
+        "h": 95,
+        "s": 1,
+        "b": 1,
+        "name": `magenta`
+    },
 ];;function getElementById(id) {
   return document.getElementById(id);
 }
@@ -1072,7 +1072,6 @@ function RGBAString(colArgs) {
     }
   }
 }
-
 function RGBString(colArgs) {
   if (colArgs[0].match(/%/)) {
     if (((colArgs[0].match(/%/g)).length) === 3) {
@@ -1099,41 +1098,40 @@ function RGBString(colArgs) {
     return (getRGBname(values));
   }
 }
-;class BaseEntity {
-  constructor(Interceptor, object) {
-    this.type = `${Interceptor.currentColor} ${object.name}`;
-    this.location = ``;
-    this.coordinates = ``;
+;function BaseEntity(Interceptor, object) {
+  this.type = Interceptor.currentColor + ` ` + object.name,
+  this.location = ``,
+  this.coordinates = ``,
+  this.isMember = function() {
+
   }
 
-  getAttributes() {
-    const {
-      type,
-      location,
-      coordinates
-    } = this;
+  this.getAttributes = function() {
     return ({
-      type,
-      location,
-      coordinates
-    });
-  }
-  getLocation(object, locArgs, canvasX, canvasY) {
+      type: this.type,
+      location: this.location,
+      coordinates: this.coordinates
+    })
+  };
+
+    this.getLocation = function(object, locArgs, canvasX, canvasY) { // eslint-disable-line
     let xCoord, yCoord;
-    locArgs = [...locArgs];
+    locArgs = [].slice.call(locArgs);
+    let i = 0;
     const that = this;
     that.coordinates = ``;
-    for (let i = 0; i < locArgs.length; ++i) {
-      const a = locArgs[i];
-      const description = object.params[i].description;
-      if (description.indexOf(`x-coordinate`) !== -1) {
+
+    locArgs.forEach((argument) => {
+      const a = argument;
+      if (object.params[i].description.indexOf(`x-coordinate`) > -1) {
         xCoord = a;
         that.coordinates += Math.round(a) + `x,`;
-      } else if (description.indexOf(`y-coordinate`) !== -1) {
+      } else if (object.params[i].description.indexOf(`y-coordinate`) > -1) {
         yCoord = a;
         that.coordinates += Math.round(a) + `y`;
       }
-    }
+      i++;
+    });
 
     if (xCoord < 0.4 * canvasX) {
       if (yCoord < 0.4 * canvasY) {
@@ -1161,30 +1159,33 @@ function RGBString(colArgs) {
       }
     }
   }
+
   /* return which part of the canvas an object os present */
-  canvasLocator(object, canvasArgs, canvasX, canvasY) {
+  this.canvasLocator = function(object, canvasArgs, canvasX, canvasY) {
     let xCoord, yCoord;
-    const noRows = 10;
-    const noCols = 10;
+    const noRows = 10,
+      noCols = 10;
     let locX, locY;
-    canvasArgs = [...canvasArgs];
-    for (let i = 0; i < canvasArgs.length; ++i) {
-      const a = canvasArgs[i];
-      const description = object.params[i].description;
-      if (description.indexOf(`x-coordinate`) !== -1) {
+    let i = 0;
+    canvasArgs = [].slice.call(canvasArgs);
+    canvasArgs.forEach((argument) => {
+      const a = argument;
+
+      if (object.params[i].description.indexOf(`x-coordinate`) > -1) {
         xCoord = a;
-      } else if (description.indexOf(`y-coordinate`) !== -1) {
+      } else if (object.params[i].description.indexOf(`y-coordinate`) > -1) {
         yCoord = a;
       }
-    }
+      i++;
+    });
 
     locX = Math.floor((xCoord / canvasX) * noRows);
     locY = Math.floor((yCoord / canvasY) * noCols);
     if (locX === noRows) {
-      locX -= 1;
+      locX = locX - 1;
     }
     if (locY === noCols) {
-      locY -= 1;
+      locY = locY - 1;
     }
     return ({
       locX,
@@ -1193,19 +1194,20 @@ function RGBString(colArgs) {
   }
 }
 
-BaseEntity.isParameter = false;;class BackgroundEntity {
-    constructor(Interceptor, x, backgroundArgs) { /* The "x" is unused due to dynamic object creation in InterceptorFunctions entityClass.  */ // eslint-disable-line
-    this.backgroundArgs = backgroundArgs;
-    this.populate(Interceptor);
-  }
-  populate(Interceptor) {
-    if (this.backgroundArgs[0].name === `p5.Color`) {
-      this.backgroundArgs = this.backgroundArgs[0].levels;
+BaseEntity.isParameter = false;
+;function BackgroundEntity(Interceptor, object, backgroundArgs, canvasX, canvasY) { // eslint-disable-line no-unused-vars
+  this.populate = function(Interceptor) {
+    if (backgroundArgs[0].name === `p5.Color`) {
+      backgroundArgs = backgroundArgs[0].levels;
     }
-    Interceptor.bgColor = Interceptor.getColorName(this.backgroundArgs).color + Interceptor.getColorName(this.backgroundArgs).rgb;
+    Interceptor.bgColor = Interceptor.getColorName(backgroundArgs).color + Interceptor.getColorName(backgroundArgs).rgb;
   }
+
+  this.populate(Interceptor);
 }
-BackgroundEntity.handledNames = [`background`];
+BackgroundEntity.handledNames = [
+  `background`
+]
 
 BackgroundEntity.handles = function(name) {
   return (this.handledNames.indexOf(name) >= 0);
@@ -1214,19 +1216,21 @@ BackgroundEntity.handles = function(name) {
 BackgroundEntity.isParameter = true;
 
 /* global Registry */
-Registry.register(BackgroundEntity);;class FillEntity {
-    constructor(Interceptor, x, fillArgs) { /* The "x" is unused due to dynamic object creation in InterceptorFunctions entityClass.  */ // eslint-disable-line
-    this.fillArgs = fillArgs;
-    this.populate(Interceptor);
-  }
-  populate(Interceptor) {
-    if (this.fillArgs[0].name === `p5.Color`) {
-      this.fillArgs = this.fillArgs[0].levels;
+Registry.register(BackgroundEntity);
+;function FillEntity(Interceptor, shapeObject, fillArgs, canvasX, canvasY) // eslint-disable-line no-unused-vars
+{
+  this.populate = function(Interceptor) {
+    if (fillArgs[0].name === `p5.Color`) {
+      fillArgs = fillArgs[0].levels;
     }
-    Interceptor.currentColor = Interceptor.getColorName(this.fillArgs).color + Interceptor.getColorName(this.fillArgs).rgb;
+    Interceptor.currentColor = Interceptor.getColorName(fillArgs).color + Interceptor.getColorName(fillArgs).rgb;
   }
+
+  this.populate(Interceptor);
 }
-FillEntity.handledNames = [`fill`];
+FillEntity.handledNames = [
+  `fill`
+]
 
 FillEntity.handles = function(name) {
   return (this.handledNames.indexOf(name) >= 0);
@@ -1235,65 +1239,61 @@ FillEntity.handles = function(name) {
 FillEntity.isParameter = true;
 
 /* global Registry */
-Registry.register(FillEntity);;/* global BaseEntity */
-class ShapeEntity extends BaseEntity {
-  constructor(Interceptor, shapeObject, shapeArgs, canvasX, canvasY) {
-    super(Interceptor, shapeObject);
-    this.shapeObject = shapeObject;
-    this.areaAbs = 0;
-    this.type = `${Interceptor.currentColor} ${shapeObject.name}`;
-    this.area = 0;
-    this.populate(shapeObject, shapeArgs, canvasX, canvasY);
-  }
-  populate(shapeObject, shapeArgs, canvasX, canvasY) {
-    this.location = this.getLocation(shapeObject, shapeArgs, canvasX, canvasY);
-    this.areaAbs = this.getObjectArea(shapeObject.name, shapeArgs);
-    this.coordLoc = this.canvasLocator(shapeObject, shapeArgs, canvasX, canvasY);
-    this.area = (this.getObjectArea(shapeObject.name, shapeArgs) * 100 / (canvasX * canvasY)).toFixed(2) + `%`;
-  }
-  getAttributes() {
-    const {
-      shapeObject,
-      type,
-      location,
-      coordinates,
-      area
-    } = this;
-    if ((!shapeObject.name.localeCompare(`ellipse`)) || !shapeObject.name.localeCompare(`rect`) || !shapeObject.name.localeCompare(`triangle`) || !shapeObject.name.localeCompare(`quad`)) {
-      return ({
-        type,
-        location,
-        coordinates,
-        area
-      });
-    } else if (!shapeObject.name.localeCompare(`line`)) {
-      return ({
-        type,
-        location,
-        coordinates,
-        length
-      });
-    } else {
-      return ({
-        type,
-        location,
-        coordinates
-      });
+Registry.register(FillEntity);
+;function ShapeEntity(Interceptor, shapeObject, shapeArgs, canvasX, canvasY) {
+  const self = this;
+  /* global BaseEntity */
+  BaseEntity.call(self, shapeObject, shapeArgs, canvasX, canvasY);
+  this.areaAbs = 0;
+  this.type = Interceptor.currentColor + ` ` + shapeObject.name;
+  this.area = 0;
+  this.length = 0;
+
+  this.populate = function(shapeObject, arguments, canvasX, canvasY) {
+    this.location = this.getLocation(shapeObject, arguments, canvasX, canvasY);
+    this.coordLoc = this.canvasLocator(shapeObject, arguments, canvasX, canvasY);
+    if(!shapeObject.name.localeCompare(`ellipse`) || !shapeObject.name.localeCompare(`rect`)  || !shapeObject.name.localeCompare(`triangle`) || !shapeObject.name.localeCompare(`quad`)) {
+      this.areaAbs = this.getObjectArea(shapeObject.name, arguments);
+      this.area = (this.getObjectArea(shapeObject.name, arguments) * 100 / (canvasX * canvasY)).toFixed(2) + `%`;
+    } else if(!shapeObject.name.localeCompare(`line`)) {
+      this.length = this.getLineLength(arguments);
     }
   }
 
+  this.getAttributes = function() {
+    if((!shapeObject.name.localeCompare(`ellipse`)) || !shapeObject.name.localeCompare(`rect`)  || !shapeObject.name.localeCompare(`triangle`) || !shapeObject.name.localeCompare(`quad`)) {
+      return ({
+        type: this.type,
+        location: this.location,
+        coordinates: this.coordinates,
+        area: this.area
+      })
+    } 
+    else if(!shapeObject.name.localeCompare(`line`)) {
+      return ({
+        type: this.type,
+        location: this.location,
+        coordinates: this.coordinates,
+        length : this.length
+      })
+    } 
+    else {
+      return ({
+        type: this.type,
+        location: this.location,
+        coordinates: this.coordinates         
+      })
+    }
+  };
+
   /* return length of lines */
-  getLineLength(...args) {
-    const {
-      round,
-      sqrt,
-      pow
-    } = Math;
-    return round(sqrt((pow(args[2] - args[0], 2)) + (pow(args[3] - args[1], 2))));
+  this.getLineLength = function(arguments){
+    const lineLength = Math.round(Math.sqrt((Math.pow(arguments[2]-arguments[0],2)) + (Math.pow(arguments[3]-arguments[1],2))));
+    return lineLength;
   }
 
   /* return area of the shape */
-  getObjectArea(objectType, shapeArgs) {
+  this.getObjectArea = function(objectType, shapeArgs) {
     let objectArea = 0;
     if (!objectType.localeCompare(`arc`)) {
       // area of full ellipse = PI * horizontal radius * vertical radius.
@@ -1327,10 +1327,10 @@ class ShapeEntity extends BaseEntity {
       // ((x4+x1)*(y4-y1)+(x1+x2)*(y1-y2)+(x2+x3)*(y2-y3)+(x3+x4)*(y3-y4))/2
       objectArea = abs(
         (shapeArgs[6] + shapeArgs[0]) * (shapeArgs[7] - shapeArgs[1]) +
-                (shapeArgs[0] + shapeArgs[2]) * (shapeArgs[1] - shapeArgs[3]) +
-                (shapeArgs[2] + shapeArgs[4]) * (shapeArgs[3] - shapeArgs[5]) +
-                (shapeArgs[4] + shapeArgs[6]) * (shapeArgs[5] - shapeArgs[7])
-      ) / 2;
+        (shapeArgs[0] + shapeArgs[2]) * (shapeArgs[1] - shapeArgs[3]) +
+        (shapeArgs[2] + shapeArgs[4]) * (shapeArgs[3] - shapeArgs[5]) +
+        (shapeArgs[4] + shapeArgs[6]) * (shapeArgs[5] - shapeArgs[7])
+      )/2;
     } else if (!objectType.localeCompare(`rect`)) {
       objectArea = shapeArgs[2] * shapeArgs[3];
     } else if (!objectType.localeCompare(`triangle`)) {
@@ -1340,9 +1340,19 @@ class ShapeEntity extends BaseEntity {
     }
     return objectArea;
   }
+
+  this.populate(shapeObject, shapeArgs, canvasX, canvasY);
 }
 
-ShapeEntity.handledNames = [`arc`, `ellipse`, `line`, `point`, `quad`, `rect`, `triangle`];
+ShapeEntity.handledNames = [
+  `arc`,
+  `ellipse`,
+  `line`,
+  `point`,
+  `quad`,
+  `rect`,
+  `triangle`
+]
 
 ShapeEntity.handles = function(name) {
   return (this.handledNames.indexOf(name) >= 0);
@@ -1351,25 +1361,33 @@ ShapeEntity.handles = function(name) {
 ShapeEntity.isParameter = false;
 
 /* global Registry */
-Registry.register(ShapeEntity);;/* global BaseEntity */
-class TextEntity extends BaseEntity {
-  constructor(Interceptor, shapeObject, textArgs, canvasX, canvasY) {
-    super(shapeObject, textArgs, canvasX, canvasY);
-    this.type = `${String(textArgs[0]).substring(0, 20)}(${Interceptor.currentColor})`;
-    this.populate(shapeObject, textArgs, canvasX, canvasY);
-  }
+Registry.register(ShapeEntity);
+;function TextEntity(Interceptor, shapeObject, arguments, canvasX, canvasY) {
 
-  populate(shapeObject, textArgs, canvasX, canvasY) {
+  const self = this;
+  /* global BaseEntity */
+  BaseEntity.call(self, shapeObject, textArgs, canvasX, canvasY);
+  this.type = String(textArgs[0]).substring(0, 20) + `(` + Interceptor.currentColor + `)`;
+
+  this.populate = function(shapeObject, textArgs, canvasX, canvasY) {
     this.location = this.getLocation(shapeObject, textArgs, canvasX, canvasY);
     this.coordLoc = this.canvasLocator(shapeObject, textArgs, canvasX, canvasY);
-  }
-  getAttributes() {
-    const { type, location, coordinates } = this;
-    return ({ type, location, coordinates });
-  }
+  };
+
+  this.getAttributes = function() {
+    return ({
+      type: this.type,
+      location: this.location,
+      coordinates: this.coordinates,
+    })
+  };
+
+  this.populate(shapeObject, textArgs, canvasX, canvasY);
 }
 
-TextEntity.handledNames = [`text`];
+TextEntity.handledNames = [
+  `text`
+]
 
 TextEntity.handles = function(name) {
   return (this.handledNames.indexOf(name) >= 0);
@@ -1378,7 +1396,8 @@ TextEntity.handles = function(name) {
 TextEntity.isParameter = false;
 
 /* global Registry */
-Registry.register(TextEntity);;function TextInterceptor() { // eslint-disable-line
+Registry.register(TextEntity);
+;function TextInterceptor() { // eslint-disable-line
   const self = this;
   /* global baseInterceptor */
   baseInterceptor.call(self);
@@ -1430,7 +1449,6 @@ TextInterceptor.prototype.populateObject = function(x, passedArgs, object, isDra
 }
 
 TextInterceptor.prototype.populateTable = function(table, objectArray) {
-  /* global MAX_OBJECTS */
   if (this.totalCount <= MAX_OBJECTS) {
     if (this.prevTotalCount > this.totalCount) {
       for (let j = 0; j < this.totalCount; j++) {
@@ -1472,7 +1490,7 @@ TextInterceptor.prototype.populateTable = function(table, objectArray) {
       }
       for (let j = this.totalCount; j < this.prevTotalCount; j++) {
         const tempRow = table.children[this.totalCount];
-        if (tempRow) {
+        if(tempRow){
           table.removeChild(tempRow);
         }
       }
@@ -1559,7 +1577,7 @@ TextInterceptor.prototype.getSummary = function(object1, object2, element) {
 
 
     object1.objectArray.forEach((objArrayItem, i) => {
-      if (i < MAX_OBJECTS) {
+      if(i<MAX_OBJECTS) {
         const objectListItem = document.createElement(`li`);
         objectList.appendChild(objectListItem);
         const objLink = document.createElement(`a`);
@@ -1577,7 +1595,7 @@ TextInterceptor.prototype.getSummary = function(object1, object2, element) {
     });
 
     object2.objectArray.forEach((objArrayItem, i) => {
-      if (i < MAX_OBJECTS) {
+      if(i<MAX_OBJECTS) {
         const objectListItem = document.createElement(`li`);
         objectList.appendChild(objectListItem);
         const objLink = document.createElement(`a`);
@@ -1598,7 +1616,8 @@ TextInterceptor.prototype.getSummary = function(object1, object2, element) {
   }
 }
 
-const textInterceptor = new TextInterceptor();;/* global funcNames */
+const textInterceptor = new TextInterceptor();
+;/* global funcNames */
 /* global allData */
 funcNames = allData.classitems.map((x) => {
   if (x.overloads) {
@@ -1733,8 +1752,7 @@ GridInterceptor.prototype.populateTable = function(objectArray, documentPassed) 
   const that = this;
   objectArray = [].slice.call(objectArray);
   objectArray.forEach((object, i) => {
-    /* global MAX_OBJECTS */
-    if (i < MAX_OBJECTS) {
+    if(i<MAX_OBJECTS) {
       const cellLoc = object.coordLoc.locY * that.noRows + object.coordLoc.locX;
       // add link in table
       const cellLink = documentPassed.createElement(`a`);
@@ -1773,9 +1791,9 @@ GridInterceptor.prototype.getSummary = function(object1, object2, elementSummary
 
     const objectList = document.createElement(`ul`);
 
-    if (this.totalCount < MAX_OBJECTS) {
+    if (true){// }(this.totalCount < MAX_OBJECTS) {
       object1.objectArray.forEach((objArrayItem, i) => {
-        if (i < MAX_OBJECTS) {
+        if(i<MAX_OBJECTS){
           const objectListItem = document.createElement(`li`);
           objectListItem.id = `object` + i;
           objectList.appendChild(objectListItem);
@@ -1792,7 +1810,7 @@ GridInterceptor.prototype.getSummary = function(object1, object2, elementSummary
         }
       });
       object2.objectArray.forEach((objArrayItem, i) => {
-        if (i < MAX_OBJECTS) {
+        if(i<MAX_OBJECTS){
           const objectListItem = document.createElement(`li`);
           objectListItem.id = `object` + (object1.objectArray.length + i);
           objectList.appendChild(objectListItem);

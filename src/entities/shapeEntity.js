@@ -1,62 +1,58 @@
-/* global BaseEntity */
-class ShapeEntity extends BaseEntity {
-  constructor(Interceptor, shapeObject, shapeArgs, canvasX, canvasY) {
-    super(Interceptor, shapeObject);
-    this.shapeObject = shapeObject;
-    this.areaAbs = 0;
-    this.type = `${Interceptor.currentColor} ${shapeObject.name}`;
-    this.area = 0;
-    this.populate(shapeObject, shapeArgs, canvasX, canvasY);
-  }
-  populate(shapeObject, shapeArgs, canvasX, canvasY) {
-    this.location = this.getLocation(shapeObject, shapeArgs, canvasX, canvasY);
-    this.areaAbs = this.getObjectArea(shapeObject.name, shapeArgs);
-    this.coordLoc = this.canvasLocator(shapeObject, shapeArgs, canvasX, canvasY);
-    this.area = (this.getObjectArea(shapeObject.name, shapeArgs) * 100 / (canvasX * canvasY)).toFixed(2) + `%`;
-  }
-  getAttributes() {
-    const {
-      shapeObject,
-      type,
-      location,
-      coordinates,
-      area
-    } = this;
-    if ((!shapeObject.name.localeCompare(`ellipse`)) || !shapeObject.name.localeCompare(`rect`) || !shapeObject.name.localeCompare(`triangle`) || !shapeObject.name.localeCompare(`quad`)) {
-      return ({
-        type,
-        location,
-        coordinates,
-        area
-      });
-    } else if (!shapeObject.name.localeCompare(`line`)) {
-      return ({
-        type,
-        location,
-        coordinates,
-        length
-      });
-    } else {
-      return ({
-        type,
-        location,
-        coordinates
-      });
+function ShapeEntity(Interceptor, shapeObject, shapeArgs, canvasX, canvasY) {
+  const self = this;
+  /* global BaseEntity */
+  BaseEntity.call(self, shapeObject, shapeArgs, canvasX, canvasY);
+  this.areaAbs = 0;
+  this.type = Interceptor.currentColor + ` ` + shapeObject.name;
+  this.area = 0;
+  this.length = 0;
+
+
+  this.populate = function(shapeObject, arguments, canvasX, canvasY) {
+    this.location = this.getLocation(shapeObject, arguments, canvasX, canvasY);
+    this.coordLoc = this.canvasLocator(shapeObject, arguments, canvasX, canvasY);
+    if(!shapeObject.name.localeCompare(`ellipse`) || !shapeObject.name.localeCompare(`rect`)  || !shapeObject.name.localeCompare(`triangle`) || !shapeObject.name.localeCompare(`quad`)) {
+      this.areaAbs = this.getObjectArea(shapeObject.name, arguments);
+      this.area = (this.getObjectArea(shapeObject.name, arguments) * 100 / (canvasX * canvasY)).toFixed(2) + `%`;
+    } else if(!shapeObject.name.localeCompare(`line`)) {
+      this.length = this.getLineLength(arguments);
     }
   }
 
+  this.getAttributes = function() {
+    if((!shapeObject.name.localeCompare(`ellipse`)) || !shapeObject.name.localeCompare(`rect`)  || !shapeObject.name.localeCompare(`triangle`) || !shapeObject.name.localeCompare(`quad`)) {
+      return ({
+        type: this.type,
+        location: this.location,
+        coordinates: this.coordinates,
+        area: this.area
+      })
+    } 
+    else if(!shapeObject.name.localeCompare(`line`)) {
+      return ({
+        type: this.type,
+        location: this.location,
+        coordinates: this.coordinates,
+        length : this.length
+      })
+    } 
+    else {
+      return ({
+        type: this.type,
+        location: this.location,
+        coordinates: this.coordinates         
+      })
+    }
+  };
+
   /* return length of lines */
-  getLineLength(...args) {
-    const {
-      round,
-      sqrt,
-      pow
-    } = Math;
-    return round(sqrt((pow(args[2] - args[0], 2)) + (pow(args[3] - args[1], 2))));
+  this.getLineLength = function(arguments){
+    const lineLength = Math.round(Math.sqrt((Math.pow(arguments[2]-arguments[0],2)) + (Math.pow(arguments[3]-arguments[1],2))));
+    return lineLength;
   }
 
   /* return area of the shape */
-  getObjectArea(objectType, shapeArgs) {
+  this.getObjectArea = function(objectType, shapeArgs) {
     let objectArea = 0;
     if (!objectType.localeCompare(`arc`)) {
       // area of full ellipse = PI * horizontal radius * vertical radius.
@@ -90,10 +86,10 @@ class ShapeEntity extends BaseEntity {
       // ((x4+x1)*(y4-y1)+(x1+x2)*(y1-y2)+(x2+x3)*(y2-y3)+(x3+x4)*(y3-y4))/2
       objectArea = abs(
         (shapeArgs[6] + shapeArgs[0]) * (shapeArgs[7] - shapeArgs[1]) +
-                (shapeArgs[0] + shapeArgs[2]) * (shapeArgs[1] - shapeArgs[3]) +
-                (shapeArgs[2] + shapeArgs[4]) * (shapeArgs[3] - shapeArgs[5]) +
-                (shapeArgs[4] + shapeArgs[6]) * (shapeArgs[5] - shapeArgs[7])
-      ) / 2;
+        (shapeArgs[0] + shapeArgs[2]) * (shapeArgs[1] - shapeArgs[3]) +
+        (shapeArgs[2] + shapeArgs[4]) * (shapeArgs[3] - shapeArgs[5]) +
+        (shapeArgs[4] + shapeArgs[6]) * (shapeArgs[5] - shapeArgs[7])
+      )/2;
     } else if (!objectType.localeCompare(`rect`)) {
       objectArea = shapeArgs[2] * shapeArgs[3];
     } else if (!objectType.localeCompare(`triangle`)) {
@@ -103,9 +99,19 @@ class ShapeEntity extends BaseEntity {
     }
     return objectArea;
   }
+
+  this.populate(shapeObject, shapeArgs, canvasX, canvasY);
 }
 
-ShapeEntity.handledNames = [`arc`, `ellipse`, `line`, `point`, `quad`, `rect`, `triangle`];
+ShapeEntity.handledNames = [
+  `arc`,
+  `ellipse`,
+  `line`,
+  `point`,
+  `quad`,
+  `rect`,
+  `triangle`
+]
 
 ShapeEntity.handles = function(name) {
   return (this.handledNames.indexOf(name) >= 0);

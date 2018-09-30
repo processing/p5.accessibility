@@ -73,8 +73,7 @@ GridInterceptor.prototype.populateTable = function(objectArray, documentPassed) 
   const that = this;
   objectArray = [].slice.call(objectArray);
   objectArray.forEach((object, i) => {
-    /* global MAX_OBJECTS */
-    if (i < MAX_OBJECTS) {
+    if(i<MAX_OBJECTS) {
       const cellLoc = object.coordLoc.locY * that.noRows + object.coordLoc.locX;
       // add link in table
       const cellLink = documentPassed.createElement(`a`);
@@ -113,9 +112,9 @@ GridInterceptor.prototype.getSummary = function(object1, object2, elementSummary
 
     const objectList = document.createElement(`ul`);
 
-    if (this.totalCount < MAX_OBJECTS) {
+    if (true){// }(this.totalCount < MAX_OBJECTS) {
       object1.objectArray.forEach((objArrayItem, i) => {
-        if (i < MAX_OBJECTS) {
+        if(i<MAX_OBJECTS){
           const objectListItem = document.createElement(`li`);
           objectListItem.id = `object` + i;
           objectList.appendChild(objectListItem);
@@ -132,7 +131,7 @@ GridInterceptor.prototype.getSummary = function(object1, object2, elementSummary
         }
       });
       object2.objectArray.forEach((objArrayItem, i) => {
-        if (i < MAX_OBJECTS) {
+        if(i<MAX_OBJECTS){
           const objectListItem = document.createElement(`li`);
           objectListItem.id = `object` + (object1.objectArray.length + i);
           objectList.appendChild(objectListItem);
