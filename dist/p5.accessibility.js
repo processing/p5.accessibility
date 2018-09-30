@@ -1366,8 +1366,6 @@ ShapeEntity.isParameter = false;
 Registry.register(ShapeEntity);
 ;function TextEntity(Interceptor, shapeObject, textArgs, canvasX, canvasY) {
   const self = this;
-
-  // console.log(textArgs );
   /* global BaseEntity */
   BaseEntity.call(self, shapeObject, textArgs, canvasX, canvasY);
   this.type = Interceptor.currentColor + ` ` + shapeObject.name + `: ` + String(textArgs[0]).substring(0, 20);
