@@ -1253,6 +1253,7 @@ Registry.register(FillEntity);
   this.currentEllipseMode = Interceptor.currentEllipseMode;
 
 
+
   this.populate = function(shapeObject, arguments, canvasX, canvasY) {
     this.location = this.getLocation(shapeObject, arguments, canvasX, canvasY);
     this.coordLoc = this.canvasLocator(shapeObject, arguments, canvasX, canvasY);
@@ -1378,7 +1379,7 @@ Registry.register(ShapeEntity);
   const self = this;
   /* global BaseEntity */
   BaseEntity.call(self, shapeObject, textArgs, canvasX, canvasY);
-  this.type = String(textArgs[0]).substring(0, 20) + `(` + Interceptor.currentColor + `)`;
+  this.type = Interceptor.currentColor + ` ` + shapeObject.name + `: ` + String(textArgs[0]).substring(0, 20);
 
   this.populate = function(shapeObject, textArgs, canvasX, canvasY) {
     this.location = this.getLocation(shapeObject, textArgs, canvasX, canvasY);

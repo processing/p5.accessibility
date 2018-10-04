@@ -2,7 +2,7 @@ function TextEntity(Interceptor, shapeObject, textArgs, canvasX, canvasY) {
   const self = this;
   /* global BaseEntity */
   BaseEntity.call(self, shapeObject, textArgs, canvasX, canvasY);
-  this.type = String(textArgs[0]).substring(0, 20) + `(` + Interceptor.currentColor + `)`;
+  this.type = Interceptor.currentColor + ` ` + shapeObject.name + `: ` + String(textArgs[0]).substring(0, 20);
 
   this.populate = function(shapeObject, textArgs, canvasX, canvasY) {
     this.location = this.getLocation(shapeObject, textArgs, canvasX, canvasY);
