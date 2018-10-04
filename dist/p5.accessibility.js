@@ -2,7 +2,7 @@ function calculateColor(hsv) {
     let colortext;
     if (hsv[0] !== 0) {
         hsv[0] = Math.round(hsv[0] * 100);
-        hue = hsv[0].toString().split(``);
+        let hue = hsv[0].toString().split(``);
         const last = hue.length - 1;
         hue[last] = parseInt(hue[last]);
         if (hue[last] < 2.5) {
@@ -47,9 +47,9 @@ function calculateColor(hsv) {
             }
         }
     } else {
-        for (let i = 0; i < color_lookup.length; i++) {
-            if ((color_lookup[i].h === hsv[0]) && (color_lookup[i].s === hsv[1]) && (color_lookup[i].b === hsv[2])) {
-                colortext = color_lookup[i].name;
+        for (let i = 0; i < colorLookUp.length; i++) {
+            if ((colorLookUp[i].h === hsv[0]) && (colorLookUp[i].s === hsv[1]) && (colorLookUp[i].b === hsv[2])) {
+                colortext = colorLookUp[i].name;
                 break;
             }
         }
@@ -141,7 +141,7 @@ const xcp = [{
     },
 ];
 
-const color_lookup = [{
+const colorLookUp = [{
         "h": 0,
         "s": 0,
         "b": 0,
@@ -838,6 +838,7 @@ function baseInterceptor() {
   this.prevTotalCount = 0,
   this.totalCount = 0,
   this.currentColor = 'white',
+  this.currentEllipseMode = 'center',
   this.bgColor = 'white',
   this.objectArea = 0,
   this.coordinates = [],
@@ -1072,6 +1073,7 @@ function RGBAString(colArgs) {
     }
   }
 }
+
 function RGBString(colArgs) {
   if (colArgs[0].match(/%/)) {
     if (((colArgs[0].match(/%/g)).length) === 3) {
@@ -1248,6 +1250,8 @@ Registry.register(FillEntity);
   this.type = Interceptor.currentColor + ` ` + shapeObject.name;
   this.area = 0;
   this.length = 0;
+  this.currentEllipseMode = Interceptor.currentEllipseMode;
+
 
   this.populate = function(shapeObject, arguments, canvasX, canvasY) {
     this.location = this.getLocation(shapeObject, arguments, canvasX, canvasY);
@@ -1268,7 +1272,7 @@ Registry.register(FillEntity);
         coordinates: this.coordinates,
         area: this.area
       })
-    } 
+    }
     else if(!shapeObject.name.localeCompare(`line`)) {
       return ({
         type: this.type,
@@ -1276,12 +1280,12 @@ Registry.register(FillEntity);
         coordinates: this.coordinates,
         length : this.length
       })
-    } 
+    }
     else {
       return ({
         type: this.type,
         location: this.location,
-        coordinates: this.coordinates         
+        coordinates: this.coordinates
       })
     }
   };
@@ -1318,7 +1322,15 @@ Registry.register(FillEntity);
         }
       }
     } else if (!objectType.localeCompare(`ellipse`)) {
-      objectArea = 3.14 * shapeArgs[2] * shapeArgs[3] / 4;
+      if(!this.currentEllipseMode.localeCompare(`center`)) {
+        objectArea = 3.14 * shapeArgs[2] * shapeArgs[3] / 4;
+      } else if(!this.currentEllipseMode.localeCompare(`radius`)) {
+        objectArea = 3.14 * shapeArgs[2] * shapeArgs[3];
+      } else if(!this.currentEllipseMode.localeCompare(`corner`)) {
+        objectArea = 3.14 * shapeArgs[2] * shapeArgs[3] / 4;
+      } else if(!this.currentEllipseMode.localeCompare(`corners`)) {
+        objectArea = 3.14 * Math.abs(shapeArgs[2] - shapeArgs[0]) * Math.abs(shapeArgs[3] - shapeArgs[1]) / 4;
+      }
     } else if (!objectType.localeCompare(`line`)) {
       objectArea = 0;
     } else if (!objectType.localeCompare(`point`)) {
@@ -1362,8 +1374,7 @@ ShapeEntity.isParameter = false;
 
 /* global Registry */
 Registry.register(ShapeEntity);
-;function TextEntity(Interceptor, shapeObject, arguments, canvasX, canvasY) {
-
+;function TextEntity(Interceptor, shapeObject, textArgs, canvasX, canvasY) {
   const self = this;
   /* global BaseEntity */
   BaseEntity.call(self, shapeObject, textArgs, canvasX, canvasY);
@@ -1397,6 +1408,25 @@ TextEntity.isParameter = false;
 
 /* global Registry */
 Registry.register(TextEntity);
+;function EllipseModeEntity(Interceptor, shapeObject, modeArgs) // eslint-disable-line no-unused-vars
+{
+  this.populate = function(Interceptor) {
+    Interceptor.currentEllipseMode = modeArgs[0];
+  }
+  this.populate(Interceptor);
+}
+EllipseModeEntity.handledNames = [
+  `ellipseMode`
+]
+
+EllipseModeEntity.handles = function(name) {
+  return (this.handledNames.indexOf(name) >= 0);
+}
+
+EllipseModeEntity.isParameter = true;
+
+/* global Registry */
+Registry.register(EllipseModeEntity);
 ;function TextInterceptor() { // eslint-disable-line
   const self = this;
   /* global baseInterceptor */

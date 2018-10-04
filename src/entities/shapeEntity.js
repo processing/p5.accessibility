@@ -6,6 +6,7 @@ function ShapeEntity(Interceptor, shapeObject, shapeArgs, canvasX, canvasY) {
   this.type = Interceptor.currentColor + ` ` + shapeObject.name;
   this.area = 0;
   this.length = 0;
+  this.currentEllipseMode = Interceptor.currentEllipseMode;
 
 
   this.populate = function(shapeObject, arguments, canvasX, canvasY) {
@@ -27,7 +28,7 @@ function ShapeEntity(Interceptor, shapeObject, shapeArgs, canvasX, canvasY) {
         coordinates: this.coordinates,
         area: this.area
       })
-    } 
+    }
     else if(!shapeObject.name.localeCompare(`line`)) {
       return ({
         type: this.type,
@@ -35,12 +36,12 @@ function ShapeEntity(Interceptor, shapeObject, shapeArgs, canvasX, canvasY) {
         coordinates: this.coordinates,
         length : this.length
       })
-    } 
+    }
     else {
       return ({
         type: this.type,
         location: this.location,
-        coordinates: this.coordinates         
+        coordinates: this.coordinates
       })
     }
   };
@@ -77,7 +78,15 @@ function ShapeEntity(Interceptor, shapeObject, shapeArgs, canvasX, canvasY) {
         }
       }
     } else if (!objectType.localeCompare(`ellipse`)) {
-      objectArea = 3.14 * shapeArgs[2] * shapeArgs[3] / 4;
+      if(!this.currentEllipseMode.localeCompare(`center`)) {
+        objectArea = 3.14 * shapeArgs[2] * shapeArgs[3] / 4;
+      } else if(!this.currentEllipseMode.localeCompare(`radius`)) {
+        objectArea = 3.14 * shapeArgs[2] * shapeArgs[3];
+      } else if(!this.currentEllipseMode.localeCompare(`corner`)) {
+        objectArea = 3.14 * shapeArgs[2] * shapeArgs[3] / 4;
+      } else if(!this.currentEllipseMode.localeCompare(`corners`)) {
+        objectArea = 3.14 * Math.abs(shapeArgs[2] - shapeArgs[0]) * Math.abs(shapeArgs[3] - shapeArgs[1]) / 4;
+      }
     } else if (!objectType.localeCompare(`line`)) {
       objectArea = 0;
     } else if (!objectType.localeCompare(`point`)) {
