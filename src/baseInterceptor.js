@@ -37,12 +37,12 @@ baseInterceptor.prototype.getColorName = function(colArgs) {
       const rgb = '(0, 0, 0)';
       if (trans === 0) {
         return ({
-          'color': 'black',
+          'color': 'black' + ' ',
           rgb
         });
       } else {
         return ({
-          'color': 'black with ' + trans + '% tranparency',
+          'color': 'black with ' + trans + '% tranparency' + ' ',
           rgb
         });
       }
@@ -50,12 +50,12 @@ baseInterceptor.prototype.getColorName = function(colArgs) {
       const rgb = '(255, 255, 255)';
       if (trans === 0) {
         return ({
-          'color': 'white',
+          'color': 'white' + ' ',
           rgb
         });
       } else {
         return ({
-          'color': 'white with ' + trans + '% tranparency',
+          'color': 'white with ' + trans + '% tranparency' + ' ',
           rgb
         });
       }
@@ -63,12 +63,12 @@ baseInterceptor.prototype.getColorName = function(colArgs) {
       const rgb = '(' + Math.round(colArgs[0]) + ', ' + Math.round(colArgs[0]) + ', ' + Math.round(colArgs[0]) + ')';
       if (trans === 0) {
         return ({
-          'color': 'gray',
+          'color': 'gray' + ' ',
           rgb
         });
       } else {
         return ({
-          'color': 'gray with ' + trans + '% tranparency',
+          'color': 'gray with ' + trans + '% tranparency' + ' ',
           rgb
         });
       }
@@ -78,19 +78,19 @@ baseInterceptor.prototype.getColorName = function(colArgs) {
       if (colArgs[0] < 10) {
         const rgb = '(0, 0, 0)';
         return ({
-          'color': 'black',
+          'color': 'black' + ' ',
           rgb
         });
       } else if (colArgs[0] > 240) {
         const rgb = '(255, 255, 255)';
         return ({
-          'color': 'white',
+          'color': 'white' + ' ',
           rgb
         });
       } else {
         const rgb = '(' + colArgs[0] + ', ' + colArgs[0] + ', ' + colArgs[0] + ')';
         return ({
-          'color': 'grey',
+          'color': 'grey' + ' ',
           rgb
         });
       }
@@ -110,14 +110,14 @@ baseInterceptor.prototype.getColorName = function(colArgs) {
         }
       }else{
         return ({
-          'color': 'white',
+          'color': 'white' + ' ',
           'rgb' : '(255, 255, 255)'
         });
       }
     }
   } else {
     return ({
-      'color': 'white',
+      'color': 'white' + ' ',
       'rgb' : '(255, 255, 255)'
     });
   }
@@ -139,7 +139,7 @@ function getRGBAname(colArgs) {
     });
   } else {
     return ({
-      'color': colorName,
+      'color': colorName + ' ',
       rgb
     });
   }
@@ -149,7 +149,7 @@ function getRGBname(colArgs) {
   const colorName = rgbColorName(colArgs[0], colArgs[1], colArgs[2]);
   const rgb = '(' + Math.round(colArgs[0]) + ', ' + Math.round(colArgs[1]) + ', ' + Math.round(colArgs[2]) + ')';
   return ({
-    'color': colorName,
+    'color': colorName + ' ',
     rgb
   });
 }
@@ -167,7 +167,7 @@ function getHexname(colArgs) {
   const b = parseInt(hex[4] + hex[5], 16);
   const rgb = '(' + r + ', ' + g + ', ' + b + ')';
   return ({
-    'color': colorName,
+    'color': colorName + ' ',
     rgb
   });
 }
