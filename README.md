@@ -33,7 +33,7 @@ If you have found a bug in the p5.accessibility.js library, you can file it here
 ## Usage
 
 Link to the library at the end of your html file:
-`<script src="https://cdn.rawgit.com/processing/p5.accessibility/v0.1.1/dist/p5-accessibility.js"></script>`
+`<script src="https://cdn.jsdelivr.net/gh/processing/p5.accessibility@0.2.0/dist/p5.accessibility.js"></script>`
 
 To get the **plain text output**, include the following in your HTML file, and place it where you want the output to be available:
 `<section id="textOutput-content"></section>`
