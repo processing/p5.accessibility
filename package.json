@@ -21,13 +21,13 @@
     "dependencies": {
         "grunt-cli": "^1.2.0",
         "grunt-contrib-connect": "^1.0.2",
-        "grunt-curl": "^2.4.1",
-        "jquery": "^3.2.1"
+        "grunt-curl": "^2.5.1",
+        "jquery": "^3.4.1"
     },
     "devDependencies": {
         "eslint": "^5.0.1",
         "eslint-config-p5js": "^1.0.1",
-        "grunt": "^1.0.3",
+        "grunt": "^1.0.4",
         "grunt-contrib-coffee": "^2.0.0",
         "grunt-contrib-concat": "^0.5.0",
         "grunt-contrib-cssmin": "~0.10.0",
@@ -35,8 +35,8 @@
         "grunt-contrib-uglify": "^3.3.0",
         "grunt-contrib-watch": "^1.1.0",
         "grunt-eslint": "^21.0.0",
-        "grunt-mocha": "^1.1.0",
-        "grunt-open": "^0.2.3",
+        "grunt-mocha": "^1.2.0",
+        "grunt-open": "^0.2.4",
         "nyc": "^12.0.2"
     }
 }
