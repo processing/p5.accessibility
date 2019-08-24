@@ -4,7 +4,7 @@ function FillEntity(Interceptor, shapeObject, fillArgs, canvasX, canvasY) // esl
     if (fillArgs[0].name === `p5.Color`) {
       fillArgs = fillArgs[0].levels;
     }
-    Interceptor.currentColor = Interceptor.getColorName(fillArgs).color + Interceptor.getColorName(fillArgs).rgb;
+    Interceptor.currentColor = Interceptor.getColorName(fillArgs).color;
   }
 
   this.populate(Interceptor);
