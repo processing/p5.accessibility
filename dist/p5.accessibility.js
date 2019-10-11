@@ -1244,7 +1244,7 @@ Registry.register(FillEntity);
     this.coordLoc = this.canvasLocator(shapeObject, arguments, canvasX, canvasY);
     if(!shapeObject.name.localeCompare(`ellipse`) || !shapeObject.name.localeCompare(`rect`)  || !shapeObject.name.localeCompare(`triangle`) || !shapeObject.name.localeCompare(`quad`)) {
       this.areaAbs = this.getObjectArea(shapeObject.name, arguments);
-      this.area = (this.getObjectArea(shapeObject.name, arguments) * 100 / (canvasX * canvasY)).toFixed(2) + `%`;
+      this.area = (Math.ceil(this.getObjectArea(shapeObject.name, arguments) * 100 / (canvasX * canvasY))) + `%`;
     } else if(!shapeObject.name.localeCompare(`line`)) {
       this.length = this.getLineLength(arguments);
     }
