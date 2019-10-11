@@ -1244,7 +1244,7 @@ Registry.register(FillEntity);
     this.coordLoc = this.canvasLocator(shapeObject, arguments, canvasX, canvasY);
     if(!shapeObject.name.localeCompare(`ellipse`) || !shapeObject.name.localeCompare(`rect`)  || !shapeObject.name.localeCompare(`triangle`) || !shapeObject.name.localeCompare(`quad`)) {
       this.areaAbs = this.getObjectArea(shapeObject.name, arguments);
-      this.area = (this.getObjectArea(shapeObject.name, arguments) * 100 / (canvasX * canvasY)).toFixed(2) + `%`;
+      this.area = (Math.ceil(this.getObjectArea(shapeObject.name, arguments) * 100 / (canvasX * canvasY))) + `%`;
     } else if(!shapeObject.name.localeCompare(`line`)) {
       this.length = this.getLineLength(arguments);
     }
@@ -1832,11 +1832,13 @@ GridInterceptor.prototype.getSummary = function(object1, object2, elementSummary
           objectList.appendChild(objectListItem);
           const objKeys = Object.keys(objArrayItem.getAttributes());
           objKeys.forEach((objKeyItem) => {
-            if (objKeyItem.localeCompare(`coordLoc`)) {
-              if (objKeyItem.localeCompare(`type`)) {
-                objectListItem.innerHTML += objKeyItem + ` = ` + objArrayItem[objKeyItem] + ` `;
-              } else {
-                objectListItem.innerHTML += objArrayItem[objKeyItem] + ` `;
+            if (objKeyItem != `coordinates`){
+              if (objKeyItem.localeCompare(`coordLoc`)) {
+                if (objKeyItem.localeCompare(`type`)) {
+                  objectListItem.innerHTML += objKeyItem + ` = ` + objArrayItem[objKeyItem] + ` `;
+                } else {
+                  objectListItem.innerHTML += objArrayItem[objKeyItem] + ` `;
+                }
               }
             }
           });
