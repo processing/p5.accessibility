@@ -137,11 +137,13 @@ GridInterceptor.prototype.getSummary = function(object1, object2, elementSummary
           objectList.appendChild(objectListItem);
           const objKeys = Object.keys(objArrayItem.getAttributes());
           objKeys.forEach((objKeyItem) => {
-            if (objKeyItem.localeCompare(`coordLoc`)) {
-              if (objKeyItem.localeCompare(`type`)) {
-                objectListItem.innerHTML += objKeyItem + ` = ` + objArrayItem[objKeyItem] + ` `;
-              } else {
-                objectListItem.innerHTML += objArrayItem[objKeyItem] + ` `;
+            if (objKeyItem != `coordinates`){
+              if (objKeyItem.localeCompare(`coordLoc`)) {
+                if (objKeyItem.localeCompare(`type`)) {
+                  objectListItem.innerHTML += objKeyItem + ` = ` + objArrayItem[objKeyItem] + ` `;
+                } else {
+                  objectListItem.innerHTML += objArrayItem[objKeyItem] + ` `;
+                }
               }
             }
           });
