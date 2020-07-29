@@ -1,3 +1,5 @@
+# Notice: This library is no longer being updated. We are currently working on integrating the Text Output and Grid Output (formerly called Table Text Output) into p5.js. You can learn more about this work in [#4703](https://github.com/processing/p5.js/pull/4703). Once #4703 is merged we will be archiving this repository. Thanks to everyone that has contributed to this repository ❤️.
+
 [![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
 
 # p5.accessibility.js
